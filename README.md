@@ -59,3 +59,15 @@ ADDITIONAL NOTES:
 
 * we can create an mp3 from festival using
 	text2wave | lame -out.mp3
+
+GUI DESIGN:
+
+* We will be using .css to add skins to our gui. This enables us to possibly add interchangable skins.
+
+* Our Buttons will have 3 states. On, Off and Hovered. On will show the user they have clicked a togglable button (such as pause). Hover will show when the user has there mouse above the button. Off will show when the button is toggled off (default).
+
+* Perhaps a dark grey or near black background would fit well with our design. With glowing buttons.
+
+* Our video timeline scroll bar should be hoverable aswell. Much like the Youtube scroll bar.
+
+* We will need open video and save video buttons.
