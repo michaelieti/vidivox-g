@@ -2,13 +2,11 @@ package player;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -19,21 +17,21 @@ import javafx.stage.Stage;
 public class MainScreen extends Application {
 	
 	final boolean GRID_IS_VISIBLE = true;
-	VidivoxLauncher launcher;
 	
 	String URL = null;
 	MediaView mv;
 	MediaPlayer mp;
 	Media currentMedia;
 	Button playBtn, pauseBtn, stopBtn, skipBackBtn, skipFwdBtn;
+	Stage primary;
 	
-	public void initiate(String[] args, VidivoxLauncher launcher){
-		this.launcher = launcher;
+	public void initiate(String[] args){
 		launch(args);
 	}
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		primary = primaryStage;
 		//create panel for player
 		//create slider section with player slider (uses seek)
 			//create top hbar (play, pause, stop)
@@ -51,10 +49,8 @@ public class MainScreen extends Application {
 		HBox cntrlBar = new HBox();
 			Button openFileBtn = new Button("Open file");
 				openFileBtn.setOnAction(new EventHandler<ActionEvent>(){
-
-					@Override
 					public void handle(ActionEvent event) {
-						System.out.println("Hello!");
+						VidivoxLauncher.openFile();
 					}
 					
 				});
@@ -77,15 +73,40 @@ public class MainScreen extends Application {
 			HBox cp_top = new HBox();
 			cp_top.setAlignment(Pos.CENTER);
 			cp_top.setSpacing(10);
-				playBtn = new Button(">");
-				pauseBtn = new Button("||");
-				stopBtn = new Button("[]");
+			Button	playBtn = new Button(">");
+				playBtn.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						VidivoxLauncher.playVideo();
+					}
+				});
+			Button pauseBtn = new Button("||");
+				pauseBtn.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						VidivoxLauncher.pauseVideo();
+					}
+				});
+			Button stopBtn = new Button("[]");
+				stopBtn.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						VidivoxLauncher.stopVideo();
+					}
+				});
 			cp_top.getChildren().addAll(playBtn, pauseBtn, stopBtn);
 			//ADD IN MIDDLE PANEL
 			HBox cp_mid = new HBox();
 			cp_mid.setAlignment(Pos.CENTER);
-				skipFwdBtn = new Button(">>");
-				skipBackBtn = new Button("<<");
+			Button skipFwdBtn = new Button(">>");
+				skipFwdBtn.setOnAction(new EventHandler<ActionEvent> () {
+					public void handle(ActionEvent event) {
+						VidivoxLauncher.ffwdVideo();
+					}
+				});
+			Button skipBackBtn = new Button("<<");
+				skipBackBtn.setOnAction(new EventHandler<ActionEvent> () {
+					public void handle(ActionEvent event) {
+						VidivoxLauncher.rwdVideo();
+					}
+				});
 			cp_mid.getChildren().addAll(skipBackBtn, skipFwdBtn);
 			//ADD IN BOTTOM PANEL
 			HBox cp_bot = new HBox();
