@@ -1,6 +1,9 @@
 package player;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -41,6 +44,20 @@ public class MainScreen extends Application {
 		grid.setVgap(10);	grid.setHgap(10);
 		grid.setPadding(new Insets(25,25,15,25));
 		grid.setGridLinesVisible(GRID_IS_VISIBLE);
+		
+			//ADD IN A CONTROL BAR
+		HBox cntrlBar = new HBox();
+			Button openFileBtn = new Button("Open file");
+				openFileBtn.setOnAction(new EventHandler<ActionEvent>(){
+
+					@Override
+					public void handle(ActionEvent event) {
+						System.out.println("Hello!");
+					}
+					
+				});
+			cntrlBar.getChildren().add(openFileBtn);
+		grid.add(cntrlBar,  0, 0);
 		
 			//MEDIA VIEW NODE ADDED: CENTER
 		StackPane mediaPane = new StackPane();
