@@ -1,12 +1,19 @@
 package player;
 
 public class VidivoxLauncher {
-
+	
+	private static MainScreen ms;
+	
+	
 	public static void main(String[] args) {
 		
 		//insert other initiation related stuff
-		MainScreen.initiate(args);
-		
+		new VidivoxLauncher(args);
+	}
+	
+	private VidivoxLauncher(String[] args){
+		ms = new MainScreen();
+		ms.initiate(args, this);
 	}
 
 }

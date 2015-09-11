@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 public class MainScreen extends Application {
 	
 	final boolean GRID_IS_VISIBLE = true;
+	VidivoxLauncher launcher;
 	
 	String URL = null;
 	MediaView mv;
@@ -26,7 +27,8 @@ public class MainScreen extends Application {
 	Media currentMedia;
 	Button playBtn, pauseBtn, stopBtn, skipBackBtn, skipFwdBtn;
 	
-	public static void initiate(String[] args){
+	public void initiate(String[] args, VidivoxLauncher launcher){
+		this.launcher = launcher;
 		launch(args);
 	}
 	
