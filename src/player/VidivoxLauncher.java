@@ -7,6 +7,7 @@ package player;
  */
 public class VidivoxLauncher {
 	
+	public static final boolean GRID_IS_VISIBLE = true;
 	private static MainScreen ms;
 	
 	
@@ -15,11 +16,18 @@ public class VidivoxLauncher {
 		
 	}
 	
+	/**
+	 * This function shall handle the initialization of any intermediate
+	 * windows we will be using.
+	 */
 	private static void initialize(String[] args) {
 		ms = new MainScreen();
 		ms.initiate(args);
 	}
 
+	/*
+	 * Placeholder Functions
+	 */
 	public static void openFile() {
 		System.out.println("File Opened Wow!");
 	}
