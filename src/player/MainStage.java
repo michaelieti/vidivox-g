@@ -42,5 +42,9 @@ public class MainStage extends Stage {
 		//grid complete, set scene
 		this.setScene(new Scene(grid));
 	}
+	
+	protected VidivoxMedia getMediaPane(){
+		return vidiMedia;
+	}
 }
 
