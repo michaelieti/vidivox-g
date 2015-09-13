@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 public class VidivoxFileControls extends HBox {
 	
 	private VidivoxLauncher launcher;
-	private Button openFileBtn;
+	private Button openFileBtn, saveFileBtn;
 	
 	public VidivoxFileControls(VidivoxLauncher vl) {
 		super();
@@ -24,6 +24,12 @@ public class VidivoxFileControls extends HBox {
 			}
 			
 		});
-		this.getChildren().add(openFileBtn);
+		saveFileBtn = new Button("Save file");
+		saveFileBtn.setOnAction(new EventHandler<ActionEvent>(){
+			public void handle(ActionEvent event) {
+				launcher.openFile();
+			}
+		});
+		this.getChildren().addAll(openFileBtn, saveFileBtn);
 	}
 }
