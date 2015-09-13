@@ -15,10 +15,8 @@ public class VidivoxVideoControls extends VBox {
 	public VidivoxVideoControls(VidivoxLauncher vl) {
 		super();
 		launcher = vl;
-		//ADD IN TOP PANEL
-		HBox cp_top = new HBox();
-		cp_top.setAlignment(Pos.CENTER);
-		cp_top.setSpacing(10);
+		
+		//Buttons defined here (e.g. play button, pause button, stop button...)
 		playBtn = new Button(">");
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -49,17 +47,22 @@ public class VidivoxVideoControls extends VBox {
 				launcher.rwdVideo();
 			}
 		});
+		
+		//ADD IN TOP PANEL
+		HBox cp_top = new HBox();
+		cp_top.setAlignment(Pos.CENTER);
+		cp_top.setSpacing(10);
 		cp_top.getChildren().addAll(playBtn, pauseBtn, stopBtn);
+		
 		//ADD IN MIDDLE PANEL
 		HBox cp_mid = new HBox();
 		cp_mid.setAlignment(Pos.CENTER);
-		
 		cp_mid.getChildren().addAll(skipBackBtn, skipFwdBtn);
+		
 		//ADD IN BOTTOM PANEL
 		HBox cp_bot = new HBox();
 		this.setSpacing(10);
 		this.getChildren().addAll(cp_top, cp_mid, cp_bot);
-		
 		
 	}
 }
