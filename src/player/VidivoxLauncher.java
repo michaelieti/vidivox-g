@@ -10,7 +10,9 @@ import javafx.stage.Stage;
  */
 public class VidivoxLauncher extends Application {
 	
+	/*Configurable Fields for Application*/
 	public static final boolean GRID_IS_VISIBLE = true;
+	public static final String DEFAULT_TITLE = "Vidivox V1";
 	private Stage ms;
 	
 	
@@ -28,31 +30,31 @@ public class VidivoxLauncher extends Application {
 	/*
 	 * Placeholder Functions
 	 */
-	public static void openFile() {
+	public void openFile() {
 		System.out.println("File Opened Wow!");
 	}
 
-	public static void playVideo() {
+	public void playVideo() {
 		System.out.println("Pressed Play Wow!");
 		
 	}
 
-	public static void pauseVideo() {
+	public void pauseVideo() {
 		System.out.println("Pressed Pause Wow!");
 		
 	}
 
-	public static void stopVideo() {
+	public void stopVideo() {
 		System.out.println("Pressed Stop Wow!");
 		
 	}
 
-	public static void ffwdVideo() {
+	public void ffwdVideo() {
 		System.out.println("Pressed Fast Foward Wow!");
 		
 	}
 
-	public static void rwdVideo() {
+	public void rwdVideo() {
 		System.out.println("Pressed Rewind Wow!");
 		
 	}
