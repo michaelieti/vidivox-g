@@ -33,6 +33,10 @@ public class VidivoxLauncher extends Application {
 	public void openFile() {
 		System.out.println("File Opened Wow!");
 	}
+	
+	public void saveFile() {
+		System.out.println("Save this shit yo");
+	}
 
 	public void playVideo() {
 		System.out.println("Pressed Play Wow!");
