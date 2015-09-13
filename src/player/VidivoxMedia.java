@@ -18,5 +18,10 @@ public class VidivoxMedia extends StackPane {
 		mv = new MediaView();
 		this.getChildren().add(mv);
 	}
+	
+	protected getMediaView() {
+		return mv;
+	}
+	
 }
 
