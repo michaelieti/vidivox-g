@@ -13,8 +13,8 @@ public class VidivoxMedia extends StackPane {
 	
 	public VidivoxMedia() {
 		super();
-		this.setMinHeight(800);
-		this.setMinWidth(1000);
+		this.setMinHeight(500);
+		this.setMinWidth(800);
 		mv = new MediaView();
 		this.getChildren().add(mv);
 	}
