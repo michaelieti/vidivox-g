@@ -13,8 +13,8 @@ public class VidivoxLauncher extends Application {
 	/*Configurable Fields for Application*/
 	public static final boolean GRID_IS_VISIBLE = true;
 	public static final String DEFAULT_TITLE = "Vidivox V1";
-	private Stage ms;
 	
+	private Stage ms;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -32,6 +32,13 @@ public class VidivoxLauncher extends Application {
 	 */
 	public void openFile() {
 		System.out.println("File Opened Wow!");
+		String userInputString = null;
+		//get user input as a string
+		//parse user input into a URI object
+		URI mediaPath = new URI(userInputString);
+		VidivoxMedia vm = ms.getMediaPane().getMediaView();
+		vm.setMediaPlayer = new MediaPlayer(new Media(mediaPath));
+		//TODO: test later
 	}
 	
 	public void saveFile() {
