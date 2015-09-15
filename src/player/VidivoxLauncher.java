@@ -1,6 +1,12 @@
 package player;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javafx.application.Application;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 /**
@@ -35,9 +41,15 @@ public class VidivoxLauncher extends Application {
 		String userInputString = null;
 		//get user input as a string
 		//parse user input into a URI object
-		URI mediaPath = new URI(userInputString);
-		VidivoxMedia vm = ms.getMediaPane().getMediaView();
-		vm.setMediaPlayer = new MediaPlayer(new Media(mediaPath));
+		URI mediaPath = null;
+		try {		//we can stick this into its own method to better compartmentalize code
+			mediaPath = new URI(userInputString);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MediaView mediaView = ((MainStage)ms).getMediaPane().getMediaView();
+		mediaView.setMediaPlayer(new MediaPlayer(new Media(mediaPath.toString())));
 		//TODO: test later
 	}
 	
