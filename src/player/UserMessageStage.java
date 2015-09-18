@@ -15,7 +15,7 @@ public class UserMessageStage extends Stage {
 	private Button okBtn;
 	
 	//Initializer block for object construction
-	public UserMessageStage() {
+	{
 		Stage stg = this;
 		okBtn = new Button("Ok");
 		okBtn.setOnAction(new EventHandler<ActionEvent>(){
