@@ -24,6 +24,12 @@ public class VidivoxVideoControls extends VBox {
 	final private static double maxVolume = 10.0;
 	final private static double defaultVolume = 5.0;
 	
+	protected void updateCurrentlyPlaying(){
+		Status st = launcher.getCurrentMediaView().getMediaPlayer().getStatus();
+		currentlyPlaying = (st == Status.PLAYING);
+		return;
+	}
+	
 	public VidivoxVideoControls(VidivoxLauncher vl) {
 		super();
 		launcher = vl;
@@ -32,10 +38,12 @@ public class VidivoxVideoControls extends VBox {
 		playBtn = new Button(">");
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				updateCurrentlyPlaying();
 				if (currentlyPlaying)
 					launcher.playVideo(playBtn);
 				else
 					launcher.pauseVideo(playBtn);
+				updateCurrentlyPlaying();
 			}
 		});
 		pauseBtn = new Button("||");
