@@ -98,6 +98,16 @@ public class VidivoxLauncher extends Application {
 		System.out.println("Pressed Rewind Wow!");
 		
 	}
+	
+	public void speech() {
+		System.out.println("Pressed Speech");
+	}
 
-
+	public void sub() {
+		System.out.println("Pressed Sub");
+	}
+	
+	public void mp3() {
+		System.out.println("Pressed mp3");
+	}
 }

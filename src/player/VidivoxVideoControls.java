@@ -56,8 +56,28 @@ public class VidivoxVideoControls extends VBox {
 		});
 		speechBtn = new Button("Spch");
 		speechBtn.setOnAction(new EventHandler<ActionEvent>() {
-
+			public void handle(ActionEvent event) {
+				launcher.speech();
+			}
 		});
+		subBtn = new Button("Sub");
+		subBtn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				launcher.sub();
+			}
+		});
+		mp3Btn = new Button("mp3");
+		mp3Btn.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				launcher.mp3();
+			}
+		});
+
+		//Initializing the Volume Slider
+
+		volumeBar = new Slider(minVolume, maxVolume, defaultVolume);
+
+
 		//ADD IN TOP PANEL
 		HBox cp_top = new HBox();
 		cp_top.setAlignment(Pos.CENTER);
@@ -67,11 +87,13 @@ public class VidivoxVideoControls extends VBox {
 		//ADD IN MIDDLE PANEL
 		HBox cp_mid = new HBox();
 		cp_mid.setAlignment(Pos.CENTER);
-		cp_mid.getChildren().addAll(skipBackBtn, skipFwdBtn);
+		cp_mid.getChildren().addAll(speechBtn, subBtn, mp3Btn,volumeBar);
 		
 		//ADD IN BOTTOM PANEL
 		HBox cp_bot = new HBox();
 		this.setSpacing(10);
+		System.out.println("Buttons:" + cp_top.getPrefWidth());
+		System.out.println("Controls:" + cp_mid.getPrefWidth());
 		this.getChildren().addAll(cp_top, cp_mid, cp_bot);
 		
 	}
