@@ -23,9 +23,12 @@ import javafx.util.Duration;
  */
 public class VidivoxLauncher extends Application {
 	
-	/*Configurable Fields for Application*/
+	/*Developer-configurable fields for application*/
 	public static final boolean GRID_IS_VISIBLE = true;
 	public static final String DEFAULT_TITLE = "Vidivox V1";
+	
+	/*User-configurable fields for application */
+	private boolean isAutoPlayEnabled = true;
 	
 	/*Status flags for the Application*/
 	private boolean mediaEnded = false;
@@ -75,7 +78,7 @@ public class VidivoxLauncher extends Application {
 			//object, but with the new file.
 			mediaView.setMediaPlayer(new MediaPlayer(media));
 			//sets video to play automatically
-			//mediaView.getMediaPlayer().setAutoPlay(true);
+			mediaView.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);
 		}
 	}
 	
