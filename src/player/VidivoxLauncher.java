@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 
 import javafx.application.Application;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
@@ -45,11 +46,27 @@ public class VidivoxLauncher extends Application {
 		File file = fileChooser.showOpenDialog(ms);
 		if (file != null){
 			mediaPath = file.toURI();	//converts to URI object
-			//basically, retrieves the MediaView object from the main stage
+			//next step retrieves the MediaView object from the main stage
 			MediaView mediaView = ((MainStage)ms).getMediaPane().getMediaView();
+			Media media = null;
+			try{
+				media = new Media(mediaPath.toString());
+			} catch (MediaException me){	//this is pretty hax tbh TODO: come up with a better way to do this
+				String message = me.getMessage().trim();
+				if (message.equals("MEDIA_UNSUPPORTED : Unrecognized file signature!")){
+					mediaPath = MediaFormatter.transformMedia(mediaPath, MediaFormatter.MP4);	//reformats the media at mediaPath and provides a new URI.
+					media = new Media(mediaPath.toString());
+				} else {
+					throw me;	//lol
+				}
+			}
+			System.out.println(mediaPath.toString());
+			//need to check media to make sure it is flv or mp4 or whatever
 			//and then assigns a new MediaPlayer with a new Media to that MediaView 
 			//object, but with the new file.
-			mediaView.setMediaPlayer(new MediaPlayer(new Media(mediaPath.toString())));
+			mediaView.setMediaPlayer(new MediaPlayer(media));
+			//sets video to play automatically
+			mediaView.getMediaPlayer().setAutoPlay(true);
 		}
 	}
 	
