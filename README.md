@@ -71,3 +71,5 @@ GUI DESIGN:
 * Our video timeline scroll bar should be hoverable aswell. Much like the Youtube scroll bar.
 
 * We will need open video and save video buttons.
+
+* Link the resizing of the window to the resizing of the mediaviews fitview
