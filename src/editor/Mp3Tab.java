@@ -40,7 +40,6 @@ public class Mp3Tab extends BindableTab {
 				if (userFile != null){
 					//TODO: File now stored in userFile, ready to manipulate.
 				}
-
 			}
 			
 		});
