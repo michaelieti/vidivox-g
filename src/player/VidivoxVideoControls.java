@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer.Status;
+import javafx.scene.media.MediaView;
 
 public class VidivoxVideoControls extends VBox {
 
@@ -14,6 +16,9 @@ public class VidivoxVideoControls extends VBox {
 	private Button playBtn, pauseBtn, stopBtn, skipBackBtn, skipFwdBtn; //Video Playback
 	private Button speechBtn, subBtn, mp3Btn; //Video Editting
 	private Slider volumeBar;
+	
+	/*Flags related to application view */
+	private boolean currentlyPlaying; //returns true: playBtn shows "||"; false: playBtn shows ">"
 	
 	final private static double minVolume = 0.0;
 	final private static double maxVolume = 10.0;
@@ -27,13 +32,16 @@ public class VidivoxVideoControls extends VBox {
 		playBtn = new Button(">");
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				launcher.playVideo();
+				if (currentlyPlaying)
+					launcher.playVideo(playBtn);
+				else
+					launcher.pauseVideo(playBtn);
 			}
 		});
 		pauseBtn = new Button("||");
 		pauseBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				launcher.pauseVideo();
+				launcher.pauseVideo(playBtn);
 			}
 		});
 		stopBtn = new Button("[]");

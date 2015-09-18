@@ -6,12 +6,15 @@ import java.net.URISyntaxException;
 
 import editor.EditPanel;
 import javafx.application.Application;
+import javafx.scene.control.Button;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * This class will act as the controller class for the application
@@ -23,6 +26,9 @@ public class VidivoxLauncher extends Application {
 	/*Configurable Fields for Application*/
 	public static final boolean GRID_IS_VISIBLE = true;
 	public static final String DEFAULT_TITLE = "Vidivox V1";
+	
+	/*Status flags for the Application*/
+	private boolean mediaEnded = false;
 	
 	protected final FileChooser fileChooser = new FileChooser();
 	private Stage ms, editorPanel;
@@ -50,14 +56,14 @@ public class VidivoxLauncher extends Application {
 		if (file != null){
 			mediaPath = file.toURI();	//converts to URI object
 			//next step retrieves the MediaView object from the main stage
-			MediaView mediaView = ((MainStage)ms).getMediaPane().getMediaView();
+			MediaView mediaView = getCurrentMediaView();
 			Media media = null;
 			try{
 				media = new Media(mediaPath.toString());
 			} catch (MediaException me){	//this is pretty hax tbh TODO: come up with a better way to do this
 				String message = me.getMessage().trim();
 				if (message.equals("MEDIA_UNSUPPORTED : Unrecognized file signature!")){
-				//	mediaPath = MediaFormatter.transformMedia(mediaPath, MediaFormatter.MP4);	//reformats the media at mediaPath and provides a new URI.
+				//	mediaPath = MediaFormatter.transformMedia(mediaPath, MediaFormatter.MP4);	//TODO: reformats the media at mediaPath and provides a new URI.
 					media = new Media(mediaPath.toString());
 				} else {
 					throw me;	//lol
@@ -69,7 +75,7 @@ public class VidivoxLauncher extends Application {
 			//object, but with the new file.
 			mediaView.setMediaPlayer(new MediaPlayer(media));
 			//sets video to play automatically
-			mediaView.getMediaPlayer().setAutoPlay(true);
+			//mediaView.getMediaPlayer().setAutoPlay(true);
 		}
 	}
 	
@@ -77,12 +83,34 @@ public class VidivoxLauncher extends Application {
 		System.out.println("Save this shit yo");
 	}
 
-	public void playVideo() {
+	/**
+	 * An event handling method that dictates what occurs when the Play button is pushed.
+	 * If the video is paused, stopped, or at the end of the video track, play resumes from current point or the start of the video track.
+	 * If the video is currently playing, the video is paused, setting into motion the setOnPaused event handler.
+	 * Other states - nothing happens (e.g. an error state is generated)
+	 * @param src - the button that generated the event
+	 */
+	public void playVideo(Button src) {
 		System.out.println("Pressed Play Wow!");
-		
+		MediaPlayer mp = getCurrentMediaView().getMediaPlayer();				// obtain the current media view
+		Status status = mp.getStatus();	// obtain current media player status.
+				//Several checks are now carried out.
+		//CHECK ONE: possible error? nothing is done in these states for now
+		if (status == Status.UNKNOWN || status == Status.HALTED ){
+			return;
+		}
+		//CHECK TWO: stopped/paused/ready states - begin playing video
+		if (status == Status.STOPPED || status == Status.READY || status == Status.PAUSED ){
+			//check if video track is at end: if so, reset the track.
+			if (mediaEnded){
+				mp.seek(mp.getStartTime());
+				mediaEnded = false;
+			}//continue playing from that point
+			mp.play();
+		}
 	}
 
-	public void pauseVideo() {
+	public void pauseVideo(Button src) {
 		System.out.println("Pressed Pause Wow!");
 		
 	}
@@ -112,5 +140,9 @@ public class VidivoxLauncher extends Application {
 	
 	public void mp3() {
 		System.out.println("Pressed mp3");
+	}
+	
+	protected MediaView getCurrentMediaView(){
+		return ((MainStage)ms).getMediaPane().getMediaView();
 	}
 }
