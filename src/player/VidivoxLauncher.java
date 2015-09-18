@@ -44,8 +44,11 @@ public class VidivoxLauncher extends Application {
 		URI mediaPath = null;
 		File file = fileChooser.showOpenDialog(ms);
 		if (file != null){
-			mediaPath = file.toURI();
+			mediaPath = file.toURI();	//converts to URI object
+			//basically, retrieves the MediaView object from the main stage
 			MediaView mediaView = ((MainStage)ms).getMediaPane().getMediaView();
+			//and then assigns a new MediaPlayer with a new Media to that MediaView 
+			//object, but with the new file.
 			mediaView.setMediaPlayer(new MediaPlayer(new Media(mediaPath.toString())));
 		}
 	}
