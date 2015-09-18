@@ -24,7 +24,7 @@ public class VidivoxLauncher extends Application {
 	public static final String DEFAULT_TITLE = "Vidivox V1";
 	
 	protected final FileChooser fileChooser = new FileChooser();
-	private Stage ms;
+	private Stage ms, editorPanel;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -33,8 +33,10 @@ public class VidivoxLauncher extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		ms = new MainStage(this);
+		editorPanel = new EditPanel();
 		primaryStage = ms;
 		primaryStage.show();
+		editorPanel.show();
 	}
 
 	/*

@@ -92,8 +92,6 @@ public class VidivoxVideoControls extends VBox {
 		//ADD IN BOTTOM PANEL
 		HBox cp_bot = new HBox();
 		this.setSpacing(10);
-		System.out.println("Buttons:" + cp_top.getPrefWidth());
-		System.out.println("Controls:" + cp_mid.getPrefWidth());
 		this.getChildren().addAll(cp_top, cp_mid, cp_bot);
 		
 	}
