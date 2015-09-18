@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import editor.EditPanel;
 import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;

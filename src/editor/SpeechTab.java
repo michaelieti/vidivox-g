@@ -1,4 +1,4 @@
-package player;
+package editor;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,7 +12,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-public class SubtitleTab extends BindableTab {
+public class SpeechTab extends BindableTab {
+	
 	final private static boolean GRID_VISIBLE = true;
 	final private static int btnSpacing = 20;
 	
@@ -20,7 +21,7 @@ public class SubtitleTab extends BindableTab {
 	private TextArea userField;
 	private Button playBtn, previewBtn, overlayBtn;
 	
-	public SubtitleTab(String title, String message) {
+	public SpeechTab(String title, String message) {
 		super(title);
 		msg = new Text(message);
 		userField = new TextArea();
@@ -32,20 +33,20 @@ public class SubtitleTab extends BindableTab {
 		overlayBtn = new Button("Overlay");
 		overlayBtn.setOnAction(null);
 		
-		GridPane subtitlePane = new GridPane();
-		subtitlePane.setGridLinesVisible(GRID_VISIBLE);
-		subtitlePane.setVgap(10);
-		subtitlePane.setHgap(10);
-		subtitlePane.setPadding(new Insets(10, 10, 10, 10));
-		subtitlePane.add(msg, 0, 0, 3, 1);
-		subtitlePane.add(userField, 0, 1, 3, 3);
-		HBox subtitleBtns = new HBox();
-		subtitleBtns.setAlignment(Pos.CENTER);
-		subtitleBtns.setSpacing(btnSpacing);
-		subtitleBtns.getChildren().addAll(playBtn, previewBtn, overlayBtn);
-		subtitlePane.add(subtitleBtns, 0, 4, 3, 1);
+		GridPane speechPane = new GridPane();
+		speechPane.setGridLinesVisible(GRID_VISIBLE);
+		speechPane.setVgap(10);
+		speechPane.setHgap(10);
+		speechPane.setPadding(new Insets(10, 10, 10, 10));
+		speechPane.add(msg, 0, 0, 3, 1);
+		speechPane.add(userField, 0, 1, 3, 3);
+		HBox speechBtns = new HBox();
+		speechBtns.setAlignment(Pos.CENTER);
+		speechBtns.setSpacing(btnSpacing);
+		speechBtns.getChildren().addAll(playBtn, previewBtn, overlayBtn);
+		speechPane.add(speechBtns, 0, 4, 3, 1);
 		
-		this.setContent(subtitlePane);
+		this.setContent(speechPane);
 		
 	}
 	

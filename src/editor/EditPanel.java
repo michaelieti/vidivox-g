@@ -1,4 +1,4 @@
-package player;
+package editor;
 
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;

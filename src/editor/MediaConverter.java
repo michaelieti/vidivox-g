@@ -1,4 +1,4 @@
-package player;
+package editor;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package player;
+package editor;
 
 import javafx.scene.control.Tab;
 import javafx.stage.Stage;

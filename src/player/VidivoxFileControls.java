@@ -27,7 +27,7 @@ public class VidivoxFileControls extends HBox {
 		saveFileBtn = new Button("Save file");
 		saveFileBtn.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent event) {
-				launcher.openFile();
+				launcher.saveFile();
 			}
 		});
 		this.getChildren().addAll(openFileBtn, saveFileBtn);

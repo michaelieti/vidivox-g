@@ -1,4 +1,4 @@
-package player;
+package utility;
 
 import java.net.URI;
 
