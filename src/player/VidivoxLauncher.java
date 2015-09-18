@@ -54,7 +54,7 @@ public class VidivoxLauncher extends Application {
 			} catch (MediaException me){	//this is pretty hax tbh TODO: come up with a better way to do this
 				String message = me.getMessage().trim();
 				if (message.equals("MEDIA_UNSUPPORTED : Unrecognized file signature!")){
-					mediaPath = MediaFormatter.transformMedia(mediaPath, MediaFormatter.MP4);	//reformats the media at mediaPath and provides a new URI.
+				//	mediaPath = MediaFormatter.transformMedia(mediaPath, MediaFormatter.MP4);	//reformats the media at mediaPath and provides a new URI.
 					media = new Media(mediaPath.toString());
 				} else {
 					throw me;	//lol
