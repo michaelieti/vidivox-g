@@ -1,5 +1,6 @@
 package player;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -7,6 +8,7 @@ import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -20,6 +22,7 @@ public class VidivoxLauncher extends Application {
 	public static final boolean GRID_IS_VISIBLE = true;
 	public static final String DEFAULT_TITLE = "Vidivox V1";
 	
+	protected final FileChooser fileChooser = new FileChooser();
 	private Stage ms;
 	
 	public static void main(String[] args) {
@@ -38,19 +41,13 @@ public class VidivoxLauncher extends Application {
 	 */
 	public void openFile() {
 		System.out.println("File Opened Wow!");
-		String userInputString = null;
-		//get user input as a string
-		//parse user input into a URI object
 		URI mediaPath = null;
-		try {		//we can stick this into its own method to better compartmentalize code
-			mediaPath = new URI(userInputString);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		File file = fileChooser.showOpenDialog(ms);
+		if (file != null){
+			mediaPath = file.toURI();
+			MediaView mediaView = ((MainStage)ms).getMediaPane().getMediaView();
+			mediaView.setMediaPlayer(new MediaPlayer(new Media(mediaPath.toString())));
 		}
-		MediaView mediaView = ((MainStage)ms).getMediaPane().getMediaView();
-		mediaView.setMediaPlayer(new MediaPlayer(new Media(mediaPath.toString())));
-		//TODO: test later
 	}
 	
 	public void saveFile() {
