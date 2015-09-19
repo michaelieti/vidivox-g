@@ -24,11 +24,6 @@ public class VidivoxVideoControls extends VBox {
 	final private static double maxVolume = 10.0;
 	final private static double defaultVolume = 5.0;
 	
-	protected void updateCurrentlyPlaying(){
-		Status st = launcher.getCurrentMediaView().getMediaPlayer().getStatus();
-		currentlyPlaying = (st == Status.PLAYING);
-		return;
-	}
 	
 	public VidivoxVideoControls(VidivoxLauncher vl) {
 		super();
@@ -41,19 +36,18 @@ public class VidivoxVideoControls extends VBox {
 				updateCurrentlyPlaying();
 				if ( ! currentlyPlaying) {
 					launcher.playVideo(playBtn);
-					playBtn.setText("||");
 				}
 				else {
 					launcher.pauseVideo(playBtn);
-					playBtn.setText(">");
 				}
-				updateCurrentlyPlaying();
+				updateControls();
 			}
 		});
 		stopBtn = new Button("[]");
 		stopBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				launcher.stopVideo();
+				updateControls();
 			}
 		});
 		skipFwdBtn = new Button(">>");
@@ -107,7 +101,24 @@ public class VidivoxVideoControls extends VBox {
 		HBox cp_bot = new HBox();
 		this.setSpacing(10);
 		this.getChildren().addAll(cp_top, cp_mid, cp_bot);
-		
 	}
+	
+
+	protected void updateCurrentlyPlaying(){
+		Status st = launcher.getCurrentMediaView().getMediaPlayer().getStatus();
+		currentlyPlaying = (st == Status.PLAYING);
+		return;
+	}
+	
+	protected void updateControls(){
+		updateCurrentlyPlaying();
+		if (currentlyPlaying){
+			playBtn.setText(">");
+		}
+		else {
+			playBtn.setText("||");
+		}
+	}
+	
 }
 
