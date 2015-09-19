@@ -73,6 +73,11 @@ public class VidivoxLauncher extends Application {
 				}
 			}
 			System.out.println(mediaPath.toString());
+			if (mediaView.getMediaPlayer() != null){
+				mediaView.getMediaPlayer().stop();
+				mediaView.getMediaPlayer().dispose();
+				System.out.println("Called mp disposal method");
+			}
 			//need to check media to make sure it is flv or mp4 or whatever
 			//and then assigns a new MediaPlayer with a new Media to that MediaView 
 			//object, but with the new file.
@@ -95,7 +100,7 @@ public class VidivoxLauncher extends Application {
 	 */
 	public void playVideo(Button src) {
 		System.out.println("Pressed Play Wow!");
-		MediaPlayer mp = getCurrentMediaView().getMediaPlayer();				// obtain the current media view
+		MediaPlayer mp = getCurrentPlayer();				// obtain the current media view
 		Status status = mp.getStatus();	// obtain current media player status.
 				//Several checks are now carried out.
 		//CHECK ONE: possible error? nothing is done in these states for now
@@ -117,23 +122,24 @@ public class VidivoxLauncher extends Application {
 
 	public void pauseVideo(Button src) {
 		System.out.println("Pressed Pause Wow!");
-		MediaPlayer mp = getCurrentMediaView().getMediaPlayer();
-		mp.pause();
+		getCurrentPlayer().pause();
 	}
 
 	public void stopVideo() {
 		System.out.println("Pressed Stop Wow!");
-		
+		getCurrentPlayer().stop();
 	}
 
 	public void ffwdVideo() {
 		System.out.println("Pressed Fast Foward Wow!");
-		
+		MediaPlayer mp = getCurrentPlayer();
+		mp.seek(mp.getCurrentTime().add(Duration.seconds(10)));
 	}
 
 	public void rwdVideo() {
 		System.out.println("Pressed Rewind Wow!");
-		
+		MediaPlayer mp = getCurrentPlayer();
+		mp.seek(mp.getCurrentTime().subtract(Duration.seconds(10)));
 	}
 	
 	public void speech() {
@@ -148,6 +154,9 @@ public class VidivoxLauncher extends Application {
 		System.out.println("Pressed mp3");
 	}
 	
+	protected MediaPlayer getCurrentPlayer(){
+		return ((MainStage)ms).getMediaPane().getMediaView().getMediaPlayer();
+	}
 	protected MediaView getCurrentMediaView(){
 		return ((MainStage)ms).getMediaPane().getMediaView();
 	}
