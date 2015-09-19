@@ -73,3 +73,9 @@ GUI DESIGN:
 * We will need open video and save video buttons.
 
 * Link the resizing of the window to the resizing of the mediaviews fitview
+
+
+
+Screen Diagram:
+
+![aww-board.png](https://bitbucket.org/repo/jBjpGX/images/3613898520-aww-board.png)
