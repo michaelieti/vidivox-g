@@ -22,7 +22,6 @@ import javafx.stage.Window;
 
 public class Mp3Tab extends BindableTab {
 	
-	final private static boolean GRID_VISIBLE = true;
 	final private static int btnSpacing = 20;
 	
 	private Text msg;
@@ -54,7 +53,7 @@ public class Mp3Tab extends BindableTab {
 		filePath.setValue("");
 		currentFile.textProperty().bind(filePath);
 		GridPane mp3Pane = new GridPane();
-		mp3Pane.setGridLinesVisible(GRID_VISIBLE);
+		mp3Pane.setGridLinesVisible(player.VidivoxLauncher.GRID_IS_VISIBLE);
 		mp3Pane.setVgap(10);
 		mp3Pane.setHgap(10);
 		mp3Pane.setPadding(new Insets(10, 10, 10, 10));

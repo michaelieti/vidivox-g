@@ -24,7 +24,7 @@ import javafx.util.Duration;
 public class VidivoxLauncher extends Application {
 	
 	/*Developer-configurable fields for application*/
-	public static final boolean GRID_IS_VISIBLE = true;
+	public static final boolean GRID_IS_VISIBLE = false;
 	public static final String DEFAULT_TITLE = "Vidivox V1";
 	
 	/*User-configurable fields for application */

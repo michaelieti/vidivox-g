@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 
 public class SpeechTab extends BindableTab {
 	
-	final private static boolean GRID_VISIBLE = true;
 	final private static int btnSpacing = 20;
 	
 	private Text msg;
@@ -34,7 +33,7 @@ public class SpeechTab extends BindableTab {
 		overlayBtn.setOnAction(null);
 		
 		GridPane speechPane = new GridPane();
-		speechPane.setGridLinesVisible(GRID_VISIBLE);
+		speechPane.setGridLinesVisible(player.VidivoxLauncher.GRID_IS_VISIBLE);
 		speechPane.setVgap(10);
 		speechPane.setHgap(10);
 		speechPane.setPadding(new Insets(10, 10, 10, 10));

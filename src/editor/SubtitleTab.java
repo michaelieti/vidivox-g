@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 
 
 public class SubtitleTab extends BindableTab {
-	final private static boolean GRID_VISIBLE = true;
 	final private static int btnSpacing = 20;
 	
 	private Text msg;
@@ -33,7 +32,7 @@ public class SubtitleTab extends BindableTab {
 		overlayBtn.setOnAction(null);
 		
 		GridPane subtitlePane = new GridPane();
-		subtitlePane.setGridLinesVisible(GRID_VISIBLE);
+		subtitlePane.setGridLinesVisible(player.VidivoxLauncher.GRID_IS_VISIBLE);
 		subtitlePane.setVgap(10);
 		subtitlePane.setHgap(10);
 		subtitlePane.setPadding(new Insets(10, 10, 10, 10));
