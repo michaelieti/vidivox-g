@@ -2,6 +2,8 @@ package editor;
 
 import java.io.File;
 
+import utility.StagedMedia;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.StringPropertyBase;
@@ -13,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -78,5 +81,23 @@ public class Mp3Tab extends BindableTab {
 	
 	public File getFile() {
 		return userFile;
+	}
+
+	@Override
+	public MediaView getMediaView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean stageMedia() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void previewMedia(StagedMedia media) {
+		// TODO Auto-generated method stub
+		
 	}
 }

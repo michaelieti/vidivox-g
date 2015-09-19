@@ -1,5 +1,6 @@
 package editor;
 
+import utility.StagedMedia;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -8,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -51,6 +53,24 @@ public class SubtitleTab extends BindableTab {
 	public void setBind(Stage toBindTo) {
 		msg.wrappingWidthProperty().bind(toBindTo.widthProperty().subtract(20));
 		return;
+	}
+
+	@Override
+	public MediaView getMediaView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean stageMedia() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void previewMedia(StagedMedia media) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -56,7 +56,7 @@ public class VidivoxLauncher extends Application {
 		System.out.println("File Opened Wow!");
 		URI mediaPath = null;
 		File file = fileChooser.showOpenDialog(ms);
-		if (file != null){
+		if (file != null) {
 			mediaPath = file.toURI();	//converts to URI object
 			//next step retrieves the MediaView object from the main stage
 			MediaView mediaView = getCurrentMediaView();
@@ -84,6 +84,7 @@ public class VidivoxLauncher extends Application {
 			mediaView.setMediaPlayer(new MediaPlayer(media));
 			//sets video to play automatically
 			mediaView.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);
+
 		}
 	}
 	
