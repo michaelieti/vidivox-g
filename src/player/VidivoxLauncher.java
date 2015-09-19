@@ -110,12 +110,15 @@ public class VidivoxLauncher extends Application {
 				mediaEnded = false;
 			}//continue playing from that point
 			mp.play();
+		} else {
+			mp.pause();
 		}
 	}
 
 	public void pauseVideo(Button src) {
 		System.out.println("Pressed Pause Wow!");
-		
+		MediaPlayer mp = getCurrentMediaView().getMediaPlayer();
+		mp.pause();
 	}
 
 	public void stopVideo() {

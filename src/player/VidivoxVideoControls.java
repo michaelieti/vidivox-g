@@ -13,12 +13,12 @@ import javafx.scene.media.MediaView;
 public class VidivoxVideoControls extends VBox {
 
 	private VidivoxLauncher launcher;
-	private Button playBtn, pauseBtn, stopBtn, skipBackBtn, skipFwdBtn; //Video Playback
+	private Button playBtn, stopBtn, skipBackBtn, skipFwdBtn; //Video Playback
 	private Button speechBtn, subBtn, mp3Btn; //Video Editting
 	private Slider volumeBar;
 	
 	/*Flags related to application view */
-	private boolean currentlyPlaying; //returns true: playBtn shows "||"; false: playBtn shows ">"
+	private boolean currentlyPlaying; //returns true if video currently playing.
 	
 	final private static double minVolume = 0.0;
 	final private static double maxVolume = 10.0;
@@ -39,17 +39,15 @@ public class VidivoxVideoControls extends VBox {
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				updateCurrentlyPlaying();
-				if (currentlyPlaying)
+				if ( ! currentlyPlaying) {
 					launcher.playVideo(playBtn);
-				else
+					playBtn.setText("||");
+				}
+				else {
 					launcher.pauseVideo(playBtn);
+					playBtn.setText(">");
+				}
 				updateCurrentlyPlaying();
-			}
-		});
-		pauseBtn = new Button("||");
-		pauseBtn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				launcher.pauseVideo(playBtn);
 			}
 		});
 		stopBtn = new Button("[]");
@@ -98,7 +96,7 @@ public class VidivoxVideoControls extends VBox {
 		HBox cp_top = new HBox();
 		cp_top.setAlignment(Pos.CENTER);
 		cp_top.setSpacing(10);
-		cp_top.getChildren().addAll(skipBackBtn, stopBtn, playBtn, pauseBtn, skipFwdBtn);
+		cp_top.getChildren().addAll(skipBackBtn, stopBtn, playBtn, skipFwdBtn);
 		
 		//ADD IN MIDDLE PANEL
 		HBox cp_mid = new HBox();
