@@ -7,6 +7,9 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Scanner;
+
+import javafx.concurrent.Task;
 
 /**
  * The purpose of this class will be to provide all the necessary functionality to edit a video.
@@ -51,12 +54,26 @@ public class MediaConverter {
 		return new File(System.getProperty("user.dir") + "/.temp/speech.wav");
 	}
 	
-	public static void ffmpegshit(String inputPath, String outputPath) {
-		//ffmpeg -i sample.avi -f mp4 -strict -2 -c:v libx264 -t 0 out2.mp4
+	public static void FFMPEGConvertToMP4(String inputPath, String outputPath) {
+		//ProcessBuilder builds the process below
+		//ffmpeg -i <inputPath> -f mp4 -strict -2 -c:v libx264 -t 0 <outputPath>.mp4
+		String command = buildFFMPEGCommand(inputPath, outputPath);
+		ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
+		//The process itself is started in a Service object.
 		//TODO:
 	}
-	public static Double HowLongToGo() {
-		return null;
+	private static String buildFFMPEGCommand(String input, String output){
+		StringBuilder sb = new StringBuilder();
+		sb.append("ffmpeg -i ");
+		sb.append(input);
+		sb.append(" -f mp4 -strict -2 -c:v libx264 -t 0 ");
+		sb.append(output);
+		sb.append(".mp4");
+		return sb.toString();
+	}
+	
+	public static double workDoneSoFar() {
+		return 0.0;
 		//TODO: Parse the output of ffmpeg to see how long it has to go
 	}
 

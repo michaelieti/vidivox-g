@@ -16,6 +16,7 @@ abstract public class StagedMedia {
 	protected File file;
 	protected Media media = null;
 	
+	
 	public StagedMedia() {
 		file = new File(System.getProperty("user.dir") + "/.temp/" + this.hashCode() + "." + getExtension());
 		while (file.exists()) {
