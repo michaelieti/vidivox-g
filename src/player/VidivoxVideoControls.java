@@ -80,7 +80,7 @@ public class VidivoxVideoControls extends HBox {
 			@Override
 			public void invalidated(Observable observable) {
 				if (volumeBar.isValueChanging()){
-					double currentVol = volumeBar.getValue() / 10.0;	//gets the current value represented by the slider
+					double currentVol = volumeBar.getValue() / maxVolume;	//gets the current value represented by the slider
 					mediaView.getMediaPlayer().setVolume(currentVol);	//updates the volume in mediaplayer to be equal to the slider value
 				}
 			}
