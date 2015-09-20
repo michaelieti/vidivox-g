@@ -43,7 +43,7 @@ public class MainStage extends Stage {
 		//grid complete, set scene
 		this.setScene(s);
 		s.getStylesheets().add
-		 ("/afs/ec.auckland.ac.nz/users/a/d/adav194/unixhome/SoftEng206/vidivox/src/player/sheet.css");
+		 ("player/sheet.css");
 	}
 	
 	protected VidivoxMedia getMediaPane(){
