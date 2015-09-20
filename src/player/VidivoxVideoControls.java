@@ -96,7 +96,7 @@ public class VidivoxVideoControls extends HBox {
 	protected void updateControls() {
 		updateCurrentlyPlaying();
 		if (currentlyPlaying){
-			//TODO: Rework this to use a toggle button and fire()
+			//TODO: Change Play/Pause button manually with ImageView
 		}
 		else {
 			//
