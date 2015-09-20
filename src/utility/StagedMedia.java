@@ -1,10 +1,7 @@
 package utility;
 
 import java.io.File;
-import java.net.URI;
-
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaException;
 
 /**
  * Creates an empty file in

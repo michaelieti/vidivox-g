@@ -1,6 +1,5 @@
 package utility;
 
-import java.io.File;
 import java.io.IOException;
 
 public class StagedAudio extends StagedMedia {
@@ -37,7 +36,7 @@ public class StagedAudio extends StagedMedia {
 		String[] cmd = {"bash", "-c", "rec", file.getAbsolutePath(), "trim", "0", "0"};
 		ProcessBuilder build = new ProcessBuilder(cmd);
 		try {
-			Process p = build.start();
+			build.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -77,6 +76,12 @@ public class SpeechTab extends BindableTab {
 		String expansion = "`echo " + userField.getText() + " | festival --tts`";
 		String[] cmd = {"bash" , "-c", expansion};
 		ProcessBuilder build = new ProcessBuilder(cmd);
+		try {
+			build.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -86,7 +91,7 @@ public class SpeechTab extends BindableTab {
 		String[] cmd = {"bash", "-c", expansion};
 		ProcessBuilder build = new ProcessBuilder(cmd);
 		try {
-			Process p = build.start();
+			build.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

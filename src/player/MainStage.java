@@ -1,16 +1,10 @@
 package player;
 
 
-import java.io.File;
-
-import sun.applet.Main;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class MainStage extends Stage {
@@ -45,11 +39,8 @@ public class MainStage extends Stage {
 		Scene s = new Scene(grid);
 		
 		//grid complete, set scene
+		s.getStylesheets().add(getClass().getResource("/player/sheet.css").toExternalForm());
 		this.setScene(s);
-		File f = new File("player/sheet.css");
-		System.out.println(f.toURI().toString());
-		s.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm());
-		System.out.println(s.getStylesheets());
 	}
 	
 	public VidivoxMedia getMediaPane(){
