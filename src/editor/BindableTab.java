@@ -45,7 +45,5 @@ abstract public class BindableTab extends Tab {
 	public abstract boolean stageMedia();
 	
 	public abstract void previewMedia(StagedMedia media);
-	
-	
 }
 

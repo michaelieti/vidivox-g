@@ -51,6 +51,14 @@ public class MediaConverter {
 		return new File(System.getProperty("user.dir") + "/.temp/speech.wav");
 	}
 	
+	public static void ffmpegshit(String inputPath, String outputPath) {
+		//ffmpeg -i sample.avi -f mp4 -strict -2 -c:v libx264 -t 0 out2.mp4
+		//TODO:
+	}
+	public static Double HowLongToGo() {
+		return null;
+		//TODO: Parse the output of ffmpeg to see how long it has to go
+	}
 
 }
 

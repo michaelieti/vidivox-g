@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -21,6 +22,8 @@ public class SpeechTab extends BindableTab {
 	private Text msg;
 	private TextArea userField;
 	private Button playBtn, previewBtn, overlayBtn;
+	
+	private Media testSpeech;
 	
 	public SpeechTab(String title, String message) {
 		super(title);
