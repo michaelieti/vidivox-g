@@ -53,16 +53,13 @@ public class VidivoxFileControls extends HBox {
 						}
 					}
 					System.out.println(mediaPath.toString());
-					if (mediaView.getMediaPlayer() != null){
-						mediaView.getMediaPlayer().stop();
-						mediaView.getMediaPlayer().dispose();
+					if (mediaView.getMediaPlayer() != null){	//if a media object is already playing...
+						mediaView.getMediaPlayer().stop();		//stop the media player
+						mediaView.getMediaPlayer().dispose();	//dispose of the media player
 						System.out.println("Called mp disposal method");
 					}
-					//need to check media to make sure it is flv or mp4 or whatever
-					//and then assigns a new MediaPlayer with a new Media to that MediaView 
-					//object, but with the new file.
-					mediaView.setMediaPlayer(new MediaPlayer(media));
-					//sets video to play automatically
+					mediaView.setMediaPlayer(new MediaPlayer(media));	//then, set a new mediaPlayer object with
+					//sets video to play automatically					  the associated video to play.
 					mediaView.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);
 				}
 			}
