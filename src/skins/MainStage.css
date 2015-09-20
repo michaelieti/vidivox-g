@@ -23,6 +23,27 @@
 	-fx-faint-focus-color: transparent;
 }
 
+#pauseBtn {
+	-fx-graphic: url("/skins/blue_GUI/blue_02_default.png");
+	-fx-background-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+#pauseBtn:hover {
+	-fx-graphic: url("/skins/blue_GUI/blue_07_hovered.png");
+	-fx-background-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+#pauseBtn:armed {
+	-fx-graphic: url("/skins/blue_GUI/blue_12_pressed.png");
+	-fx-background-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
 #stopBtn {
 	-fx-graphic: url("/skins/blue_GUI/blue_03_default.png");
 	-fx-background-color: transparent;

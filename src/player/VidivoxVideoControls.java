@@ -95,11 +95,11 @@ public class VidivoxVideoControls extends HBox {
 	
 	protected void updateControls() {
 		updateCurrentlyPlaying();
-		if (currentlyPlaying){
-			//TODO: Change Play/Pause button manually with ImageView
+		if (currentlyPlaying){	//gg ez shit
+			playBtn.setId("pauseBtn");
 		}
 		else {
-			//
+			playBtn.setId("playBtn");
 		}
 	}
 	
