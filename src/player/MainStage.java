@@ -1,5 +1,6 @@
 package player;
 
+import java.io.File;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,10 +41,9 @@ public class MainStage extends Stage {
 		grid.add(vidiVidCtrl, 0,2);
 		Scene s = new Scene(grid);
 		
-		//grid complete, set scene
+		//grid complete, set scene. Link css
+		s.getStylesheets().add(getClass().getResource("/player/sheet.css").toExternalForm());
 		this.setScene(s);
-		s.getStylesheets().add
-		 ("/afs/ec.auckland.ac.nz/users/a/d/adav194/unixhome/SoftEng206/vidivox/src/player/sheet.css");
 	}
 	
 	protected VidivoxMedia getMediaPane(){
