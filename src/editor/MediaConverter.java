@@ -45,7 +45,7 @@ public class MediaConverter {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public static File TextToSpeech(String msg) throws IOException, InterruptedException {
+	public static File textToSpeech(String msg) throws IOException, InterruptedException {
 		String expansion = "echo " + msg + " hello | text2wave > .temp/speech.wav";
 		String[] cmd = {"bash","-c",expansion};
 		ProcessBuilder build = new ProcessBuilder(cmd);
@@ -54,10 +54,11 @@ public class MediaConverter {
 		return new File(System.getProperty("user.dir") + "/.temp/speech.wav");
 	}
 	
-	public static void FFMPEGConvertToMP4(String inputPath, String outputPath) {
+	public static void convertToMP4(String inputPath, String outputPath) {
 		//ProcessBuilder builds the process below
 		//ffmpeg -i <inputPath> -f mp4 -strict -2 -c:v libx264 -t 0 <outputPath>.mp4
 		String command = buildFFMPEGCommand(inputPath, outputPath);
+		
 		ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
 		//The process itself is started in a Service object.
 		//TODO:
