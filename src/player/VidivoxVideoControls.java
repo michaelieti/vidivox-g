@@ -5,6 +5,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
@@ -31,8 +34,10 @@ public class VidivoxVideoControls extends HBox {
 	public VidivoxVideoControls(MediaView mv) {
 		super();
 		this.mediaView = mv;
+		
+		ToggleButton tb = new ToggleButton();
 		//Buttons defined here (e.g. play button, pause button, stop button...)
-		playBtn = new Button(">");
+		playBtn = new Button();
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				updateCurrentlyPlaying();
@@ -45,26 +50,32 @@ public class VidivoxVideoControls extends HBox {
 				updateControls();
 			}
 		});
-		stopBtn = new Button("[]");
+		playBtn.setId("playBtn");
+
+		stopBtn = new Button();
 		stopBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				stopVideo();
 				updateControls();
 			}
 		});
-		skipFwdBtn = new Button(">>");
+		stopBtn.setId("stopBtn");
+		
+		skipFwdBtn = new Button();
 		skipFwdBtn.setOnAction(new EventHandler<ActionEvent> () {
 			public void handle(ActionEvent event) {
 				ffwdVideo();
 			}
 		});
-		skipBackBtn = new Button("<<");
+		skipFwdBtn.setId("skipFwdBtn");
+		
+		skipBackBtn = new Button();
 		skipBackBtn.setOnAction(new EventHandler<ActionEvent> () {
 			public void handle(ActionEvent event) {
 				rwdVideo();
 			}
 		});
-		
+		skipBackBtn.setId("skipBackBtn");
 		//Initializing the Volume Slider
 
 		volumeBar = new Slider(minVolume, maxVolume, defaultVolume);
@@ -72,6 +83,7 @@ public class VidivoxVideoControls extends HBox {
 		this.setAlignment(Pos.CENTER);
 		this.setSpacing(10);
 		this.getChildren().addAll(skipBackBtn, stopBtn, playBtn, skipFwdBtn, volumeBar);
+		this.getStylesheets().add(getClass().getResource("/skins/MainStage.css").toExternalForm());
 	}
 	
 
@@ -84,10 +96,10 @@ public class VidivoxVideoControls extends HBox {
 	protected void updateControls() {
 		updateCurrentlyPlaying();
 		if (currentlyPlaying){
-			playBtn.setText(">");
+			//TODO: Rework this to use a toggle button and fire()
 		}
 		else {
-			playBtn.setText("||");
+			//
 		}
 	}
 	

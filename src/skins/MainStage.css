@@ -1,0 +1,56 @@
+.root {
+     -fx-background-image: url("BG_3.png");
+}
+
+#playBtn {
+	-fx-graphic: url("/skins/blue_GUI/blue_01_default.png");
+	-fx-background-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+#playBtn:hover {
+	-fx-graphic: url("/skins/blue_GUI/blue_06_hovered.png");
+	-fx-background-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+#stopBtn {
+	-fx-graphic: url("/skins/blue_GUI/blue_03_default.png");
+	-fx-background-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+#stopBtn:hover {
+	-fx-graphic: url("/skins/blue_GUI/blue_08_hovered.png");
+	-fx-background-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+#skipFwdBtn {
+	-fx-graphic: url("/skins/blue_GUI/blue_05_default.png");
+	-fx-background-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+#skipFwdBtn:hover {
+	-fx-graphic: url("/skins/blue_GUI/blue_10_hovered.png");
+	-fx-background-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+#skipBackBtn {
+	-fx-graphic: url("/skins/blue_GUI/blue_04_default.png");
+	-fx-background-color: transparent;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+#skipBackBtn:hover {
+	-fx-graphic: url("/skins/blue_GUI/blue_09_hovered.png");
+}
