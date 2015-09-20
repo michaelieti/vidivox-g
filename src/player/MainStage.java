@@ -41,9 +41,8 @@ public class MainStage extends Stage {
 		Scene s = new Scene(grid);
 		
 		//grid complete, set scene
+		s.getStylesheets().add(getClass().getResource("/player/sheet.css").toExternalForm());
 		this.setScene(s);
-		s.getStylesheets().add
-		 ("player/sheet.css");
 	}
 	
 	protected VidivoxMedia getMediaPane(){
