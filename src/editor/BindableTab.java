@@ -6,20 +6,38 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 /**
- * Tabs which extend this class are eligble to be used in the vidivox editors panel.
- * The required abstract methods allow the tabs to interact correctly with supplied media.
+ * A BindableTab represents a panel of the Vidivox Editors panel which allows the user to make changes to
+ * the original video. Each BindableTable contains the necessary functionality to generate a secondary media source (StagedMedia)
+ * and merge this source with the original video.
  * @author adav194
  *
  */
 abstract public class BindableTab extends Tab {
 	
-	public BindableTab() {
+	/**
+	 * Each Tab of the editor panel represents a process which makes changes to the original Media.
+	 * This field represents a snapshot of changes thats are being tested out before they are finalized
+	 * onto the original Media.
+	 */
+	protected StagedMedia stagedMedia;
+	
+	private MediaView mediaView;
+	
+	public BindableTab(MediaView mv) {
 		super();
+		mediaView = mv;
 	}
 	
-	public BindableTab(String title) {
+	public BindableTab(MediaView mv, String title) {
 		super(title);
+		mediaView = mv;
 	}
+	
+	/**
+	 * This method specifies the specific type of StagedMedia which this tab shall generate.
+	 * @return
+	 */
+	protected abstract void initStagedMedia();
 	
 	/**
 	 * This method sets any necessary binds within the tab based on properties available to the encasing stage.
@@ -33,17 +51,19 @@ abstract public class BindableTab extends Tab {
 	 * This method insures Tabs in the editor panel can access the MediaView (and its associated MediaPlayer and Media objects)
 	 * @return
 	 */
-	public abstract MediaView getMediaView();
+	public MediaView getMediaView() { 
+		return mediaView;
+	}
 	
 	/**
-	 * This method insures that the Tab can 'stage' any change it has made to its associated Media object.
-	 * Instead of making changes directly to the media file, the relevant sections of the editted Media are
-	 * processed separately. This allows the user to preview any changes s/he has made before saving them to the
-	 * original media.
-	 * @return
+	 * This method takes all of the settings and values within this tab and processes them to produce all (if any) StagedMedia.
+	 * For example, the SpeechTab will take the text within its TextArea and create an wav file of that speech (linked to a StagedMedia).
 	 */
-	public abstract boolean stageMedia();
+	public abstract void stageMedia();
 	
-	public abstract void previewMedia(StagedMedia media);
+	/**
+	 * This method takes previously StagedMedia and combines it with the original Media source.
+	 */
+	public abstract void publishStage(StagedMedia media);
 }
 

@@ -1,13 +1,10 @@
 package player;
 
-import java.io.File;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class MainStage extends Stage {
@@ -39,14 +36,15 @@ public class MainStage extends Stage {
 		//CONTROL PANEL ADDED: BOTTOM
 		vidiVidCtrl = new VidivoxVideoControls(vidiMedia.getMediaView());
 		grid.add(vidiVidCtrl, 0,2);
+		
 		Scene s = new Scene(grid);
 		
-		//grid complete, set scene. Link css
-		s.getStylesheets().add(getClass().getResource("/player/sheet.css").toExternalForm());
+		//grid complete, set scene
+		s.getStylesheets().add(getClass().getResource("/skins/MainStage.css").toExternalForm());
 		this.setScene(s);
 	}
 	
-	protected VidivoxMedia getMediaPane(){
+	public VidivoxMedia getMediaPane(){
 		return vidiMedia;
 	}
 }

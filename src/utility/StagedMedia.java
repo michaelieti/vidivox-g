@@ -1,10 +1,7 @@
 package utility;
 
 import java.io.File;
-import java.net.URI;
-
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaException;
 
 /**
  * Creates an empty file in
@@ -12,10 +9,16 @@ import javafx.scene.media.MediaException;
  *
  */
 abstract public class StagedMedia {
-	protected URI uri;
-	protected File file;
-	protected Media media = null;
-	
+	/**
+	 * This field represents the physical location of the StagedMedia. The URI and path to
+	 * this location can be extracted from the File object.
+	 */
+	protected File file; //Path to physical file in vidivox/.temp
+	/**
+	 * The Media which is linked to the piece of StagedMedia being examined. Media objects
+	 * can be handled by MediaPlayer and MediaView.
+	 */
+	protected Media media; //To change media, use ffmpeg from processbuilder and output to file.getPath()
 	
 	public StagedMedia() {
 		file = new File(System.getProperty("user.dir") + "/.temp/" + this.hashCode() + "." + getExtension());
@@ -23,7 +26,7 @@ abstract public class StagedMedia {
 			file = new File(System.getProperty("user.dir") + "/.temp/" + file.hashCode() + "." + getExtension());
 		}
 		createFile();
-		uri = file.toURI();
+		media = new Media(file.toURI().toString());
 	}
 	
 	/**
@@ -43,7 +46,7 @@ abstract public class StagedMedia {
 	
 	public Media getMedia() throws Exception {
 		if (media == null) {
-			throw new Exception("This StagedMedia has not been assigned yet."); //Beca
+			throw new Exception("This StagedMedia has not been assigned yet."); //B
 		} else {
 			return media;
 		}
@@ -51,6 +54,10 @@ abstract public class StagedMedia {
 	
 	public void setMedia(String URI) {
 		media = new Media(URI);
+	}
+	
+	public File getFile() { 
+		return file;
 	}
 	
 }

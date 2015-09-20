@@ -6,13 +6,11 @@ import utility.StagedMedia;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.property.StringPropertyBase;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaView;
@@ -20,7 +18,6 @@ import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 
 public class Mp3Tab extends BindableTab {
@@ -34,8 +31,8 @@ public class Mp3Tab extends BindableTab {
 	private File userFile = null;
 	private StringProperty filePath = new SimpleStringProperty();
 	
-	public Mp3Tab(String title, String message) {
-		super(title);
+	public Mp3Tab(MediaView mv, String title, String message) {
+		super(mv, title);
 		msg = new Text(message);
 		//Initializing Button Event handlers
 		browseBtn = new Button("Browse");
@@ -88,15 +85,22 @@ public class Mp3Tab extends BindableTab {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void stageMedia() {
+		// TODO Auto-generated method stub
+		return;
+	}
+
 
 	@Override
-	public boolean stageMedia() {
+	public void publishStage(StagedMedia media) {
 		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
 	@Override
-	public void previewMedia(StagedMedia media) {
+	protected void initStagedMedia() {
 		// TODO Auto-generated method stub
 		
 	}

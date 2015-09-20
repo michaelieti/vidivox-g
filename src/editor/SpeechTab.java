@@ -1,5 +1,8 @@
 package editor;
 
+import java.io.IOException;
+
+import utility.StagedAudio;
 import utility.StagedMedia;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -23,15 +25,19 @@ public class SpeechTab extends BindableTab {
 	private TextArea userField;
 	private Button playBtn, previewBtn, overlayBtn;
 	
-	private Media testSpeech;
-	
-	public SpeechTab(String title, String message) {
-		super(title);
+	public SpeechTab(MediaView mv,String title, String message) {
+		super(mv, title);
 		msg = new Text(message);
 		userField = new TextArea();
 		//Initializing Button Event handlers
 		playBtn = new Button("Play");
-		playBtn.setOnAction(null);
+		playBtn.setOnAction(new EventHandler<ActionEvent>() {
+			
+			public void handle(ActionEvent arg0) {
+				playSpeech();
+			}
+			
+		});
 		previewBtn = new Button("Preview");
 		previewBtn.setOnAction(null);
 		overlayBtn = new Button("Overlay");
@@ -65,17 +71,43 @@ public class SpeechTab extends BindableTab {
 		return null;
 	}
 
+	private void playSpeech() {
+		System.out.println(userField.getText());
+		String expansion = "`echo " + userField.getText() + " | festival --tts`";
+		String[] cmd = {"bash" , "-c", expansion};
+		ProcessBuilder build = new ProcessBuilder(cmd);
+		try {
+			build.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
-	public boolean stageMedia() {
-		// TODO Auto-generated method stub
-		return false;
+	public void stageMedia() {
+		String path = stagedMedia.getFile().getAbsolutePath();
+		String expansion = "`echo " + userField.getText() + " | text2wave > " + path + "`";
+		String[] cmd = {"bash", "-c", expansion};
+		ProcessBuilder build = new ProcessBuilder(cmd);
+		try {
+			build.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public void previewMedia(StagedMedia media) {
+	public void publishStage(StagedMedia media) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void initStagedMedia() {
+		stagedMedia = new StagedAudio(StagedAudio.MediaTypes.WAV);
+	}
+
 
 }
 

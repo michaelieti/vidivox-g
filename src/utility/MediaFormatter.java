@@ -2,8 +2,6 @@ package utility;
 
 import java.net.URI;
 
-import javafx.scene.media.Media;
-
 public class MediaFormatter {
 	
 	static int MP4 = 1;
