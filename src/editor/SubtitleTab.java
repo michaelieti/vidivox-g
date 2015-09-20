@@ -21,8 +21,8 @@ public class SubtitleTab extends BindableTab {
 	private TextArea userField;
 	private Button playBtn, previewBtn, overlayBtn;
 	
-	public SubtitleTab(String title, String message) {
-		super(title);
+	public SubtitleTab(MediaView mv, String title, String message) {
+		super(mv, title);
 		msg = new Text(message);
 		userField = new TextArea();
 		//Initializing Button Event handlers
@@ -62,16 +62,24 @@ public class SubtitleTab extends BindableTab {
 	}
 
 	@Override
-	public boolean stageMedia() {
+	public void stageMedia() {
 		// TODO Auto-generated method stub
-		return false;
+		return;
 	}
 
 	@Override
-	public void previewMedia(StagedMedia media) {
+	public void publishStage(StagedMedia media) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	protected void initStagedMedia() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }
 

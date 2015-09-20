@@ -1,6 +1,9 @@
 package player;
 
+
 import java.io.File;
+
+import sun.applet.Main;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -41,12 +44,15 @@ public class MainStage extends Stage {
 		grid.add(vidiVidCtrl, 0,2);
 		Scene s = new Scene(grid);
 		
-		//grid complete, set scene. Link css
-		s.getStylesheets().add(getClass().getResource("/player/sheet.css").toExternalForm());
+		//grid complete, set scene
 		this.setScene(s);
+		File f = new File("player/sheet.css");
+		System.out.println(f.toURI().toString());
+		s.getStylesheets().add(getClass().getResource("sheet.css").toExternalForm());
+		System.out.println(s.getStylesheets());
 	}
 	
-	protected VidivoxMedia getMediaPane(){
+	public VidivoxMedia getMediaPane(){
 		return vidiMedia;
 	}
 }

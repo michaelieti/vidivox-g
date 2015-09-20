@@ -5,8 +5,32 @@ import java.io.IOException;
 
 public class StagedAudio extends StagedMedia {
 
+	public enum MediaTypes {
+		MP3(".mp3"), WAV(".wav");
+		private String type;
+		private MediaTypes(String type) {
+			this.type = type;
+		}
+		
+		public String getExtension() {
+			return type;
+		}
+	}
+	
+	/**
+	 * The format of this particular instance of StagedMedia. 
+	 * Valid formats currently include: mp3, wav.
+	 */
+	private MediaTypes format;
+	
+	
+	public StagedAudio(MediaTypes type) {
+		super();
+		format = type;
+	}
 	/**
 	 * Creates an Empty wav file using the linux command 'rec'.
+	 * Does not work for mp3
 	 */
 	@Override
 	protected void createFile() {
@@ -25,7 +49,9 @@ public class StagedAudio extends StagedMedia {
 	 */
 	@Override
 	protected String getExtension() {
-		return ".wav";
+		return format.getExtension();
 	}
 
+	
+	
 }

@@ -1,7 +1,5 @@
 package player;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -72,21 +70,7 @@ public class VidivoxVideoControls extends HBox {
 		//Initializing the Volume Slider
 
 		volumeBar = new Slider(minVolume, maxVolume, defaultVolume);
-		//the volumeBar's valueProperty registers a listener, that is notified when
-		//	that property is invalidated. Invalidation is caused by e.g. the value
-		//	property not being equal to the slider's position
-		volumeBar.valueProperty().addListener(new InvalidationListener() {
-			
-			@Override
-			public void invalidated(Observable observable) {
-				if (volumeBar.isValueChanging()){
-					double currentVol = volumeBar.getValue() / maxVolume;	//gets the current value represented by the slider
-					mediaView.getMediaPlayer().setVolume(currentVol);	//updates the volume in mediaplayer to be equal to the slider value
-				}
-			}
-		});
-		
-		
+
 		this.setAlignment(Pos.CENTER);
 		this.setSpacing(10);
 		this.getChildren().addAll(skipBackBtn, stopBtn, playBtn, skipFwdBtn, volumeBar);
