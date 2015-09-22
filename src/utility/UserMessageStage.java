@@ -16,10 +16,9 @@ public class UserMessageStage extends Stage {
 	
 	//Initializer block for object construction
 	{
-		Stage stg = this;
+		final Stage stg = this;
 		okBtn = new Button("Ok");
 		okBtn.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
 			public void handle(ActionEvent e) {
 				stg.close();
 			}

@@ -1,0 +1,15 @@
+.root {
+     -fx-background-image: url("BG_3.png");
+}
+
+#fileControls{
+	-fx-background-color: black;
+}
+
+#fileBtns {
+	-fx-background-color: black;
+	-fx-text-fill: darkgrey;
+}
+#fileBtns:hover {
+	-fx-text-fill:  aquamarine;
+}

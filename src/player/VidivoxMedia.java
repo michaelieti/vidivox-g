@@ -21,7 +21,7 @@ public class VidivoxMedia extends VBox {
 		this.getChildren().addAll(mv,mediaTimeline);
 	}
 	
-	protected MediaView getMediaView() {
+	public MediaView getMediaView() {
 		return mv;
 	}
 	

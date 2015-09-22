@@ -1,21 +1,29 @@
 package player;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
+import javafx.util.Duration;
 
-public class VidivoxVideoControls extends VBox {
+public class VidivoxVideoControls extends HBox {
 
-	private VidivoxLauncher launcher;
+	private MediaView mediaView;
 	private Button playBtn, stopBtn, skipBackBtn, skipFwdBtn; //Video Playback
-	private Button speechBtn, subBtn, mp3Btn; //Video Editting
 	private Slider volumeBar;
+	
+	/*Status flags for the Application*/
+	private boolean mediaEnded = false;
 	
 	/*Flags related to application view */
 	private boolean currentlyPlaying; //returns true if video currently playing.
@@ -25,99 +33,148 @@ public class VidivoxVideoControls extends VBox {
 	final private static double defaultVolume = 5.0;
 	
 	
-	public VidivoxVideoControls(VidivoxLauncher vl) {
+	public VidivoxVideoControls(MediaView mv) {
 		super();
-		launcher = vl;
+		this.mediaView = mv;
 		
+		ToggleButton tb = new ToggleButton();
 		//Buttons defined here (e.g. play button, pause button, stop button...)
-		playBtn = new Button(">");
+		playBtn = new Button();
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				updateCurrentlyPlaying();
 				if ( ! currentlyPlaying) {
-					launcher.playVideo(playBtn);
+					playVideo(playBtn);
 				}
 				else {
-					launcher.pauseVideo(playBtn);
+					pauseVideo(playBtn);
 				}
 				updateControls();
 			}
 		});
-		stopBtn = new Button("[]");
+		playBtn.setId("playBtn");
+
+		stopBtn = new Button();
 		stopBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				launcher.stopVideo();
+				stopVideo();
 				updateControls();
 			}
 		});
-		skipFwdBtn = new Button(">>");
+		stopBtn.setId("stopBtn");
+		
+		skipFwdBtn = new Button();
 		skipFwdBtn.setOnAction(new EventHandler<ActionEvent> () {
 			public void handle(ActionEvent event) {
-				launcher.ffwdVideo();
+				ffwdVideo();
 			}
 		});
-		skipBackBtn = new Button("<<");
+		skipFwdBtn.setId("skipFwdBtn");
+		
+		skipBackBtn = new Button();
 		skipBackBtn.setOnAction(new EventHandler<ActionEvent> () {
 			public void handle(ActionEvent event) {
-				launcher.rwdVideo();
+				rwdVideo();
 			}
 		});
-		speechBtn = new Button("Spch");
-		speechBtn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				launcher.speech();
-			}
-		});
-		subBtn = new Button("Sub");
-		subBtn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				launcher.sub();
-			}
-		});
-		mp3Btn = new Button("mp3");
-		mp3Btn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				launcher.mp3();
-			}
-		});
-
+		skipBackBtn.setId("skipBackBtn");
 		//Initializing the Volume Slider
 
 		volumeBar = new Slider(minVolume, maxVolume, defaultVolume);
+		//the volumeBar's valueProperty registers a listener, that is notified when
+		//	that property is invalidated. Invalidation is caused by e.g. the value
+		//	property not being equal to the slider's position
+		volumeBar.valueProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				//if (volumeBar.isValueChanging()){
+					double currentVol = volumeBar.getValue() / maxVolume;	//gets the current value represented by the slider
+					mediaView.getMediaPlayer().setVolume(currentVol);	//updates the volume in mediaplayer to be equal to the slider value
+				//}
+			}
+		});
 
-
-		//ADD IN TOP PANEL
-		HBox cp_top = new HBox();
-		cp_top.setAlignment(Pos.CENTER);
-		cp_top.setSpacing(10);
-		cp_top.getChildren().addAll(skipBackBtn, stopBtn, playBtn, skipFwdBtn);
-		
-		//ADD IN MIDDLE PANEL
-		HBox cp_mid = new HBox();
-		cp_mid.setAlignment(Pos.CENTER);
-		cp_mid.getChildren().addAll(speechBtn, subBtn, mp3Btn,volumeBar);
-		
-		//ADD IN BOTTOM PANEL
-		HBox cp_bot = new HBox();
+		this.setAlignment(Pos.CENTER);
 		this.setSpacing(10);
-		this.getChildren().addAll(cp_top, cp_mid, cp_bot);
+		this.getChildren().addAll(skipBackBtn, stopBtn, playBtn, skipFwdBtn, volumeBar);
+		//This can be changed to BlueSkin GreenSkin PurpleSkin or OrangeSkin
+		this.getStylesheets().add(getClass().getResource("/skins/BlueSkin.css").toExternalForm());
 	}
 	
 
-	protected void updateCurrentlyPlaying(){
-		Status st = launcher.getCurrentMediaView().getMediaPlayer().getStatus();
+	protected void updateCurrentlyPlaying() {
+		Status st = mediaView.getMediaPlayer().getStatus();
 		currentlyPlaying = (st == Status.PLAYING);
 		return;
 	}
 	
-	protected void updateControls(){
+	protected void updateControls() {
 		updateCurrentlyPlaying();
-		if (currentlyPlaying){
-			playBtn.setText(">");
+		if (currentlyPlaying){	//gg ez shit
+			playBtn.setId("pauseBtn");
 		}
 		else {
-			playBtn.setText("||");
+			playBtn.setId("playBtn");
 		}
+	}
+	
+	/*
+	 * Previously in VidivoxLauncher
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
+	/**
+	 * An event handling method that dictates what occurs when the Play button is pushed.
+	 * If the video is paused, stopped, or at the end of the video track, play resumes from current point or the start of the video track.
+	 * If the video is currently playing, the video is paused, setting into motion the setOnPaused event handler.
+	 * Other states - nothing happens (e.g. an error state is generated)
+	 * @param src - the button that generated the event
+	 */
+	public void playVideo(Button src) {
+		System.out.println("Pressed Play Wow!");
+		//Refactored obtain the current media view
+		Status status = mediaView.getMediaPlayer().getStatus();	// obtain current media player status.
+				//Several checks are now carried out.
+		//CHECK ONE: possible error? nothing is done in these states for now
+		if (status == Status.UNKNOWN || status == Status.HALTED ){
+			return;
+		}
+		//CHECK TWO: stopped/paused/ready states - begin playing video
+		if (status == Status.STOPPED || status == Status.READY || status == Status.PAUSED ){
+			//check if video track is at end: if so, reset the track.
+			if (mediaEnded){
+				mediaView.getMediaPlayer().seek(mediaView.getMediaPlayer().getStartTime());
+				mediaEnded = false;
+			}//continue playing from that point
+			mediaView.getMediaPlayer().play();
+		} else {
+			mediaView.getMediaPlayer().pause();
+		}
+	}
+	
+	public void pauseVideo(Button src) {
+		System.out.println("Pressed Pause Wow!");
+		mediaView.getMediaPlayer().pause();
+	}
+
+	public void stopVideo() {
+		System.out.println("Pressed Stop Wow!");
+		mediaView.getMediaPlayer().stop();
+	}
+
+	public void ffwdVideo() {
+		System.out.println("Pressed Fast Foward Wow!");
+		MediaPlayer mp = mediaView.getMediaPlayer();
+		mp.seek(mp.getCurrentTime().add(Duration.seconds(10)));
+	}
+
+	public void rwdVideo() {
+		System.out.println("Pressed Rewind Wow!");
+		MediaPlayer mp = mediaView.getMediaPlayer();
+		mp.seek(mp.getCurrentTime().subtract(Duration.seconds(10)));
 	}
 	
 }

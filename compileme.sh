@@ -5,5 +5,5 @@
 
 cd src
 /usr/lib/jvm/jdk8/bin/javac -cp . `find | grep .java$`
-/usr/lib/jvm/jdk8/bin/jar cvfm vidivox.jar ../manifest.txt `find | grep .class$`
+/usr/lib/jvm/jdk8/bin/jar cvfm vidivox.jar ../manifest.txt `find | grep .class$` `find | grep .css$` `find | grep .png$`
 rm -f `find | grep .class$`

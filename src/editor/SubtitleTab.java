@@ -1,13 +1,13 @@
 package editor;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import utility.StagedMedia;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -19,8 +19,8 @@ public class SubtitleTab extends BindableTab {
 	private TextArea userField;
 	private Button playBtn, previewBtn, overlayBtn;
 	
-	public SubtitleTab(String title, String message) {
-		super(title);
+	public SubtitleTab(MediaView mv, String title, String message) {
+		super(mv, title);
 		msg = new Text(message);
 		userField = new TextArea();
 		//Initializing Button Event handlers
@@ -52,6 +52,32 @@ public class SubtitleTab extends BindableTab {
 		msg.wrappingWidthProperty().bind(toBindTo.widthProperty().subtract(20));
 		return;
 	}
+
+	@Override
+	public MediaView getMediaView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void stageMedia() {
+		// TODO Auto-generated method stub
+		return;
+	}
+
+	@Override
+	public void publishStage(StagedMedia media) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void initStagedMedia() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }
 
