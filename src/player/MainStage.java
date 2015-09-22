@@ -40,6 +40,7 @@ public class MainStage extends Stage {
 		Scene s = new Scene(grid);
 		
 		//grid complete, set scene
+		//MainStage contains the styling information for all the components of MainStage that do not change
 		s.getStylesheets().add(getClass().getResource("/skins/MainStage.css").toExternalForm());
 		this.setScene(s);
 	}

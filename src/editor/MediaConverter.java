@@ -66,13 +66,13 @@ public class MediaConverter {
 	 * @throws ExecutionException 
 	 * @throws InterruptedException 
 	 */
-	public static Media convertToMP4(String inputPath, String outputPath) throws InterruptedException, ExecutionException {
+	public static Media convertToMP4(String inputPath, final String outputPath) throws InterruptedException, ExecutionException {
 		//ProcessBuilder builds the process below
 		//ffmpeg -y -i <inputPath> -f mp4 -strict -2 -c:v libx264 -t 0 <outputPath>.mp4
 		//TODO: check that Path.toString() works properly here
 		System.out.println("Beginning conversion...");
 		String command = buildFFMPEGCommand(inputPath.toString(), outputPath.toString());
-		ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
+		final ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
 		//TODO: test this shit out
 		Task<Media> task = new Task<Media>(){
 			@Override
@@ -116,4 +116,3 @@ public class MediaConverter {
 	}
 
 }
-
