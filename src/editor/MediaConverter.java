@@ -23,6 +23,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
 
+import utility.*;
+
+
 /**
  * The purpose of this class will be to provide all the necessary functionality to edit a video.
  * 
@@ -66,6 +69,19 @@ public class MediaConverter {
 		return new File(System.getProperty("user.dir") + "/.temp/speech.wav");
 	}
 	
+	public static StagedMedia mergeVideoAndAudio(Media video, StagedMedia audio){
+		
+		//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+		String command = "";	//TODO: INSERT COMMAND HERE
+		//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+		ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
+		
+		//TODO: THE REST OF THIS SHIT KLLJASLKJSDLKLA
+		
+		return null;	//TODO
+	}
+	
+	
 	/**
 	 * Version 0.1 - not yet tested.
 	 * Converts a file (given via a path string) to an mp4 that will be compatible with
@@ -77,7 +93,7 @@ public class MediaConverter {
 	 * @throws InterruptedException 
 	 */
 	public static Media convertToMP4(String inputPath, final String outputPath) throws InterruptedException, ExecutionException {
-		//ProcessBuilder builds the process below
+	/*	//ProcessBuilder builds the process below
 		//ffmpeg -y -i <inputPath> -f mp4 -strict -2 -c:v libx264 -t 0 <outputPath>.mp4
 		//TODO: check that Path.toString() works properly here
 		System.out.println("Beginning conversion...");
@@ -96,30 +112,7 @@ public class MediaConverter {
             	return null;
             }
         };
-        //SET UP THE PROGRESS BAR - TODO: BIND TO PROGRESS
-        ProgressBar progressBar = new ProgressBar();
-        //BUTTON FOR STARTING THE PROCESS
-        Button btnStart = new Button("Start converting");
-        btnStart.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent t) {
-                new Thread(task).start();
-            }
-        });
-        
-        VBox box = new VBox();
-        box.setPadding(new Insets(8,8,8,8));
-        box.setSpacing(8);
-        box.getChildren().addAll(progressBar, btnStart);
-        
-        StackPane root = new StackPane();
-        root.getChildren().add(box);
-        
-        Stage notifactionStage = new Stage();
-        notifactionStage.setTitle("Conversion");
-        notifactionStage.setScene(new Scene(root, 300, 250));
-        notifactionStage.show();
-        
+     */   
         return null;
 	}
 	/**
