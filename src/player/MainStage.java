@@ -1,11 +1,14 @@
 package player;
 
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class MainStage extends Stage {
 	
@@ -43,10 +46,20 @@ public class MainStage extends Stage {
 		//MainStage contains the styling information for all the components of MainStage that do not change
 		s.getStylesheets().add(getClass().getResource("/skins/MainStage.css").toExternalForm());
 		this.setScene(s);
+		/*
+		 * Setting the close action of this window to close the application
+		 */
+		this.setOnCloseRequest(new EventHandler<WindowEvent>(){
+		    @Override
+		    public void handle(WindowEvent event) {
+		        Platform.exit();
+		    }
+		});
 	}
 	
 	public VidivoxMedia getMediaPane(){
 		return vidiMedia;
 	}
+	
 }
 
