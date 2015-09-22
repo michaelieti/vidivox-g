@@ -97,7 +97,8 @@ public class VidivoxVideoControls extends HBox {
 		this.setAlignment(Pos.CENTER);
 		this.setSpacing(10);
 		this.getChildren().addAll(skipBackBtn, stopBtn, playBtn, skipFwdBtn, volumeBar);
-		this.getStylesheets().add(getClass().getResource("/skins/MainStage.css").toExternalForm());
+		//This can be changed to BlueSkin GreenSkin PurpleSkin or OrangeSkin
+		this.getStylesheets().add(getClass().getResource("/skins/BlueSkin.css").toExternalForm());
 	}
 	
 

@@ -24,7 +24,7 @@ public class VidivoxFileControls extends HBox {
 	private boolean isAutoPlayEnabled = true;
 	
 	private MediaView mediaView;
-	private Button openFileBtn, saveFileBtn;
+	private Button openFileBtn, saveFileBtn, editPanelBtn;
 	private File currentFile = null;
 	
 	protected final FileChooser fileChooser = new FileChooser();
@@ -37,7 +37,7 @@ public class VidivoxFileControls extends HBox {
 		
 		//OPEN FILE BUTTON STARTS HERE
 		openFileBtn = new Button("Open file");
-		openFileBtn.setId("openFileBtn");
+		openFileBtn.setId("fileBtns");
 		openFileBtn.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent event) {
 				System.out.println("File Opened Wow!");
@@ -83,13 +83,23 @@ public class VidivoxFileControls extends HBox {
 		
 		//SAVE FILE BUTTON STARTS HERE
 		saveFileBtn = new Button("Save file");
-		saveFileBtn.setId("saveFileBtn");
+		saveFileBtn.setId("fileBtns");
 		saveFileBtn.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent event) {
 				//Placeholder
 			}
 		});
+		
+		editPanelBtn = new Button("Edit file");
+		editPanelBtn.setId("fileBtns");
+		editPanelBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				ms.getLauncher().getEditor().show();
+			}
+			
+		});
 		this.setSpacing(8.0);
-		this.getChildren().addAll(openFileBtn, saveFileBtn);
+		this.getChildren().addAll(openFileBtn, saveFileBtn, editPanelBtn);
 	}
 }
