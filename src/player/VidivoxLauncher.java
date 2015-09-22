@@ -32,5 +32,9 @@ public class VidivoxLauncher extends Application {
 		primaryStage.show();
 		editorPanel.show();
 	}
+	
+	public EditPanel getEditor() {
+		return editorPanel;
+	}
 
 }

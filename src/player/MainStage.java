@@ -15,10 +15,12 @@ public class MainStage extends Stage {
 	private VidivoxMedia vidiMedia;
 	private VidivoxVideoControls vidiVidCtrl;
 	private VidivoxFileControls vidiFileCtrl;
+	private VidivoxLauncher launcher;
 
 	public MainStage(VidivoxLauncher vl) {
 		super();
 		this.setTitle(VidivoxLauncher.DEFAULT_TITLE);
+		launcher = vl;
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setVgap(10);	
@@ -59,6 +61,10 @@ public class MainStage extends Stage {
 	
 	public VidivoxMedia getMediaPane(){
 		return vidiMedia;
+	}
+	
+	public VidivoxLauncher getLauncher() {
+		return launcher;
 	}
 	
 }

@@ -6,10 +6,10 @@
 	-fx-background-color: black;
 }
 
-#openFileBtn, #saveFileBtn {
+#fileBtns {
 	-fx-background-color: black;
 	-fx-text-fill: darkgrey;
 }
-#openFileBtn:hover, #saveFileBtn:hover {
+#fileBtns:hover {
 	-fx-text-fill:  aquamarine;
 }
