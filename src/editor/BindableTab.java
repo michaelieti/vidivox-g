@@ -26,11 +26,13 @@ abstract public class BindableTab extends Tab {
 	public BindableTab(MediaView mv) {
 		super();
 		mediaView = mv;
+		this.setClosable(false);
 	}
 	
 	public BindableTab(MediaView mv, String title) {
 		super(title);
 		mediaView = mv;
+		this.setClosable(false);
 	}
 	
 	/**
