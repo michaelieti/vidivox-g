@@ -2,6 +2,7 @@ package player;
 
 import java.io.File;
 import java.net.URI;
+import java.util.concurrent.ExecutionException;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,8 +31,13 @@ public class VidivoxFileControls extends HBox {
 	
 	public VidivoxFileControls(final MainStage ms, MediaView mv) {
 		super();
+		this.setId("fileControls");
+		
 		mediaView = mv;
+		
+		//OPEN FILE BUTTON STARTS HERE
 		openFileBtn = new Button("Open file");
+		openFileBtn.setId("openFileBtn");
 		openFileBtn.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent event) {
 				System.out.println("File Opened Wow!");
@@ -43,10 +49,16 @@ public class VidivoxFileControls extends HBox {
 					Media media = null;
 					try{
 						media = new Media(mediaPath.toString());
-					} catch (MediaException me){	//this is pretty hax tbh TODO: come up with a better way to do this
+					} catch (Exception me){	//this is pretty hax tbh TODO: come up with a better way to do this
 						String message = me.getMessage().trim();
-						if (message.equals("MEDIA_UNSUPPORTED : Unrecognized file signature!")){
-						//	mediaPath = MediaFormatter.transformMedia(mediaPath, MediaFormatter.MP4);	//TODO: reformats the media at mediaPath and provides a new URI.
+						if (message.equals("Unrecognized file signature!")){
+							try {	//second try
+								media = editor.MediaConverter.convertToMP4(mediaPath.getPath(), mediaPath.getPath());
+							} catch (InterruptedException | ExecutionException e) {
+								System.out.println("wow u really screwed up");
+								e.printStackTrace();
+							}	//end second try	
+							//TODO: reformats the media at mediaPath and provides a new URI.
 							media = new Media(mediaPath.toString());
 						} else {
 							throw me;	//lol
@@ -68,12 +80,16 @@ public class VidivoxFileControls extends HBox {
 			}
 			
 		});
+		
+		//SAVE FILE BUTTON STARTS HERE
 		saveFileBtn = new Button("Save file");
+		saveFileBtn.setId("saveFileBtn");
 		saveFileBtn.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent event) {
 				//Placeholder
 			}
 		});
+		this.setSpacing(8.0);
 		this.getChildren().addAll(openFileBtn, saveFileBtn);
 	}
 }

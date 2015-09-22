@@ -20,7 +20,7 @@ public class MainStage extends Stage {
 		grid.setAlignment(Pos.CENTER);
 		grid.setVgap(10);	
 		grid.setHgap(10);
-		grid.setPadding(new Insets(25,25,15,25));
+		grid.setPadding(new Insets(0,0,15,0));
 		grid.setGridLinesVisible(VidivoxLauncher.GRID_IS_VISIBLE);
 		
 		vidiMedia = new VidivoxMedia();

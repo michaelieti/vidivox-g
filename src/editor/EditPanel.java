@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 public class EditPanel extends Stage {
 	
-	final private static String DEFAULT_TITLE = "Editting Window";
+	final private static String DEFAULT_TITLE = "Editing Window";
 	
 	BindableTab speech, subtitle, mp3;
 	

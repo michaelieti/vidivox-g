@@ -66,17 +66,20 @@ public class MediaConverter {
 	 * @throws ExecutionException 
 	 * @throws InterruptedException 
 	 */
-	public static Media convertToMP4(Path inputPath, Path outputPath) throws InterruptedException, ExecutionException {
+	public static Media convertToMP4(String inputPath, String outputPath) throws InterruptedException, ExecutionException {
 		//ProcessBuilder builds the process below
-		//ffmpeg -i <inputPath> -f mp4 -strict -2 -c:v libx264 -t 0 <outputPath>.mp4
+		//ffmpeg -y -i <inputPath> -f mp4 -strict -2 -c:v libx264 -t 0 <outputPath>.mp4
 		//TODO: check that Path.toString() works properly here
+		System.out.println("Beginning conversion...");
 		String command = buildFFMPEGCommand(inputPath.toString(), outputPath.toString());
 		ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
 		//TODO: test this shit out
 		Task<Media> task = new Task<Media>(){
 			@Override
 			protected Media call() throws Exception {
+				System.out.println("Task has begun.");
 				Process p = pb.start();
+				System.out.println("Process is started.");
 				//TODO: check isCancelled() so that it can be cancelled
 				Platform.runLater(new Runnable(){
 					@Override
@@ -87,9 +90,12 @@ public class MediaConverter {
 				});	//end runnable
 				p.waitFor();
 				Media media = new Media(outputPath+".mp4");
+				System.out.println("Task has ended.");
 				return media;
 			}	//end call
 		};	//end task implementation
+		task.run();
+		System.out.println("Exited task!");
 		return task.get();
 	}
 	/**

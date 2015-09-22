@@ -2,6 +2,18 @@
      -fx-background-image: url("BG_3.png");
 }
 
+#fileControls{
+	-fx-background-color: black;
+}
+
+#openFileBtn, #saveFileBtn {
+	-fx-background-color: black;
+	-fx-text-fill: darkgrey;
+}
+#openFileBtn:hover, #saveFileBtn:hover {
+	-fx-text-fill:  aquamarine;
+}
+
 #playBtn {
 	-fx-graphic: url("/skins/blue_GUI/blue_01_default.png");
 	-fx-background-color: transparent;
