@@ -11,7 +11,17 @@ import java.util.concurrent.ExecutionException;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
+import javafx.stage.Stage;
 
 /**
  * The purpose of this class will be to provide all the necessary functionality to edit a video.
@@ -74,35 +84,49 @@ public class MediaConverter {
 		String command = buildFFMPEGCommand(inputPath.toString(), outputPath.toString());
 		ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
 		//TODO: test this shit out
-		Task<Media> task = new Task<Media>(){
-			@Override
-			protected Media call() throws Exception {
-				System.out.println("Task has begun.");
-				Process p = pb.start();
-				System.out.println("Process is started.");
-				//TODO: check isCancelled() so that it can be cancelled
-				Platform.runLater(new Runnable(){
-					@Override
-					public void run() {
-						//create a new Dialog saying some shit like "processing..." etc
-						System.out.println("Processing conversion...");
-					}
-				});	//end runnable
-				p.waitFor();
-				Media media = new Media(outputPath+".mp4");
-				System.out.println("Task has ended.");
-				return media;
-			}	//end call
-		};	//end task implementation
-		task.run();
-		System.out.println("Exited task!");
-		return task.get();
+		
+		//CREATE TASK
+		final Task task;
+        task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+            	Process p = pb.start();
+            	p.waitFor();
+            	//TODO: finish this shet
+            	return null;
+            }
+        };
+        //SET UP THE PROGRESS BAR - TODO: BIND TO PROGRESS
+        ProgressBar progressBar = new ProgressBar();
+        //BUTTON FOR STARTING THE PROCESS
+        Button btnStart = new Button("Start converting");
+        btnStart.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent t) {
+                new Thread(task).start();
+            }
+        });
+        
+        VBox box = new VBox();
+        box.setPadding(new Insets(8,8,8,8));
+        box.setSpacing(8);
+        box.getChildren().addAll(progressBar, btnStart);
+        
+        StackPane root = new StackPane();
+        root.getChildren().add(box);
+        
+        Stage notifactionStage = new Stage();
+        notifactionStage.setTitle("Conversion");
+        notifactionStage.setScene(new Scene(root, 300, 250));
+        notifactionStage.show();
+        
+        return null;
 	}
 	/**
 	 * A utility method for convertToMP4(). Not for public use.
 	 */
 	private static String buildFFMPEGCommand(String in, String out){
-		StringBuilder sb = new StringBuilder("ffmpeg -i ");
+		StringBuilder sb = new StringBuilder("ffmpeg -y -i ");
 		sb.append(in);
 		sb.append(" -f mp4 -strict -2 -c:v libx264 -t 0 ");
 		sb.append(out);
