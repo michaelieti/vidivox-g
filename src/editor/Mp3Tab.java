@@ -2,7 +2,9 @@ package editor;
 
 import java.io.File;
 
+import utility.StagedAudio;
 import utility.StagedMedia;
+import utility.StagedVideo;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -13,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
@@ -31,7 +34,7 @@ public class Mp3Tab extends BindableTab {
 	private File userFile = null;
 	private StringProperty filePath = new SimpleStringProperty();
 	
-	public Mp3Tab(MediaView mv, String title, String message) {
+	public Mp3Tab(final MediaView mv, String title, String message) {
 		super(mv, title);
 		msg = new Text(message);
 		//Initializing Button Event handlers
@@ -48,7 +51,20 @@ public class Mp3Tab extends BindableTab {
 			
 		});
 		okBtn = new Button("Ok");
-		okBtn.setOnAction(null);
+		okBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				if (userFile != null) {
+					StagedVideo result;
+					Media audio = new Media(userFile.toURI().toString());
+					StagedAudio s = new StagedAudio(audio);
+					Media video = mv.getMediaPlayer().getMedia();
+					result = (StagedVideo) MediaConverter.mergeVideoAndAudio(video, s);
+					System.out.println(result.getFile().getAbsolutePath());
+				}
+			}
+			
+		});
 		TextField currentFile = new TextField("");
 		filePath.setValue("");
 		currentFile.textProperty().bind(filePath);

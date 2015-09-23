@@ -1,11 +1,14 @@
 package utility;
 
+import java.io.File;
 import java.io.IOException;
+
+import javafx.scene.media.Media;
 
 public class StagedAudio extends StagedMedia {
 
 	public enum MediaTypes {
-		MP3(".mp3"), WAV(".wav");
+		MP3(".mp3"), WAV(".wav"), NONE("");
 		private String type;
 		private MediaTypes(String type) {
 			this.type = type;
@@ -24,8 +27,14 @@ public class StagedAudio extends StagedMedia {
 	
 	
 	public StagedAudio(MediaTypes type) {
-		super();
 		format = type;
+		InitMedia();
+	}
+	
+	public StagedAudio(Media audio) {
+		media = audio;
+		file = new File(audio.getSource());
+		format = MediaTypes.NONE;
 	}
 	/**
 	 * Creates an Empty wav file using the linux command 'rec'.
@@ -48,7 +57,7 @@ public class StagedAudio extends StagedMedia {
 	 */
 	@Override
 	protected String getExtension() {
-		return format.getExtension();
+		return ".mp3";
 	}
 
 	

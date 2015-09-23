@@ -1,7 +1,9 @@
 package editor;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -69,16 +71,33 @@ public class MediaConverter {
 		return new File(System.getProperty("user.dir") + "/.temp/speech.wav");
 	}
 	
-	public static StagedMedia mergeVideoAndAudio(Media video, StagedMedia audio){
+	public static StagedMedia mergeVideoAndAudio(Media video, StagedAudio audio){
 		
-		//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-		String command = "";	//TODO: INSERT COMMAND HERE
-		//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-		ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
+		String pathVideo = video.getSource();
+		String pathAudio = audio.getFile().getPath();
+		StagedVideo output = new StagedVideo();
+		String expansion = "ffmpeg -y -i " + pathVideo + " -i " + pathAudio + " -filter_complex amix=inputs=2 -shortest " + output.getFile().getAbsolutePath();
+		String[] cmd = {"/bin/bash", "-c", expansion };
+		String l = "";
+		for (String s: cmd) {
+			l = l + s;
+		}
+		System.out.println(l);
+		ProcessBuilder pb = new ProcessBuilder(cmd);
+		try {
+			pb.redirectErrorStream(true);
+			Process p = pb.start();
+			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			while ((line = b.readLine()) != null) {
+				System.out.println("CMD2>: " + line);
+			}
+			p.waitFor();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		} 
 		
-		//TODO: THE REST OF THIS SHIT KLLJASLKJSDLKLA
-		
-		return null;	//TODO
+		return output;	//TODO
 	}
 	
 	
@@ -115,6 +134,7 @@ public class MediaConverter {
      */   
         return null;
 	}
+	
 	/**
 	 * A utility method for convertToMP4(). Not for public use.
 	 */

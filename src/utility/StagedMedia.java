@@ -20,7 +20,7 @@ abstract public class StagedMedia {
 	 */
 	protected Media media; //To change media, use ffmpeg from processbuilder and output to file.getPath()
 	
-	public StagedMedia() {
+	protected void InitMedia() {
 		file = new File(System.getProperty("user.dir") + "/.temp/" + this.hashCode() + "." + getExtension());
 		while (file.exists()) {
 			file = new File(System.getProperty("user.dir") + "/.temp/" + file.hashCode() + "." + getExtension());
@@ -46,7 +46,7 @@ abstract public class StagedMedia {
 	
 	public Media getMedia() throws Exception {
 		if (media == null) {
-			throw new Exception("This StagedMedia has not been assigned yet."); //B
+			throw new Exception("This StagedMedia has not been assigned yet.");
 		} else {
 			return media;
 		}

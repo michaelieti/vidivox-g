@@ -1,5 +1,6 @@
 package editor;
 
+import java.io.File;
 import java.io.IOException;
 
 import utility.StagedAudio;
@@ -14,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 
@@ -23,12 +25,16 @@ public class SpeechTab extends BindableTab {
 	
 	private Text msg;
 	private TextArea userField;
-	private Button playBtn, previewBtn, overlayBtn;
+	private Button playBtn, saveBtn, overlayBtn;
+	private FileChooser f;
+	private Stage stage;
 	
 	public SpeechTab(MediaView mv,String title, String message) {
 		super(mv, title);
 		msg = new Text(message);
 		userField = new TextArea();
+		f = new FileChooser();
+		f.setTitle("Save");
 		//Initializing Button Event handlers
 		playBtn = new Button("Play");
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -38,8 +44,20 @@ public class SpeechTab extends BindableTab {
 			}
 			
 		});
-		previewBtn = new Button("Preview");
-		previewBtn.setOnAction(null);
+		saveBtn = new Button("Save Speech");
+		saveBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				FileChooser f = new FileChooser();
+				f.setTitle("Save");
+				File file = new FileChooser().showSaveDialog(null);
+				if (file != null) {
+					textToSpeech(userField.getText(), file.getAbsolutePath());
+				}
+			}
+			
+		});
 		overlayBtn = new Button("Overlay");
 		overlayBtn.setOnAction(null);
 		
@@ -53,7 +71,7 @@ public class SpeechTab extends BindableTab {
 		HBox speechBtns = new HBox();
 		speechBtns.setAlignment(Pos.CENTER);
 		speechBtns.setSpacing(btnSpacing);
-		speechBtns.getChildren().addAll(playBtn, previewBtn, overlayBtn);
+		speechBtns.getChildren().addAll(playBtn, saveBtn, overlayBtn);
 		speechPane.add(speechBtns, 0, 4, 3, 1);
 		
 		this.setContent(speechPane);
@@ -87,7 +105,18 @@ public class SpeechTab extends BindableTab {
 	@Override
 	public void stageMedia() {
 		String path = stagedMedia.getFile().getAbsolutePath();
-		String expansion = "`echo " + userField.getText() + " | text2wave > " + path + "`";
+		textToSpeech(userField.getText(), path);
+	}
+	
+	/**
+	 * Convenience method which saves a particular string as an audio file
+	 * at a given path. Not for public use
+	 * @param msg
+	 * @param path
+	 */
+	private void textToSpeech(String msg, String path) {
+		//TODO: Implement Concurrency
+		String expansion = "`echo " + msg + " | text2wave > " + path + "`";
 		String[] cmd = {"bash", "-c", expansion};
 		ProcessBuilder build = new ProcessBuilder(cmd);
 		try {
@@ -107,7 +136,7 @@ public class SpeechTab extends BindableTab {
 	public void initStagedMedia() {
 		stagedMedia = new StagedAudio(StagedAudio.MediaTypes.WAV);
 	}
-
+	
 
 }
 
