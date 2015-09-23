@@ -25,12 +25,12 @@ public class VidivoxVideoControls extends HBox {
 	/*Status flags for the Application*/
 	private boolean mediaEnded = false;
 	
-	/*Flags related to application view */
-	private boolean currentlyPlaying; //returns true if video currently playing.
-	
+		
 	final private static double minVolume = 0.0;
 	final private static double maxVolume = 10.0;
 	final private static double defaultVolume = 5.0;
+	
+	final private double playRateIncrement = 0.5;
 	
 	
 	public VidivoxVideoControls(MediaView mv) {
@@ -40,25 +40,41 @@ public class VidivoxVideoControls extends HBox {
 		ToggleButton tb = new ToggleButton();
 		//Buttons defined here (e.g. play button, pause button, stop button...)
 		playBtn = new Button();
+		playBtn.setId("playBtn");
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				updateCurrentlyPlaying();
-				if ( ! currentlyPlaying) {
-					playVideo(playBtn);
+				MediaPlayer mp = mediaView.getMediaPlayer();
+				//if the rate is not currently 1.0, set to 1.0 and then return to pause.
+				if (mp.getRate() != 1.0){
+					mp.setRate(1.0);
 				}
-				else {
-					pauseVideo(playBtn);
+				Status status = mp.getStatus();
+				//CHECK ONE: possible error? nothing is done in these states for now
+				if (status == Status.UNKNOWN || status == Status.HALTED ){
+					playBtn.setId("playBtn");
+					return;
 				}
-				updateControls();
+				//CHECK TWO: stopped/paused/ready states - begin playing video
+				if (status == Status.STOPPED || status == Status.READY || status == Status.PAUSED ){
+					//check if video track is at end: if so, reset the track.
+					if (mediaEnded){
+						mp.seek(mp.getStartTime());
+						mediaEnded = false;
+					}//continue playing from that point
+					mp.play();
+					playBtn.setId("pauseBtn");
+				} else {
+					mp.pause();
+					playBtn.setId("playBtn");
+				}
 			}
 		});
-		playBtn.setId("playBtn");
 
 		stopBtn = new Button();
 		stopBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				stopVideo();
-				updateControls();
+				playBtn.setId("playBtn");
 			}
 		});
 		stopBtn.setId("stopBtn");
@@ -100,65 +116,8 @@ public class VidivoxVideoControls extends HBox {
 		//This can be changed to BlueSkin GreenSkin PurpleSkin or OrangeSkin
 		this.getStylesheets().add(getClass().getResource("/skins/BlueSkin.css").toExternalForm());
 	}
+	/* end placement of classes*/
 	
-
-	protected void updateCurrentlyPlaying() {
-		Status st = mediaView.getMediaPlayer().getStatus();
-		currentlyPlaying = (st == Status.PLAYING);
-		return;
-	}
-	
-	protected void updateControls() {
-		updateCurrentlyPlaying();
-		if (currentlyPlaying){	//gg ez shit
-			playBtn.setId("pauseBtn");
-		}
-		else {
-			playBtn.setId("playBtn");
-		}
-	}
-	
-	/*
-	 * Previously in VidivoxLauncher
-	 * 
-	 * 
-	 * 
-	 */
-	
-	
-	/**
-	 * An event handling method that dictates what occurs when the Play button is pushed.
-	 * If the video is paused, stopped, or at the end of the video track, play resumes from current point or the start of the video track.
-	 * If the video is currently playing, the video is paused, setting into motion the setOnPaused event handler.
-	 * Other states - nothing happens (e.g. an error state is generated)
-	 * @param src - the button that generated the event
-	 */
-	public void playVideo(Button src) {
-		System.out.println("Pressed Play Wow!");
-		//Refactored obtain the current media view
-		Status status = mediaView.getMediaPlayer().getStatus();	// obtain current media player status.
-				//Several checks are now carried out.
-		//CHECK ONE: possible error? nothing is done in these states for now
-		if (status == Status.UNKNOWN || status == Status.HALTED ){
-			return;
-		}
-		//CHECK TWO: stopped/paused/ready states - begin playing video
-		if (status == Status.STOPPED || status == Status.READY || status == Status.PAUSED ){
-			//check if video track is at end: if so, reset the track.
-			if (mediaEnded){
-				mediaView.getMediaPlayer().seek(mediaView.getMediaPlayer().getStartTime());
-				mediaEnded = false;
-			}//continue playing from that point
-			mediaView.getMediaPlayer().play();
-		} else {
-			mediaView.getMediaPlayer().pause();
-		}
-	}
-	
-	public void pauseVideo(Button src) {
-		System.out.println("Pressed Pause Wow!");
-		mediaView.getMediaPlayer().pause();
-	}
 
 	public void stopVideo() {
 		System.out.println("Pressed Stop Wow!");
@@ -168,14 +127,17 @@ public class VidivoxVideoControls extends HBox {
 	public void ffwdVideo() {
 		System.out.println("Pressed Fast Foward Wow!");
 		MediaPlayer mp = mediaView.getMediaPlayer();
-		mp.seek(mp.getCurrentTime().add(Duration.seconds(10)));
+		Double currentRate = mp.getRate();
+		mp.setRate(currentRate + playRateIncrement);
 	}
 
 	public void rwdVideo() {
-		System.out.println("Pressed Rewind Wow!");
 		MediaPlayer mp = mediaView.getMediaPlayer();
+		if (mp.getRate() != 1.0){
+			mp.setRate(1.0);
+			return;
+		}
 		mp.seek(mp.getCurrentTime().subtract(Duration.seconds(10)));
 	}
-	
-}
 
+}
