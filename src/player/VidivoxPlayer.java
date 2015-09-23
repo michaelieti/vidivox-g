@@ -43,25 +43,9 @@ public class VidivoxPlayer {
 		singletonPlayer = this;
 		this.mv = new MediaView();
 	}
-	/*	//POSSIBLY DELETABLE???
-	private VidivoxPlayer(Media media){
-		singletonPlayer = this;
-		this.mv = new MediaView(new MediaPlayer(media));
-		initialize();
-	}
-	private VidivoxPlayer(VidivoxMedia mediaPanel) {
-		singletonPlayer = this;
-		this.mediaPanel = mediaPanel;
-		this.mv = new MediaView();
-	}
-	private VidivoxPlayer(VidivoxMedia mediaPanel, Media media){
-		singletonPlayer = this;
-		this.mediaPanel = mediaPanel;
-		this.mv = new MediaView(new MediaPlayer(media));
-		initialize();
-	}/*
 	
 	/* PANEL INTERACTORS*/
+	/* MUST BE CALLED DURING STAGE CONSTRUCTION */
 	public void setMediaPanel(VidivoxMedia mediaPanel){
 		this.mediaPanel = mediaPanel;
 	}
@@ -102,6 +86,17 @@ public class VidivoxPlayer {
 	/* METHODS CALLED FROM INITIALIZE */
 	public void bindTimeline(Slider mediaTimeline){
 		// TODO: hook up this timeline shit
+		mediaTimeline.valueProperty().addListener(new InvalidationListener() {
+			
+			@Override
+			public void invalidated(Observable observable) {
+				if (mediaTimeline.isValueChanging()){
+					MediaPlayer mp = mv.getMediaPlayer();
+					Duration mediaLength = mp.getMedia().getDuration();
+					mp.seek(mediaLength.multiply(mediaTimeline.getValue() / VidivoxMedia.MAXTIME));
+				}
+			}
+		});
 	}
 	
 }

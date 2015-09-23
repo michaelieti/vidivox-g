@@ -15,7 +15,7 @@ import javafx.util.Duration;
  */
 public class VidivoxMedia extends VBox {
 	protected VidivoxPlayer vp = VidivoxPlayer.getVidivoxPlayer();
-	protected Slider mediaTimeline;
+	protected SliderVX mediaTimeline;
 	
 	protected static final double MINTIME = 0.0;
 	protected static final double MAXTIME = 100.0;
@@ -28,7 +28,7 @@ public class VidivoxMedia extends VBox {
 		MediaView mv = vp.getMediaView();
 		mv.setFitHeight(500);
 		mv.setFitWidth(800);
-		mediaTimeline = new Slider(MINTIME, MAXTIME, STARTTIME);  //TODO: subclass this timeline. tie timeline to media file so it updates accordingly.		
+		mediaTimeline = new SliderVX(MINTIME, MAXTIME, STARTTIME);  //TODO: subclass this timeline. tie timeline to media file so it updates accordingly.		
 		this.getChildren().addAll(mv,mediaTimeline);
 	}
 	
@@ -38,7 +38,7 @@ public class VidivoxMedia extends VBox {
 	public VidivoxPlayer getPlayer(){
 		return vp;
 	}
-	public Slider getTimeline(){
+	public SliderVX getTimeline(){
 		return mediaTimeline;
 	}
 	
