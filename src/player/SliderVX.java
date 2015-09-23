@@ -12,8 +12,9 @@ import javafx.scene.input.MouseEvent;
  */
 public class SliderVX extends Slider {
 
-	static final private long TIME_THRESHOLD = 500;
+	static final private long TIME_THRESHOLD = 100;
 	
+	private boolean sliderFlag = false;	//returns true if mouse was clicked on it.
 	private long mouseEventTime = 0;	//time in milliseconds
 	
 	public SliderVX(){
@@ -30,13 +31,30 @@ public class SliderVX extends Slider {
 		addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				mouseEventTime = System.currentTimeMillis();
+				/* mouseEventTime = System.currentTimeMillis(); */
+				sliderFlag = true;
 			}
 		});
 	} /* end post constructor initializer */
 	
+	/*
 	public boolean wasMousePressedOnSlider(){
-		return ((System.currentTimeMillis() - mouseEventTime) <= TIME_THRESHOLD );
+		if ((System.currentTimeMillis() - mouseEventTime) <= TIME_THRESHOLD )
 	}
+	*/
+	
+	public boolean getSliderFlag(){
+		return sliderFlag;
+	}
+	
+	public void resetSliderFlag(){
+		sliderFlag = false;
+	}
+	
+	//mouse is clicked
+	//currentTimeMillis is called, and the mouseEventTime is set e.g. to 100.
+	//wasMousePressedOnSlider returns true as long as currenttime - mouseEventTime < = threshold
+	
+	//need to return the mouseevent time to false;
 	
 }

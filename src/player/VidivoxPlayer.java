@@ -88,21 +88,21 @@ public class VidivoxPlayer {
 		mediaTimeline.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
-				if (mediaTimeline.wasMousePressedOnSlider()){
+				if (mediaTimeline.getSliderFlag()){
 					Duration mediaLength = getMedia().getDuration();
 					getMediaPlayer().seek(mediaLength.multiply(mediaTimeline.getValue() / VidivoxMedia.MAXTIME));
+					mediaTimeline.resetSliderFlag();
 				}
 			}
 		});
 		mv.getMediaPlayer().currentTimeProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
-				if ( ! mediaTimeline.wasMousePressedOnSlider()){
+				if ( ! mediaTimeline.getSliderFlag()){
 					double timePassed = getMediaPlayer().getCurrentTime().toMillis();	//get current time value
 					double timeTotal = getMedia().getDuration().toMillis();				//get total length
 					double newRatio = timePassed/timeTotal; 		//divide total length by current time = ratio
-					mediaTimeline.setValue(100*newRatio);
-					//set slider value = ratio * 100
+					mediaTimeline.setValue(100*newRatio);			//set slider value = ratio * 100
 				}
 				
 			}
