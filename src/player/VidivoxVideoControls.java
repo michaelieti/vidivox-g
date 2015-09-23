@@ -19,8 +19,8 @@ import javafx.util.Duration;
 public class VidivoxVideoControls extends HBox {
 
 	private MediaView mediaView;
-	private Button playBtn, stopBtn, skipBackBtn, skipFwdBtn; //Video Playback
-	private Slider volumeBar;
+	protected Button playBtn, stopBtn, skipBackBtn, skipFwdBtn; //Video Playback
+	protected Slider volumeBar;
 	
 	/*Status flags for the Application*/
 	private boolean mediaEnded = false;
@@ -35,12 +35,12 @@ public class VidivoxVideoControls extends HBox {
 	
 	public VidivoxVideoControls(MediaView mv) {
 		super();
+		VidivoxPlayer.getVidivoxPlayer().setControlPanel(this);
 		this.mediaView = mv;
 		
-		ToggleButton tb = new ToggleButton();
 		//Buttons defined here (e.g. play button, pause button, stop button...)
 		playBtn = new Button();
-		playBtn.setId("playBtn");
+		playBtn.setId("pauseBtn");
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				MediaPlayer mp = mediaView.getMediaPlayer();

@@ -36,5 +36,9 @@ public class VidivoxLauncher extends Application {
 	public EditPanel getEditor() {
 		return editorPanel;
 	}
+	
+	public VidivoxMedia getView(){
+		return ms.getMediaPane();
+	}
 
 }

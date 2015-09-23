@@ -23,17 +23,17 @@ public class VidivoxFileControls extends HBox {
 	/*User-configurable fields for application */
 	private boolean isAutoPlayEnabled = true;
 	
-	private MediaView mediaView;
-	private Button openFileBtn, saveFileBtn, editPanelBtn;
+	private VidivoxMedia vvm;
+	protected Button openFileBtn, saveFileBtn, editPanelBtn;
 	private File currentFile = null;
+	private final FileChooser fileChooser = new FileChooser();
 	
-	protected final FileChooser fileChooser = new FileChooser();
-	
-	public VidivoxFileControls(final MainStage ms, MediaView mv) {
+	public VidivoxFileControls(final MainStage ms, VidivoxMedia vvm) {
 		super();
+		VidivoxPlayer.getVidivoxPlayer().setFilePanel(this);
 		this.setId("fileControls");
 		
-		mediaView = mv;
+		this.vvm = vvm;
 		
 		//OPEN FILE BUTTON STARTS HERE
 		openFileBtn = new Button("Open file");
@@ -50,32 +50,16 @@ public class VidivoxFileControls extends HBox {
 					try{
 						media = new Media(mediaPath.toString());
 					} catch (Exception me){	//this is pretty hax tbh TODO: come up with a better way to do this
-						String message = me.getMessage().trim();
-						if (message.equals("Unrecognized file signature!")){
-							try {	//second try
-								media = editor.MediaConverter.convertToMP4(mediaPath.getPath(), mediaPath.getPath());
-							} catch (InterruptedException | ExecutionException e) {
-								System.out.println("wow u really screwed up");
-								e.printStackTrace();
-							}	//end second try	
-							//TODO: reformats the media at mediaPath and provides a new URI.
-							media = new Media(mediaPath.toString());
-						} else {
-							throw me;	//lol
-						}
+						me.printStackTrace();
+						System.out.println("wrong file format");
 					}
+					//file check!
 					System.out.println(mediaPath.toString());
-					if (mediaView.getMediaPlayer() != null){
-						mediaView.getMediaPlayer().stop();
-						mediaView.getMediaPlayer().dispose();
-						System.out.println("Called mp disposal method");
-					}
-					//need to check media to make sure it is flv or mp4 or whatever
-					//and then assigns a new MediaPlayer with a new Media to that MediaView 
-					//object, but with the new file.
-					mediaView.setMediaPlayer(new MediaPlayer(media));
-					//sets video to play automatically
-					mediaView.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);
+					//get the wrapper class, set the media
+					VidivoxPlayer vp = vvm.getPlayer();
+					vp.setMedia(media);
+					
+					vp.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);	
 				}
 			}
 			

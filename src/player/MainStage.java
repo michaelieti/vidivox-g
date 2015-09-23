@@ -31,7 +31,7 @@ public class MainStage extends Stage {
 		vidiMedia = new VidivoxMedia();
 				
 		//FILE CONTROL BAR: ADDED TO TOP
-		vidiFileCtrl = new VidivoxFileControls(this, vidiMedia.getMediaView());
+		vidiFileCtrl = new VidivoxFileControls(this, vidiMedia);
 		grid.add(vidiFileCtrl,  0, 0);
 
 		//MEDIA VIEW NODE ADDED: CENTER
