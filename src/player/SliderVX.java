@@ -26,6 +26,7 @@ public class SliderVX extends Slider {
 	
 	/*Post-constructor initializer block */
 	{
+		//adds the event filter, which processes an event before the event handlers.
 		addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {

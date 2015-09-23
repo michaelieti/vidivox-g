@@ -84,17 +84,27 @@ public class VidivoxPlayer {
 	}
 	
 	/* METHODS CALLED FROM INITIALIZE */
-	public void bindTimeline(Slider mediaTimeline){
-		// TODO: hook up this timeline shit
+	public void bindTimeline(SliderVX mediaTimeline){
 		mediaTimeline.valueProperty().addListener(new InvalidationListener() {
-			
 			@Override
 			public void invalidated(Observable observable) {
-				if (mediaTimeline.isValueChanging()){
-					MediaPlayer mp = mv.getMediaPlayer();
-					Duration mediaLength = mp.getMedia().getDuration();
-					mp.seek(mediaLength.multiply(mediaTimeline.getValue() / VidivoxMedia.MAXTIME));
+				if (mediaTimeline.wasMousePressedOnSlider()){
+					Duration mediaLength = getMedia().getDuration();
+					getMediaPlayer().seek(mediaLength.multiply(mediaTimeline.getValue() / VidivoxMedia.MAXTIME));
 				}
+			}
+		});
+		mv.getMediaPlayer().currentTimeProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				if ( ! mediaTimeline.wasMousePressedOnSlider()){
+					double timePassed = getMediaPlayer().getCurrentTime().toMillis();	//get current time value
+					double timeTotal = getMedia().getDuration().toMillis();				//get total length
+					double newRatio = timePassed/timeTotal; 		//divide total length by current time = ratio
+					mediaTimeline.setValue(100*newRatio);
+					//set slider value = ratio * 100
+				}
+				
 			}
 		});
 	}
