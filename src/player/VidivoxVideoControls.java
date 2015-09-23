@@ -94,8 +94,7 @@ public class VidivoxVideoControls extends HBox {
 			}
 		});
 		skipBackBtn.setId("skipBackBtn");
-		//Initializing the Volume Slider
-
+		
 		volumeBar = new Slider(minVolume, maxVolume, defaultVolume);
 		//the volumeBar's valueProperty registers a listener, that is notified when
 		//	that property is invalidated. Invalidation is caused by e.g. the value
@@ -103,10 +102,10 @@ public class VidivoxVideoControls extends HBox {
 		volumeBar.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
-				//if (volumeBar.isValueChanging()){
-					double currentVol = volumeBar.getValue() / maxVolume;	//gets the current value represented by the slider
-					mediaView.getMediaPlayer().setVolume(currentVol);	//updates the volume in mediaplayer to be equal to the slider value
-				//}
+				double currentVol = volumeBar.getValue() / maxVolume;
+				// gets the current value represented by the slider
+				mediaView.getMediaPlayer().setVolume(currentVol);
+				// updates the volume in mediaplayer to be equal to the slider value
 			}
 		});
 

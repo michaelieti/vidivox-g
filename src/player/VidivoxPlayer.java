@@ -95,17 +95,13 @@ public class VidivoxPlayer {
 	
 	/* INITIALIZER METHOD - CALLED AFTER A MediaPlayer OBJECT IS ASSIGNED */
 	public void initialize(){
-		bindTimeline(mediaPanel.getTimeline());
+		bindTimeline(mediaPanel.getTimeline());		//timeline changes iff the video time changes
+		
 	}
 	
 	/* METHODS CALLED FROM INITIALIZE */
 	public void bindTimeline(Slider mediaTimeline){
-		mediaTimeline.valueProperty().addListener(new InvalidationListener() {
-            public void invalidated(Observable ov) {
-            	Duration totalDuration = mv.getMediaPlayer().getTotalDuration();
-            	mv.getMediaPlayer().seek(totalDuration.multiply(mediaTimeline.getValue() / 100.0));
-            }
-        });
+		// TODO: hook up this timeline shit
 	}
 	
 }

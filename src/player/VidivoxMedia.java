@@ -17,9 +17,9 @@ public class VidivoxMedia extends VBox {
 	protected VidivoxPlayer vp = VidivoxPlayer.getVidivoxPlayer();
 	protected Slider mediaTimeline;
 	
-	private static final double MINTIME = 0.0;
-	private static final double MAXTIME = 100.0;
-	private static final double STARTTIME = 0.0;
+	protected static final double MINTIME = 0.0;
+	protected static final double MAXTIME = 100.0;
+	protected static final double STARTTIME = 0.0;
 	
 	
 	public VidivoxMedia() {
