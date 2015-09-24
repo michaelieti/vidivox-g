@@ -65,8 +65,7 @@ public class Mp3Tab extends BindableTab {
 					Media video = mv.getMediaPlayer().getMedia();
 					result = (StagedVideo) MediaConverter.mergeVideoAndAudio(video, s, prog, mv);
 					try {
-						mv.getMediaPlayer().stop();
-						mv.getMediaPlayer().dispose();
+					
 						//mv.setMediaPlayer(new MediaPlayer(result.getMedia()));
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -91,6 +90,7 @@ public class Mp3Tab extends BindableTab {
 		mp3Pane.add(browseBtn, 0, 1);
 		mp3Pane.add(currentFile, 1, 1);
 		mp3Pane.add(mp3Buttons, 0, 2, 2, 1);
+		prog.setVisible(false);
 		mp3Pane.add(prog, 0, 3);
 		
 		
