@@ -20,6 +20,7 @@ public class PreviewControls extends HBox {
 			ffwd.setId("prev-ffwd");
 		volumeSlider = new Slider(MINVOL, MAXVOL, DEFAULTVOL);
 			volumeSlider.setId("prev-vol");
+		this.getChildren().addAll(rewind, ffwd, volumeSlider);
 	}
 	
 }

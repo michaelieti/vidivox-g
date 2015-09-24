@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
@@ -26,10 +27,11 @@ public class EditPanel extends Stage {
 		HBox root = new HBox();	//the overall panel
 		VBox previewPanel = new VBox();
 		
-		MediaView previewView = PreviewMedia.getPreviewMedia().getView();
-		PreviewControls previewControls = new PreviewControls();
-		PreviewMedia.getPreviewMedia().setControls(previewControls);
-		
+			MediaView previewView = PreviewMedia.getPreviewMedia().getView();
+			StackPane sp = new StackPane(previewView);
+			PreviewControls previewControls = new PreviewControls();
+				PreviewMedia.getPreviewMedia().setControls(previewControls);
+				
 		TabPane pane = new TabPane();
 		speech = new SpeechTab(mv, "Speech","Some shit that will introduce this tab and what you can do");
 		subtitle = new SubtitleTab(mv, "Subtitles","Some shit different place");
@@ -38,7 +40,11 @@ public class EditPanel extends Stage {
 		subtitle.setBind(this);
 		mp3.setBind(this);
 		pane.getTabs().addAll(speech, subtitle, mp3);
-		this.setScene(new Scene(pane));
+		previewPanel.getChildren().addAll(sp, previewControls);
+		root.getChildren().addAll(pane, previewPanel);
+		Scene scene = new Scene(root);
+		
+		this.setScene(scene);
 		/*
 		 * Setting the close operation for this window to simply hide it. This will allow the window to be reopened at
 		 * a future stage
