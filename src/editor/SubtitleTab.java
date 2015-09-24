@@ -8,6 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -21,6 +22,7 @@ public class SubtitleTab extends BindableTab {
 	public SubtitleTab(MediaView mv, String title, String message) {
 		super(mv, title);
 		msg = new Text(message);
+		msg.setFill(Color.LIGHTGRAY);
 		userField = new TextArea();
 		// Initializing Button Event handlers
 		playBtn = new Button("Play");

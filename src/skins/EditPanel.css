@@ -1,3 +1,13 @@
+.root {
+	-fx-text-fill: darkgrey;
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+.tab-content-area {
+	-fx-background-color: #e6e6e6;
+}
+
 .tab-header-area {
    -fx-background-image: url("BG_3.png");
 }
@@ -11,7 +21,8 @@
 }
 
 .tab-content-area {
-	-fx-background-color: #e6e6e6;
+	 -fx-background-color: #3c3c3c;
+	 -fx-text-fill: darkgrey;
 }
 
 .tab {
@@ -27,25 +38,16 @@
 	-fx-background-color: #e6e6e6;
 }
 
-.tab *.tab-label {
-    -fx-text-fill: white;
-}
-
-.tab-pane .tab:selected
-{
+.tab-pane .tab:selected {
     -fx-background-color: #3c3c3c;
 }
 
-.tab-down-button {
-	-fx-background-color: #3c3c3c;
-}
 
 .tab-pane.floating *.tab-header-area {
 	-fx-background-color: #3c3c3c;
 
 }
 .tab .tab-label { 
-
     -fx-alignment: CENTER;
     -fx-text-fill: #828282;
     -fx-font-size: 12px;
@@ -55,115 +57,4 @@
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
     -fx-text-fill: #96b946;
-}
-
-#fileControls{
-	-fx-background-color: black;
-}
-
-#fileBtns {
-	-fx-background-color: black;
-	-fx-text-fill: darkgrey;
-}
-#fileBtns:hover {
-	-fx-text-fill:  aquamarine;
-}
-
-#playBtn {
-	-fx-graphic: url("/skins/blue_GUI/blue_01.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#playBtn:hover {
-	-fx-graphic: url("/skins/blue_GUI/blue_06.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#playBtn:armed {
-	-fx-graphic: url("/skins/blue_GUI/blue_11.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#pauseBtn {
-	-fx-graphic: url("/skins/blue_GUI/blue_02.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#pauseBtn:hover {
-	-fx-graphic: url("/skins/blue_GUI/blue_07.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#pauseBtn:armed {
-	-fx-graphic: url("/skins/blue_GUI/blue_12.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#stopBtn {
-	-fx-graphic: url("/skins/blue_GUI/blue_03.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#stopBtn:hover {
-	-fx-graphic: url("/skins/blue_GUI/blue_08.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#stopBtn:armed {
-	-fx-graphic: url("/skins/blue_GUI/blue_13.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#skipFwdBtn {
-	-fx-graphic: url("/skins/blue_GUI/blue_05.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#skipFwdBtn:hover {
-	-fx-graphic: url("/skins/blue_GUI/blue_10.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#skipFwdBtn:armed {
-	-fx-graphic: url("/skins/blue_GUI/blue_15.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#skipBackBtn {
-	-fx-graphic: url("/skins/blue_GUI/blue_04.png");
-	-fx-background-color: transparent;
-	-fx-focus-color: transparent;
-	-fx-faint-focus-color: transparent;
-}
-
-#skipBackBtn:hover {
-	-fx-graphic: url("/skins/blue_GUI/blue_09.png");
-}
-
-#skipBackBtn:armed {
-	-fx-graphic: url("/skins/blue_GUI/blue_14.png");
 }
