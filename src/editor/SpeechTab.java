@@ -32,10 +32,10 @@ public class SpeechTab extends BindableTab {
 	private Button playBtn, cancelBtn, saveBtn, overlayBtn;
 	private FileChooser f;
 	private Stage stage;
-	private ProgressBar progBar;
+	private ProgressBar progBar = new ProgressBar();
 	private int pid = -1;
 
-	public SpeechTab(MediaView mv, String title, String message) {
+	public SpeechTab(final MediaView mv, String title, String message) {
 		super(mv, title);
 		msg = new Text(message);
 		userField = new TextArea();
@@ -71,14 +71,14 @@ public class SpeechTab extends BindableTab {
 			public void handle(ActionEvent arg0) {
 				cancelSpeech();
 			}
-			
+
 		});
 		overlayBtn = new Button("Overlay");
 		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg) {
-				//TODO: THIS SHIT IS BROKEN AHHHH
+				// TODO: THIS SHIT IS BROKEN AHHHH
 				// make temp wav file
 				// call mp3 to wav
 				// call overlay metho0d in mp3
@@ -86,12 +86,12 @@ public class SpeechTab extends BindableTab {
 					String msg = userField.getText();
 					StagedAudio stgAudio = MediaConverter.textToSpeech(msg);
 					Media video = mv.getMediaPlayer().getMedia();
-					MediaConverter.mergeVideoAndAudio(video, stgAudio, null);
-				} catch (Exception e){
+					MediaConverter.mergeVideoAndAudio(video, stgAudio, progBar);
+				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println("gg u screwed");
 				}
-				
+
 			}
 
 		});
@@ -106,8 +106,11 @@ public class SpeechTab extends BindableTab {
 		HBox speechBtns = new HBox();
 		speechBtns.setAlignment(Pos.CENTER);
 		speechBtns.setSpacing(btnSpacing);
-		speechBtns.getChildren().addAll(playBtn, cancelBtn, saveBtn, overlayBtn);
+		speechBtns.getChildren()
+				.addAll(playBtn, cancelBtn, saveBtn, overlayBtn);
 		speechPane.add(speechBtns, 0, 4, 3, 1);
+		progBar.setVisible(false);
+		speechPane.add(progBar, 0, 5);
 
 		this.setContent(speechPane);
 
@@ -158,10 +161,12 @@ public class SpeechTab extends BindableTab {
 		th.start();
 
 	}
-	
+
 	private void cancelSpeech() {
 		if (pid != -1) {
-			String expansion = "kill -9 `pstree -pn " + pid + " | grep -o \"([[:digit:]]*)\" | grep -o \"[[:digit:]]*\"`";
+			String expansion = "kill -9 `pstree -pn "
+					+ pid
+					+ " | grep -o \"([[:digit:]]*)\" | grep -o \"[[:digit:]]*\"`";
 			String[] cmd = { "bash", "-c", expansion };
 			ProcessBuilder build = new ProcessBuilder(cmd);
 			try {
@@ -208,8 +213,8 @@ public class SpeechTab extends BindableTab {
 	public void initStagedMedia() {
 		stagedMedia = new StagedAudio(StagedAudio.MediaTypes.WAV);
 	}
-	
-	private String buildPath(){
+
+	private String buildPath() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(System.getProperty("user.home"));
 		sb.append("/temp/wav");
