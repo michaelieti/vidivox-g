@@ -65,7 +65,7 @@ public class VidivoxFileControls extends HBox {
 		saveFileBtn.setId("fileBtns");
 		saveFileBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				// Placeholder
+				
 			}
 		});
 

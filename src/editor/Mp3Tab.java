@@ -58,7 +58,7 @@ public class Mp3Tab extends BindableTab {
 			public void handle(ActionEvent arg0) {
 				if (userFile != null) {
 					Media audio = new Media(userFile.toURI().toString());
-					StagedAudio s = new StagedAudio(audio);
+					StagedAudio s = new StagedAudio(audio,"");
 					Media video = mv.getMediaPlayer().getMedia();
 					MediaConverter.mergeVideoAndAudio(video, s, prog);
 				}

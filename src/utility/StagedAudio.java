@@ -7,8 +7,17 @@ import javafx.scene.media.Media;
 
 public class StagedAudio extends StagedMedia {
 
+	private String ext;
+
+	/**
+	 * Currently unnecessary. The purpose of this enum is to specify the
+	 * formatting type of the audio when it is initialized.
+	 * 
+	 * @author adav194
+	 * 
+	 */
 	public enum MediaTypes {
-		MP3(".mp3"), WAV(".wav"), NONE("");
+		MP3(".mp3"), WAV(".wav");
 		private String type;
 
 		private MediaTypes(String type) {
@@ -21,20 +30,29 @@ public class StagedAudio extends StagedMedia {
 	}
 
 	/**
-	 * The format of this particular instance of StagedMedia. Valid formats
-	 * currently include: mp3, wav.
+	 * Use this constructor if you wish to create a new StagedAudio container to
+	 * store audio not yet made. You must select the type of audio which will be
+	 * stored in this container.
+	 * 
+	 * @param type
 	 */
-	private MediaTypes format;
-
 	public StagedAudio(MediaTypes type) {
-		format = type;
+		ext = type.getExtension();
 		InitMedia();
 	}
 
-	public StagedAudio(Media audio) {
+	/**
+	 * Use this constructor if you wish to create a StagedAudio from Media which
+	 * already exists. If you do not know what the extension is it is ok to use
+	 * an empty string.
+	 * 
+	 * @param audio
+	 * @param extension
+	 */
+	public StagedAudio(Media audio, String extension) {
 		media = audio;
 		file = new File(audio.getSource());
-		format = MediaTypes.NONE;
+		ext = extension;
 	}
 
 	/**
@@ -51,8 +69,6 @@ public class StagedAudio extends StagedMedia {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// TODO:This creates the file, but there is no way of checking if it was
-		// successful or not
 	}
 
 	/**
@@ -60,7 +76,7 @@ public class StagedAudio extends StagedMedia {
 	 */
 	@Override
 	protected String getExtension() {
-		return ".mp3";
+		return ext;
 	}
 
 }
