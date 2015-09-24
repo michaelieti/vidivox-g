@@ -88,11 +88,9 @@ public class MainStage extends Stage {
 	}
 	
 	public void changeSkin(SkinColor sc){
-		//remove all skins
 		Scene scene = this.getScene();
-		scene.getStylesheets().clear();
-		//reinstate the chosen skin
-		scene.getStylesheets().add(sc.toURL());
+		scene.getStylesheets().clear();			//remove all skins
+		scene.getStylesheets().add(sc.toURL());	//reinstate a skin
 	}
 
 }

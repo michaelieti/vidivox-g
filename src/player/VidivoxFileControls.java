@@ -135,7 +135,7 @@ public class VidivoxFileControls extends HBox {
 			
 		});
 		MenuItem greenSkin = new MenuItem("Green");
-		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
+		greenSkin.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -145,7 +145,7 @@ public class VidivoxFileControls extends HBox {
 			
 		});
 		MenuItem orangeSkin = new MenuItem("Orange");
-		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
+		orangeSkin.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -154,7 +154,7 @@ public class VidivoxFileControls extends HBox {
 			
 		});
 		MenuItem purpleSkin = new MenuItem("Purple");
-		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
+		purpleSkin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				ms.changeSkin(MainStage.SkinColor.PURPLE);
