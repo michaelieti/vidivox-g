@@ -10,13 +10,16 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import player.VidivoxPlayer;
 
 public class SpeechTab extends BindableTab {
 
@@ -27,6 +30,7 @@ public class SpeechTab extends BindableTab {
 	private Button playBtn, saveBtn, overlayBtn;
 	private FileChooser f;
 	private Stage stage;
+	private ProgressBar progBar;
 
 	public SpeechTab(MediaView mv, String title, String message) {
 		super(mv, title);
@@ -58,17 +62,29 @@ public class SpeechTab extends BindableTab {
 
 		});
 		overlayBtn = new Button("Overlay");
-<<<<<<< HEAD
 		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg) {
+				//TODO: THIS SHIT IS BROKEN AHHHH
 				// make temp wav file
 				// call mp3 to wav
 				// call overlay metho0d in mp3
-				String msg = userField.getText();
-				String path = "~/temp/wav";
-				textToSpeech(msg, path);
+				try {
+					String msg = userField.getText();
+					
+					File file = MediaConverter.textToSpeech(msg);
+					// textToSpeech waits for the file to finish creating itself
+					Media wavMedia = new Media(file.toURI().toString());
+					StagedAudio mp3 = new StagedAudio(wavMedia);
+					
+					Media video = VidivoxPlayer.getVidivoxPlayer().getMedia();
+					StagedMedia mergedTempVideo = MediaConverter.mergeVideoAndAudio(video, mp3, progBar);
+				} catch (Exception e){
+					e.printStackTrace();
+					System.out.println("gg u screwed");
+				}
+				
 			}
 
 		});
@@ -149,6 +165,13 @@ public class SpeechTab extends BindableTab {
 	@Override
 	public void initStagedMedia() {
 		stagedMedia = new StagedAudio(StagedAudio.MediaTypes.WAV);
+	}
+	
+	private String buildPath(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(System.getProperty("user.home"));
+		sb.append("/temp/wav");
+		return sb.toString();
 	}
 
 }
