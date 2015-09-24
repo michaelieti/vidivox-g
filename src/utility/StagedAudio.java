@@ -42,6 +42,19 @@ public class StagedAudio extends StagedMedia {
 	}
 
 	/**
+	 * Use this constructor if you wish to create a new StagedAudio container to
+	 * store audio from a specific location.
+	 * 
+	 * @param type
+	 * @param location
+	 */
+	public StagedAudio(MediaTypes type, File location) {
+		file = location;
+		ext = type.getExtension();
+		createFile();
+	}
+
+	/**
 	 * Use this constructor if you wish to create a StagedAudio from Media which
 	 * already exists. If you do not know what the extension is it is ok to use
 	 * an empty string.

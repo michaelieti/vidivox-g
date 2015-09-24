@@ -17,6 +17,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.media.Media;
 import utility.*;
+import utility.StagedAudio.MediaTypes;
 
 /**
  * The purpose of this class will be to provide all the necessary functionality
@@ -47,24 +48,46 @@ public class MediaConverter {
 	}
 
 	/**
-	 * Uses festival to create an mp3 file from a text file. A File object is
-	 * returned, representing this mp3 file.
+	 * Uses speech synthesis to verbalize a given msg. The resulting wav file is
+	 * stored as a temporary file and returned as a StagedAudio object.
 	 * 
 	 * @param msg
 	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
 	 */
-	public static File textToSpeech(String msg) throws IOException,
-			InterruptedException {
-		String expansion = "echo " + msg
-				+ " hello | text2wave > .temp/speech.wav";
+	public static StagedAudio textToSpeech(String msg) {
+		StagedAudio output = new StagedAudio(MediaTypes.WAV);
+		String expansion = "`echo " + msg + " | text2wave > "
+				+ output.getFile().getAbsolutePath() + "`";
 		String[] cmd = { "bash", "-c", expansion };
 		ProcessBuilder build = new ProcessBuilder(cmd);
-		Process p = build.start();
-		p.waitFor(); // TODO: Implement concurrency, this code is potentially
-						// slow.
-		return new File(System.getProperty("user.dir") + "/.temp/speech.wav");
+		try {
+			build.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
+	/**
+	 * Uses speech synthesis to verbalize a given msg. The resulting wav file is
+	 * stored at a specific destination and returned as a StagedAudio object.
+	 * 
+	 * @param msg
+	 * @param destination
+	 * @return
+	 */
+	public static StagedAudio textToSpeech(String msg, File destination) {
+		StagedAudio output = new StagedAudio(MediaTypes.WAV, destination);
+		String expansion = "`echo " + msg + " | text2wave > "
+				+ output.getFile().getAbsolutePath() + "`";
+		String[] cmd = { "bash", "-c", expansion };
+		ProcessBuilder build = new ProcessBuilder(cmd);
+		try {
+			build.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return output;
 	}
 
 	public static StagedMedia mergeVideoAndAudio(Media video,
