@@ -60,6 +60,7 @@ public class MergeVideoAndAudio extends Task<StagedMedia> {
 		String pathVideo = video.getSource();
 		String pathAudio = audio.getFile().getPath();
 		StagedVideo output = new StagedVideo();
+		System.out.println("Out: " + output.getFile().getAbsolutePath());
 		String expansion = "ffmpeg -y -i " + pathVideo + " -i " + pathAudio
 				+ " -filter_complex amix=inputs=2 -shortest "
 				+ output.getFile().getAbsolutePath();

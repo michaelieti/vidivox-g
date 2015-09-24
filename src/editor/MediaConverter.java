@@ -51,11 +51,12 @@ public class MediaConverter {
 	 * Uses speech synthesis to verbalize a given msg. The resulting wav file is
 	 * stored as a temporary file and returned as a StagedAudio object.
 	 * 
-	 * @param msg
+	 * @param msg - the text to be turned into speech
 	 * @return
 	 */
 	public static StagedAudio textToSpeech(String msg) {
 		StagedAudio output = new StagedAudio(MediaTypes.WAV);
+		System.out.println("made staged audio "+ output.getFile().getAbsolutePath());
 		String expansion = "`echo " + msg + " | text2wave > "
 				+ output.getFile().getAbsolutePath() + "`";
 		String[] cmd = { "bash", "-c", expansion };
@@ -89,7 +90,13 @@ public class MediaConverter {
 		}
 		return output;
 	}
-
+	/**
+	 * 
+	 * @param video - a Media object representing the video intake.
+	 * @param audio - a StagedAudio object representing the audio intake.
+	 * @param prog - the ProgressBar object to be updated. May be null.
+	 * @return StagedMedia object representing the video, merged with the audio.
+	 */
 	public static StagedMedia mergeVideoAndAudio(Media video,
 			StagedAudio audio, ProgressBar prog) {
 

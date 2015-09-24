@@ -82,20 +82,15 @@ public class SpeechTab extends BindableTab {
 				// make temp wav file
 				// call mp3 to wav
 				// call overlay metho0d in mp3
-				/*try {
+				try {
 					String msg = userField.getText();
-					
-					File file = MediaConverter.textToSpeech(msg);
-					// textToSpeech waits for the file to finish creating itself
-					Media wavMedia = new Media(file.toURI().toString());
-					StagedAudio mp3 = new StagedAudio(wavMedia);
-					
-					Media video = VidivoxPlayer.getVidivoxPlayer().getMedia();
-					StagedMedia mergedTempVideo = MediaConverter.mergeVideoAndAudio(video, mp3, progBar);
+					StagedAudio stgAudio = MediaConverter.textToSpeech(msg);
+					Media video = mv.getMediaPlayer().getMedia();
+					MediaConverter.mergeVideoAndAudio(video, stgAudio, null);
 				} catch (Exception e){
 					e.printStackTrace();
 					System.out.println("gg u screwed");
-				}*/
+				}
 				
 			}
 

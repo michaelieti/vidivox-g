@@ -1,7 +1,9 @@
 package utility;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javafx.scene.media.Media;
 
@@ -74,11 +76,23 @@ public class StagedAudio extends StagedMedia {
 	 */
 	@Override
 	protected void createFile() {
-		String[] cmd = { "bash", "-c", "rec", file.getAbsolutePath(), "trim",
+		String[] cmd = { "rec", file.getAbsolutePath(), "trim",
 				"0", "0" };
+		String l = "";
+		for (String s:cmd) {
+			l += " " +s;
+		}
+		System.out.println(l);
 		ProcessBuilder build = new ProcessBuilder(cmd);
+		build.redirectErrorStream(true);
 		try {
-			build.start();
+			Process p =	build.start();
+			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			while ((line = b.readLine()) != null) {
+				System.out.println(line);
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
