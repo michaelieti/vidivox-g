@@ -13,9 +13,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
@@ -33,10 +35,12 @@ public class Mp3Tab extends BindableTab {
 	private final FileChooser fc = new FileChooser();
 	private File userFile = null;
 	private StringProperty filePath = new SimpleStringProperty();
+	private ProgressBar prog;
 	
 	public Mp3Tab(final MediaView mv, String title, String message) {
 		super(mv, title);
 		msg = new Text(message);
+		prog = new ProgressBar();
 		//Initializing Button Event handlers
 		browseBtn = new Button("Browse");
 		browseBtn.setOnAction(new EventHandler<ActionEvent>(){
@@ -59,8 +63,14 @@ public class Mp3Tab extends BindableTab {
 					Media audio = new Media(userFile.toURI().toString());
 					StagedAudio s = new StagedAudio(audio);
 					Media video = mv.getMediaPlayer().getMedia();
-					result = (StagedVideo) MediaConverter.mergeVideoAndAudio(video, s);
-					System.out.println(result.getFile().getAbsolutePath());
+					result = (StagedVideo) MediaConverter.mergeVideoAndAudio(video, s, prog, mv);
+					try {
+						mv.getMediaPlayer().stop();
+						mv.getMediaPlayer().dispose();
+						//mv.setMediaPlayer(new MediaPlayer(result.getMedia()));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			
@@ -81,6 +91,8 @@ public class Mp3Tab extends BindableTab {
 		mp3Pane.add(browseBtn, 0, 1);
 		mp3Pane.add(currentFile, 1, 1);
 		mp3Pane.add(mp3Buttons, 0, 2, 2, 1);
+		mp3Pane.add(prog, 0, 3);
+		
 		
 		this.setContent(mp3Pane);
 		

@@ -3,15 +3,18 @@ package editor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,6 +26,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 import utility.*;
@@ -71,32 +75,21 @@ public class MediaConverter {
 		return new File(System.getProperty("user.dir") + "/.temp/speech.wav");
 	}
 	
-	public static StagedMedia mergeVideoAndAudio(Media video, StagedAudio audio){
+	public static StagedMedia mergeVideoAndAudio(Media video, StagedAudio audio, ProgressBar prog, MediaView mv) {
 		
-		String pathVideo = video.getSource();
-		String pathAudio = audio.getFile().getPath();
-		StagedVideo output = new StagedVideo();
-		String expansion = "ffmpeg -y -i " + pathVideo + " -i " + pathAudio + " -filter_complex amix=inputs=2 -shortest " + output.getFile().getAbsolutePath();
-		String[] cmd = {"/bin/bash", "-c", expansion };
-		String l = "";
-		for (String s: cmd) {
-			l = l + s;
-		}
-		System.out.println(l);
-		ProcessBuilder pb = new ProcessBuilder(cmd);
+		
+		InBackground task = new InBackground(video, audio, prog, mv);
+		
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();
+		
+		StagedMedia output = null;
 		try {
-			pb.redirectErrorStream(true);
-			Process p = pb.start();
-			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String line;
-			while ((line = b.readLine()) != null) {
-				System.out.println("CMD2>: " + line);
-			}
-			p.waitFor();
-		} catch (IOException | InterruptedException e) {
+			output = task.getValue();
+		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-		
+		}
 		return output;	//TODO
 	}
 	
@@ -135,6 +128,45 @@ public class MediaConverter {
         return null;
 	}
 	
+	
+	public static void currentlyProcessed(InputStream in, Task task) {
+		BufferedReader bin = new BufferedReader(new InputStreamReader(in));
+		String line;
+		Boolean processingStarted = false;
+		try {
+			while ((line = bin.readLine()) != null) {
+				if (line.equals("Press [q] to stop, [?] for help")) {
+					processingStarted = true;
+				} else if (processingStarted & (line.indexOf("time=") != -1)) {
+					line = line.substring(line.indexOf("time=") + 5, line.indexOf(" bitrate"));
+					
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
+		
+	}
+	/**
+	 * This helper function takes a string in the form "hh:mm:ss" and returns
+	 * the amount of seconds this amounts to.
+	 * @param time
+	 * @return
+	 */
+	public static Double timeToSeconds(String time) {
+		time = time.replace(":", " ");
+		time = time.replace(".", " ");
+		Scanner scan = new Scanner(time);
+		//Calculating hours
+		int seconds = scan.nextInt() * 3600;
+		//Calculating minutes
+		seconds += scan.nextInt() * 60;
+		//Calculating seconds
+		seconds += scan.nextInt();
+		scan.close();
+		return (double) seconds;
+	}
 	/**
 	 * A utility method for convertToMP4(). Not for public use.
 	 */
