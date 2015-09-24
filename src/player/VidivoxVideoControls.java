@@ -30,7 +30,7 @@ public class VidivoxVideoControls extends HBox {
 	final private static double maxVolume = 10.0;
 	final private static double defaultVolume = 5.0;
 	
-	final private double playRateIncrement = 0.5;
+	final private double playRateIncrement = 3.5;
 	
 	
 	public VidivoxVideoControls(MediaView mv) {

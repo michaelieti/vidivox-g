@@ -2,6 +2,7 @@ package player;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -80,7 +81,7 @@ public class VidivoxPlayer {
 	/* INITIALIZER METHOD - CALLED AFTER A MediaPlayer OBJECT IS ASSIGNED */
 	public void initialize(){
 		bindTimeline(mediaPanel.getTimeline());		//timeline changes iff the video time changes
-		
+		bindButtonId(controlPanel.playBtn);
 	}
 	
 	/* METHODS CALLED FROM INITIALIZE */
@@ -108,5 +109,26 @@ public class VidivoxPlayer {
 			}
 		});
 	}
-	
+	private void bindButtonId(Button button){
+		MediaPlayer mp = getMediaPlayer();
+		//define both runnables
+		Runnable setIdPlayRunnable = new Runnable() {
+			@Override
+			public void run() {
+				button.setId("pauseBtn");
+			}
+		};
+		Runnable setIdPausedRunnable = new Runnable(){
+			@Override
+			public void run() {
+				button.setId("playBtn");
+			}
+		};
+		//assign the runnables to event handlers
+		mp.setOnPaused(setIdPausedRunnable);
+		mp.setOnPlaying(setIdPlayRunnable);
+		mp.setOnStopped(setIdPausedRunnable);
+		
+		
+	}
 }

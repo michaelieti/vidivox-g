@@ -84,34 +84,12 @@ public class MediaConverter {
 		thread.setDaemon(true);
 		thread.start();
 		
-		
-		
 		StagedMedia output = null;
 		try {
 			output = task.getValue();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		/*String pathVideo = video.getSource();
-		String pathAudio = audio.getFile().getPath();
-		StagedVideo output = new StagedVideo();
-		String expansion = "ffmpeg -y -i " + pathVideo + " -i " + pathAudio + " -filter_complex amix=inputs=2 -shortest " + output.getFile().getAbsolutePath();
-		String[] cmd = {"/bin/bash", "-c", expansion };
-		String l = "";
-		for (String s: cmd) {
-			l = l + s;
-		}
-		System.out.println(l);
-		ProcessBuilder pb = new ProcessBuilder(cmd);
-		try {
-			pb.redirectErrorStream(true);
-			Process p = pb.start();
-			currentlyProcessed(p.getInputStream(), null);
-			p.waitFor();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		} 
-		*/
 		return output;	//TODO
 	}
 	

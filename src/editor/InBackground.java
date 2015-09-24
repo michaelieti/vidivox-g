@@ -60,21 +60,6 @@ public class InBackground extends Task<StagedMedia> {
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
-		final Task<StagedMedia> t = this;
-		this.setOnSucceeded(new EventHandler<WorkerStateEvent> () {
-			@Override
-			public void handle(WorkerStateEvent arg0) {
-				try {
-					System.out.println("Media set to:" + t.getValue().getMedia().getSource());
-					view.setMediaPlayer(new MediaPlayer(t.getValue().getMedia()));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			
-		});
-		this.setOnFailed(getOnScheduled());
-		
 		return output;	//TODO
 	}
 	
@@ -96,9 +81,6 @@ public class InBackground extends Task<StagedMedia> {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		if (processingStarted == false) {
-			System.out.println("FAILED");
 		}
 		return;
 	}
