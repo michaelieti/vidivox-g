@@ -2,9 +2,11 @@ package editor;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import utility.StagedAudio;
 import utility.StagedMedia;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -24,8 +26,9 @@ public class SpeechTab extends BindableTab {
 
 	private Text msg;
 	private TextArea userField;
-	private Button playBtn, saveBtn, overlayBtn;
+	private Button playBtn, cancelBtn, saveBtn, overlayBtn;
 	private FileChooser f;
+	private int pid = -1;
 
 	public SpeechTab(MediaView mv, String title, String message) {
 		super(mv, title);
@@ -56,6 +59,15 @@ public class SpeechTab extends BindableTab {
 			}
 
 		});
+		cancelBtn = new Button("Cancel Speech");
+		cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				cancelSpeech();
+			}
+			
+		});
 		overlayBtn = new Button("Overlay");
 		overlayBtn.setOnAction(null);
 
@@ -69,7 +81,7 @@ public class SpeechTab extends BindableTab {
 		HBox speechBtns = new HBox();
 		speechBtns.setAlignment(Pos.CENTER);
 		speechBtns.setSpacing(btnSpacing);
-		speechBtns.getChildren().addAll(playBtn, saveBtn, overlayBtn);
+		speechBtns.getChildren().addAll(playBtn, cancelBtn, saveBtn, overlayBtn);
 		speechPane.add(speechBtns, 0, 4, 3, 1);
 
 		this.setContent(speechPane);
@@ -88,16 +100,53 @@ public class SpeechTab extends BindableTab {
 	}
 
 	private void playSpeech() {
-		System.out.println(userField.getText());
-		String expansion = "`echo \"" + userField.getText() + "\" | festival --tts`";
-		String[] cmd = {"bash" , "-c", expansion};
-		ProcessBuilder build = new ProcessBuilder(cmd);
-		try {
-			build.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		cancelSpeech();
+		Task<Void> task = new Task<Void>() {
+
+			@Override
+			protected Void call() throws Exception {
+				String expansion = "`echo \"" + userField.getText()
+						+ "\" | festival --tts`";
+				String[] cmd = { "bash", "-c", expansion };
+				ProcessBuilder build = new ProcessBuilder(cmd);
+				Process p;
+				try {
+					p = build.start();
+					if (p.getClass().getName().equals("java.lang.UNIXProcess")) {
+						Field f = p.getClass().getDeclaredField("pid");
+						f.setAccessible(true);
+						pid = f.getInt(p);
+						p.waitFor();
+						pid = -1;
+					}
+				} catch (IOException | NoSuchFieldException | SecurityException
+						| IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+				return null;
+			}
+
+		};
+
+		Thread th = new Thread(task);
+		th.setDaemon(true);
+		th.start();
+
+	}
+	
+	private void cancelSpeech() {
+		if (pid != -1) {
+			String expansion = "kill -9 `pstree -pn " + pid + " | grep -o \"([[:digit:]]*)\" | grep -o \"[[:digit:]]*\"`";
+			String[] cmd = { "bash", "-c", expansion };
+			ProcessBuilder build = new ProcessBuilder(cmd);
+			try {
+				build.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			pid = -1;
 		}
+		return;
 	}
 
 	@Override
@@ -114,7 +163,6 @@ public class SpeechTab extends BindableTab {
 	 * @param path
 	 */
 	private void textToSpeech(String msg, String path) {
-		// TODO: Implement Concurrency
 		String expansion = "`echo " + msg + " | text2wave > " + path + "`";
 		String[] cmd = { "bash", "-c", expansion };
 		ProcessBuilder build = new ProcessBuilder(cmd);

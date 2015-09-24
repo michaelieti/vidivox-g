@@ -84,7 +84,7 @@ public class PreviewMedia {
 		});
 	}
 	private void bindVolumeSlider(){
-		Slider volSlider = pc.volumeSlider;
+		final Slider volSlider = pc.volumeSlider;
 		volSlider.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
