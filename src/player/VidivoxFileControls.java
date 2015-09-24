@@ -128,9 +128,8 @@ public class VidivoxFileControls extends HBox {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.getScene().getStylesheets().clear();
-				ms.getScene().getStylesheets().add(getClass().getResource("/skins/BlueSkin.css")
-						.toExternalForm());
+				ms.getVideoControls().getStyleClass().remove("blue");
+				ms.getVideoControls().getStyleClass().add("green");
 			}
 			
 		});
@@ -139,9 +138,8 @@ public class VidivoxFileControls extends HBox {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.getScene().getStylesheets().clear();
-				ms.getScene().getStylesheets().add(getClass().getResource("/skins/GreenSkin.css")
-						.toExternalForm());
+				ms.getVideoControls().getStyleClass().remove("green");
+				ms.getVideoControls().getStyleClass().add("blue");
 			}
 			
 		});

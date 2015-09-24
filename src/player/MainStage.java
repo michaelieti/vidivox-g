@@ -46,7 +46,7 @@ public class MainStage extends Stage {
 		// MainStage contains the styling information for all the components of
 		// MainStage that do not change
 		s.getStylesheets()
-				.add(getClass().getResource("/skins/BlueSkin.css")
+				.add(getClass().getResource("/skins/MainStage.css")
 						.toExternalForm());
 		this.setScene(s);
 		/*
@@ -62,6 +62,10 @@ public class MainStage extends Stage {
 
 	public VidivoxMedia getMediaPane() {
 		return vidiMedia;
+	}
+	
+	public VidivoxVideoControls getVideoControls() {
+		return vidiVidCtrl;
 	}
 
 	public VidivoxLauncher getLauncher() {
