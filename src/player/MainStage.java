@@ -23,7 +23,6 @@ public class MainStage extends Stage {
 		
 		public String toURL() {
 			String x = getClass().getResource(url).toExternalForm();
-			System.out.println(x);
 			return x;
 		}
 	}
