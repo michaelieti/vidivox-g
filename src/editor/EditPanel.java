@@ -52,6 +52,7 @@ public class EditPanel extends Stage {
 		 * PreviewMedia.getPreviewMedia().setControls(previewControls);
 		 */
 		TabPane pane = new TabPane();
+		
 		speech = new SpeechTab(mv, "Speech",
 				"Some shit that will introduce this tab and what you can do");
 		subtitle = new SubtitleTab(mv, "Subtitles", "Some shit different place");
@@ -59,6 +60,9 @@ public class EditPanel extends Stage {
 		speech.setBind(this);
 		subtitle.setBind(this);
 		mp3.setBind(this);
+		speech.setId("tabs");
+		subtitle.setId("tabs");
+		mp3.setId("tabs");
 		pane.getTabs().addAll(speech, subtitle, mp3);
 		/*
 		 * //[PREVIEW PANEL] Uncomment 2 of 2 for Preview Panel // ALSO: change
@@ -66,7 +70,7 @@ public class EditPanel extends Stage {
 		 * previewControls); root.getChildren().addAll(pane, previewPanel);
 		 */
 		Scene scene = new Scene(pane);
-
+		scene.getStylesheets().add(getClass().getResource("/skins/EditPanel.css").toExternalForm());
 		this.setScene(scene);
 		/*
 		 * Setting the close operation for this window to simply hide it. This

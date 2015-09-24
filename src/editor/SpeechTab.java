@@ -111,7 +111,8 @@ public class SpeechTab extends BindableTab {
 		speechPane.add(speechBtns, 0, 4, 3, 1);
 		progBar.setVisible(false);
 		speechPane.add(progBar, 0, 5);
-
+		speechPane.getStyleClass().add("gridPane");
+		speechPane.getStylesheets().add(getClass().getResource("/skins/EditPanel.css").toExternalForm());
 		this.setContent(speechPane);
 
 	}
