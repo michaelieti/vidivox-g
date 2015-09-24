@@ -3,8 +3,11 @@ package editor;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 
 public class PreviewMedia {
@@ -73,10 +76,22 @@ public class PreviewMedia {
 		});
 	}
 	private void bindRWD(){
-		
+		pc.rewind.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				mp.seek(mp.getCurrentTime().add(new Duration(10000)));
+			}
+		});
 	}
 	private void bindVolumeSlider(){
-		
+		Slider volSlider = pc.volumeSlider;
+		volSlider.valueProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				double currentVol = volSlider.getValue()/100;
+				mp.setVolume(currentVol);
+			}
+		});
 	}
 	
 }
