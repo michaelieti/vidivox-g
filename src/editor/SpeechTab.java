@@ -30,6 +30,7 @@ public class SpeechTab extends BindableTab {
 	private FileChooser f;
 	private int pid = -1;
 
+
 	public SpeechTab(MediaView mv, String title, String message) {
 		super(mv, title);
 		msg = new Text(message);
@@ -69,7 +70,19 @@ public class SpeechTab extends BindableTab {
 			
 		});
 		overlayBtn = new Button("Overlay");
-		overlayBtn.setOnAction(null);
+		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg) {
+				// make temp wav file
+				// call mp3 to wav
+				// call overlay metho0d in mp3
+				String msg = userField.getText();
+				String path = "~/temp/wav";
+				textToSpeech(msg, path);
+			}
+
+		});
 
 		GridPane speechPane = new GridPane();
 		speechPane.setGridLinesVisible(player.VidivoxLauncher.GRID_IS_VISIBLE);
