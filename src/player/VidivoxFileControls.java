@@ -136,7 +136,6 @@ public class VidivoxFileControls extends HBox {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				System.out.println("lol u green");
 				ms.changeSkin(MainStage.SkinColor.GREEN);
 			}
 			

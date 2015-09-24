@@ -60,7 +60,6 @@ public class MainStage extends Stage {
 		// grid complete, set scene
 		// MainStage contains the styling information for all the components of
 		// MainStage that do not change
-		System.out.println(getClass().getResource("/skins/BlueSkin.css").toExternalForm());
 		s.getStylesheets().add(getClass().getResource("/skins/BlueSkin.css").toExternalForm());
 		this.setScene(s);
 		/*
