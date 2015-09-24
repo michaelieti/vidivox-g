@@ -74,6 +74,8 @@ public class VidivoxFileControls extends HBox {
 		saveFileBtn.setId("fileBtns");
 		saveFileBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				System.out.println("u purple motherfucker");
+				ms.changeSkin(MainStage.SkinColor.PURPLE);
 				Media toSave = VidivoxPlayer.getVidivoxPlayer()
 						.getMediaPlayer().getMedia();
 				FileChooser f = new FileChooser();
@@ -125,11 +127,10 @@ public class VidivoxFileControls extends HBox {
 		});
 		MenuItem blueSkin = new MenuItem("Blue");
 		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.getVideoControls().getStyleClass().remove("blue");
-				ms.getVideoControls().getStyleClass().add("green");
+				System.out.println("lol u blue");
+				ms.changeSkin(MainStage.SkinColor.BLUE);
 			}
 			
 		});
@@ -138,8 +139,8 @@ public class VidivoxFileControls extends HBox {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.getVideoControls().getStyleClass().remove("green");
-				ms.getVideoControls().getStyleClass().add("blue");
+				System.out.println("lol u green");
+				ms.changeSkin(MainStage.SkinColor.GREEN);
 			}
 			
 		});
@@ -148,20 +149,15 @@ public class VidivoxFileControls extends HBox {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.getScene().getStylesheets().clear();
-				ms.getScene().getStylesheets().add(getClass().getResource("/skins/OrangeSkin.css")
-						.toExternalForm());
+				ms.changeSkin(MainStage.SkinColor.ORANGE);
 			}
 			
 		});
 		MenuItem purpleSkin = new MenuItem("Purple");
 		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.getScene().getStylesheets().clear();
-				ms.getScene().getStylesheets().add(getClass().getResource("/skins/PurpleSkin.css")
-						.toExternalForm());
+				ms.changeSkin(MainStage.SkinColor.PURPLE);
 			}
 			
 		});
