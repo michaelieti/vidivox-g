@@ -109,7 +109,7 @@ public class VidivoxPlayer {
 			}
 		});
 	}
-	private void bindButtonId(Button button){
+	private void bindButtonId(final Button button){
 		MediaPlayer mp = getMediaPlayer();
 		//define both runnables
 		Runnable setIdPlayRunnable = new Runnable() {

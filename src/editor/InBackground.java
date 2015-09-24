@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import player.VidivoxPlayer;
+
 import utility.StagedAudio;
 import utility.StagedMedia;
 import utility.StagedVideo;
@@ -51,15 +53,17 @@ public class InBackground extends Task<StagedMedia> {
 		try {
 			pb.redirectErrorStream(true);
 			Process p = pb.start();
+			bar.setVisible(true);
 			this.updateProgress(0, video.getDuration().toSeconds());
 			currentlyProcessed(p.getInputStream());
 			p.waitFor();
-			
-			view.setMediaPlayer(new MediaPlayer(output.getMedia()));
-			view.getMediaPlayer().play();
+			this.updateProgress(video.getDuration().toSeconds(), video.getDuration().toSeconds());
+			VidivoxPlayer.getVidivoxPlayer().setMediaPlayer(new MediaPlayer(output.getMedia()));
+			VidivoxPlayer.getVidivoxPlayer().getMediaPlayer().play();
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
+		bar.setVisible(false);
 		return output;	//TODO
 	}
 	
@@ -73,9 +77,7 @@ public class InBackground extends Task<StagedMedia> {
 					processingStarted = true;
 				} else if (processingStarted & (line.indexOf("time=") != -1)) {
 					line = line.substring(line.indexOf("time=") + 5, line.indexOf(" bitrate"));
-					System.out.println("Processing Under Way 2: " + video.getDuration().toSeconds());
 					this.updateProgress(MediaConverter.timeToSeconds(line), video.getDuration().toSeconds());
-					System.out.println("Converted! :" + MediaConverter.timeToSeconds(line));
 					
 				}
 			}
