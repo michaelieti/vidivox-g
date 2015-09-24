@@ -73,11 +73,17 @@ public class VidivoxPlayer {
 	}
 
 	public void setMediaPlayer(MediaPlayer mp) {
+		if (getMediaPlayer() != null){
+			getMediaPlayer().dispose();
+		}
 		mv.setMediaPlayer(mp);
 		initialize();
 	}
 
 	public void setMedia(Media media) {
+		if (getMediaPlayer() != null){
+			getMediaPlayer().dispose();
+		}
 		mv.setMediaPlayer(new MediaPlayer(media));
 		initialize();
 	}

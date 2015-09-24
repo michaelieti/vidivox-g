@@ -46,7 +46,7 @@ public class MainStage extends Stage {
 		// MainStage contains the styling information for all the components of
 		// MainStage that do not change
 		s.getStylesheets()
-				.add(getClass().getResource("/skins/MainStage.css")
+				.add(getClass().getResource("/skins/BlueSkin.css")
 						.toExternalForm());
 		this.setScene(s);
 		/*

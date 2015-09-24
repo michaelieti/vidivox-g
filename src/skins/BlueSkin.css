@@ -1,3 +1,19 @@
+.root {
+     -fx-background-image: url("BG_3.png");
+}
+
+#fileControls{
+	-fx-background-color: black;
+}
+
+#fileBtns {
+	-fx-background-color: black;
+	-fx-text-fill: darkgrey;
+}
+#fileBtns:hover {
+	-fx-text-fill:  aquamarine;
+}
+
 #playBtn {
 	-fx-graphic: url("/skins/blue_GUI/blue_01.png");
 	-fx-background-color: transparent;

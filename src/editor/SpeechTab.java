@@ -82,7 +82,7 @@ public class SpeechTab extends BindableTab {
 				// make temp wav file
 				// call mp3 to wav
 				// call overlay metho0d in mp3
-				try {
+				/*try {
 					String msg = userField.getText();
 					
 					File file = MediaConverter.textToSpeech(msg);
@@ -95,7 +95,7 @@ public class SpeechTab extends BindableTab {
 				} catch (Exception e){
 					e.printStackTrace();
 					System.out.println("gg u screwed");
-				}
+				}*/
 				
 			}
 
