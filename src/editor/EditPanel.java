@@ -54,9 +54,9 @@ public class EditPanel extends Stage {
 		TabPane pane = new TabPane();
 		
 		speech = new SpeechTab(mv, "Speech",
-				"Some shit that will introduce this tab and what you can do");
-		subtitle = new SubtitleTab(mv, "Subtitles", "Some shit different place");
-		mp3 = new Mp3Tab(mv, "Mp3", "sync yo sik az beats");
+				"Enter text to be spoken over the video");
+		subtitle = new SubtitleTab(mv, "Subtitles", "Enter text to be subtitled (coming soon...)");
+		mp3 = new Mp3Tab(mv, "Mp3", "Find an mp3 or wav file to overlay on the video");
 		speech.setBind(this);
 		subtitle.setBind(this);
 		mp3.setBind(this);
