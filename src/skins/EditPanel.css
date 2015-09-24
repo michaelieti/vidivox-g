@@ -41,7 +41,7 @@
 }
 
 .tab-pane.floating *.tab-header-area {
--	fx-background-color: #3c3c3c;
+	-fx-background-color: #3c3c3c;
 
 }
 .tab .tab-label { 

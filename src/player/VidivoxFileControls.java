@@ -159,9 +159,14 @@ public class VidivoxFileControls extends HBox {
 		});
 		
 		skinMenu = new MenuBar();
+		skinMenu.setId("skin-menu");	//menu bar id set
 		Menu selectSkin = new Menu("Select Skin");
+		selectSkin.setId("skin-select");//menu id set
 		skinMenu.getMenus().addAll(selectSkin);
 		selectSkin.getItems().addAll(blueSkin, greenSkin, orangeSkin, purpleSkin);
+		for (MenuItem mi: selectSkin.getItems()){
+			mi.setStyle("-fx-text-fill: black;");
+		}
 		this.setSpacing(8.0);
 		this.getChildren().addAll(openFileBtn, saveFileBtn, editPanelBtn, skinMenu);
 	}

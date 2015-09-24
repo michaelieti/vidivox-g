@@ -1,11 +1,23 @@
+/* ROOT PANEL */
 .root {
      -fx-background-image: url("BG_3.png");
 }
 
+/* EDITOR PANEL */
 .tabPane {
 	-fx-background-color: black;
 }
 
+/* SKIN MENU STUFF STARTS HERE */
+#skin-menu{
+	-fx-background-color: black;
+}
+#skin-menu .label {
+	-fx-text-fill: darkgrey;
+}
+
+
+/* FILE CONTROLS (NOT SKINS) */
 #fileControls{
 	-fx-background-color: black;
 }
@@ -18,6 +30,7 @@
 	-fx-text-fill:  aquamarine;
 }
 
+/* VIDEO CONTROL BUTTONS */
 #playBtn {
 	-fx-graphic: url("/skins/blue_GUI/blue_01.png");
 	-fx-background-color: transparent;
