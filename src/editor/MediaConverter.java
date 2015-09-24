@@ -57,13 +57,20 @@ public class MediaConverter {
 	public static StagedAudio textToSpeech(String msg) {
 		StagedAudio output = new StagedAudio(MediaTypes.WAV);
 		System.out.println("made staged audio "+ output.getFile().getAbsolutePath());
-		String expansion = "`echo " + msg + " | text2wave > "
+		String expansion = "`echo \"" + msg + "\" | text2wave > "
 				+ output.getFile().getAbsolutePath() + "`";
 		String[] cmd = { "bash", "-c", expansion };
 		ProcessBuilder build = new ProcessBuilder(cmd);
+		build.redirectErrorStream(true);
 		try {
-			build.start();
-		} catch (IOException e) {
+			Process p = build.start();
+			BufferedReader b = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			while ((line = b.readLine()) != null) {
+				System.out.println(line);
+			}
+			p.waitFor();
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 		return output;

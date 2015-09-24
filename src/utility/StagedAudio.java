@@ -92,8 +92,9 @@ public class StagedAudio extends StagedMedia {
 			while ((line = b.readLine()) != null) {
 				System.out.println(line);
 			}
+			p.waitFor();
 			
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
