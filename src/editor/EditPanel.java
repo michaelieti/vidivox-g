@@ -3,6 +3,8 @@ package editor;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -21,6 +23,13 @@ public class EditPanel extends Stage {
 	public EditPanel(MediaView mv, String title) {
 		super();
 		this.setTitle(title);
+		HBox root = new HBox();	//the overall panel
+		VBox previewPanel = new VBox();
+		
+		MediaView previewView = PreviewMedia.getPreviewMedia().getView();
+		PreviewControls previewControls = new PreviewControls();
+		PreviewMedia.getPreviewMedia().setControls(previewControls);
+		
 		TabPane pane = new TabPane();
 		speech = new SpeechTab(mv, "Speech","Some shit that will introduce this tab and what you can do");
 		subtitle = new SubtitleTab(mv, "Subtitles","Some shit different place");
