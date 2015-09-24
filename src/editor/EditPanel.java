@@ -60,9 +60,6 @@ public class EditPanel extends Stage {
 		speech.setBind(this);
 		subtitle.setBind(this);
 		mp3.setBind(this);
-		speech.setId("tabs");
-		subtitle.setId("tabs");
-		mp3.setId("tabs");
 		pane.getTabs().addAll(speech, subtitle, mp3);
 		/*
 		 * //[PREVIEW PANEL] Uncomment 2 of 2 for Preview Panel // ALSO: change

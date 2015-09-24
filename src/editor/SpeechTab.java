@@ -18,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -38,6 +39,7 @@ public class SpeechTab extends BindableTab {
 	public SpeechTab(final MediaView mv, String title, String message) {
 		super(mv, title);
 		msg = new Text(message);
+		msg.setFill(Color.LIGHTGRAY);
 		userField = new TextArea();
 		f = new FileChooser();
 		f.setTitle("Save");

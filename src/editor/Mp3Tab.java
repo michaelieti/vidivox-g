@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -38,6 +39,7 @@ public class Mp3Tab extends BindableTab {
 	public Mp3Tab(final MediaView mv, String title, String message) {
 		super(mv, title);
 		msg = new Text(message);
+		msg.setFill(Color.LIGHTGRAY);
 		prog = new ProgressBar();
 		//Initializing Button Event handlers
 		browseBtn = new Button("Browse");
