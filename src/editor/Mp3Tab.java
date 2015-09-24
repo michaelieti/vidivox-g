@@ -4,7 +4,6 @@ import java.io.File;
 
 import utility.StagedAudio;
 import utility.StagedMedia;
-import utility.StagedVideo;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -17,7 +16,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
@@ -59,17 +57,10 @@ public class Mp3Tab extends BindableTab {
 			@Override
 			public void handle(ActionEvent arg0) {
 				if (userFile != null) {
-					StagedVideo result;
 					Media audio = new Media(userFile.toURI().toString());
 					StagedAudio s = new StagedAudio(audio);
 					Media video = mv.getMediaPlayer().getMedia();
-					result = (StagedVideo) MediaConverter.mergeVideoAndAudio(video, s, prog, mv);
-					try {
-					
-						//mv.setMediaPlayer(new MediaPlayer(result.getMedia()));
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					MediaConverter.mergeVideoAndAudio(video, s, prog);
 				}
 			}
 			

@@ -10,24 +10,26 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class UserMessageStage extends Stage {
-	
+
 	private static String DEFAULT_TITLE = "Warning!";
 	private Button okBtn;
-	
-	//Initializer block for object construction
+
+	// Initializer block for object construction
 	{
 		final Stage stg = this;
 		okBtn = new Button("Ok");
-		okBtn.setOnAction(new EventHandler<ActionEvent>(){
+		okBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
 				stg.close();
 			}
 		});
 	}
-	
+
 	/**
-	 * Constructs a message window with a given title and message. An 'ok' button is also created to allow the user
-	 * to close the window after reading the message.
+	 * Constructs a message window with a given title and message. An 'ok'
+	 * button is also created to allow the user to close the window after
+	 * reading the message.
+	 * 
 	 * @param title
 	 * @param msg
 	 */
@@ -35,19 +37,19 @@ public class UserMessageStage extends Stage {
 		super();
 		VBox layout = new VBox();
 		layout.setAlignment(Pos.CENTER);
-		layout.getChildren().addAll(new Text(msg),okBtn);
+		layout.getChildren().addAll(new Text(msg), okBtn);
 		this.setScene(new Scene(layout));
 		this.setTitle(title);
 		this.show();
 	}
-	
+
 	/**
 	 * A convenience method which utilizes the default title.
+	 * 
 	 * @param msg
 	 */
 	public UserMessageStage(String msg) {
-		this(DEFAULT_TITLE,msg);
+		this(DEFAULT_TITLE, msg);
 	}
 
 }
-

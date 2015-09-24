@@ -58,6 +58,7 @@ public class SpeechTab extends BindableTab {
 
 		});
 		overlayBtn = new Button("Overlay");
+<<<<<<< HEAD
 		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
