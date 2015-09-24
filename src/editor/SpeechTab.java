@@ -91,7 +91,7 @@ public class SpeechTab extends BindableTab {
 
 	private void playSpeech() {
 		System.out.println(userField.getText());
-		String expansion = "`echo " + userField.getText() + " | festival --tts`";
+		String expansion = "`echo \"" + userField.getText() + "\" | festival --tts`";
 		String[] cmd = {"bash" , "-c", expansion};
 		ProcessBuilder build = new ProcessBuilder(cmd);
 		try {
