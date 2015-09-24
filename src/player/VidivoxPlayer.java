@@ -26,11 +26,13 @@ public class VidivoxPlayer {
 	private static VidivoxPlayer singletonPlayer;
 
 	private MediaView mv;
-
+	
 	private VidivoxMedia mediaPanel;
 	private VidivoxVideoControls controlPanel;
 	private VidivoxFileControls filePanel;
 
+	private double initialVolume = VidivoxVideoControls.DEFAULTVOLUME;
+	
 	/* SINGLETON CONSTRUCTOR */
 	public static VidivoxPlayer getVidivoxPlayer() {
 		if (singletonPlayer == null) {
@@ -74,6 +76,7 @@ public class VidivoxPlayer {
 
 	public void setMediaPlayer(MediaPlayer mp) {
 		if (getMediaPlayer() != null){
+			predisposal();
 			getMediaPlayer().dispose();
 		}
 		mv.setMediaPlayer(mp);
@@ -82,6 +85,7 @@ public class VidivoxPlayer {
 
 	public void setMedia(Media media) {
 		if (getMediaPlayer() != null){
+			predisposal();
 			getMediaPlayer().dispose();
 		}
 		mv.setMediaPlayer(new MediaPlayer(media));
@@ -90,13 +94,18 @@ public class VidivoxPlayer {
 
 	/* INITIALIZER METHOD - CALLED AFTER A MediaPlayer OBJECT IS ASSIGNED */
 	public void initialize() {
-		bindTimeline(mediaPanel.getTimeline()); // timeline changes iff the
-												// video time changes
+		bindTimeline(mediaPanel.getTimeline());
 		bindButtonId(controlPanel.playBtn);
+		setInitialVolume(controlPanel.volumeBar);
+	}
+	
+	/* DISPOSAL METHOD - CALLED JUST BEFORE DISPOSAL OF A MediaPlayer OBJECT */
+	public void predisposal(){
+		storeVolume(controlPanel.volumeBar);
 	}
 
 	/* METHODS CALLED FROM INITIALIZE */
-	public void bindTimeline(final SliderVX mediaTimeline) {
+	private void bindTimeline(final SliderVX mediaTimeline) {
 		mediaTimeline.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
@@ -115,30 +124,16 @@ public class VidivoxPlayer {
 					public void invalidated(Observable observable) {
 						if (!mediaTimeline.getSliderFlag()) {
 							double timePassed = getMediaPlayer()
-									.getCurrentTime().toMillis(); // get current
-																	// time
-																	// value
+									.getCurrentTime().toMillis();
 							double timeTotal = getMedia().getDuration()
-									.toMillis(); // get total length
-							double newRatio = timePassed / timeTotal; // divide
-																		// total
-																		// length
-																		// by
-																		// current
-																		// time
-																		// =
-																		// ratio
-							mediaTimeline.setValue(100 * newRatio); // set
-																	// slider
-																	// value =
-																	// ratio *
-																	// 100
+									.toMillis();
+							double newRatio = timePassed / timeTotal; 
+							mediaTimeline.setValue(100 * newRatio); 
 						}
 
 					}
 				});
 	}
-
 	private void bindButtonId(final Button button) {
 		MediaPlayer mp = getMediaPlayer();
 		// define both runnables
@@ -159,5 +154,13 @@ public class VidivoxPlayer {
 		mp.setOnPlaying(setIdPlayRunnable);
 		mp.setOnStopped(setIdPausedRunnable);
 
+	}
+	private void setInitialVolume(final SliderVX volumeBar){
+		getMediaPlayer().setVolume(initialVolume);
+	}
+	
+	/* METHODS CALLED FROM PREDISPOSAL */
+	private void storeVolume(final SliderVX volumeBar){
+		initialVolume = volumeBar.getValue() / VidivoxVideoControls.MAXVOLUME;
 	}
 }

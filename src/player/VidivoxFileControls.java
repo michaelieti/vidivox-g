@@ -74,8 +74,6 @@ public class VidivoxFileControls extends HBox {
 		saveFileBtn.setId("fileBtns");
 		saveFileBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				System.out.println("u purple motherfucker");
-				ms.changeSkin(MainStage.SkinColor.PURPLE);
 				Media toSave = VidivoxPlayer.getVidivoxPlayer()
 						.getMediaPlayer().getMedia();
 				FileChooser f = new FileChooser();
@@ -129,7 +127,6 @@ public class VidivoxFileControls extends HBox {
 		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				System.out.println("lol u blue");
 				ms.changeSkin(MainStage.SkinColor.BLUE);
 			}
 			
@@ -139,7 +136,6 @@ public class VidivoxFileControls extends HBox {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				System.out.println("lol u green");
 				ms.changeSkin(MainStage.SkinColor.GREEN);
 			}
 			

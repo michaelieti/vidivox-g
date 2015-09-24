@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
@@ -18,14 +17,14 @@ public class VidivoxVideoControls extends HBox {
 	private MediaView mediaView;
 	protected Button playBtn, stopBtn, skipBackBtn, skipFwdBtn; // Video
 																// Playback
-	protected Slider volumeBar;
+	protected SliderVX volumeBar;
 
 	/* Status flags for the Application */
 	private boolean mediaEnded = false;
 
-	final private static double minVolume = 0.0;
-	final private static double maxVolume = 10.0;
-	final private static double defaultVolume = 5.0;
+	final public static double MINVOLUME = 0.0;
+	final public static double MAXVOLUME = 10.0;
+	final public static double DEFAULTVOLUME = 5.0;
 
 	final private double playRateIncrement = 3.5;
 
@@ -94,20 +93,12 @@ public class VidivoxVideoControls extends HBox {
 		});
 		skipBackBtn.setId("skipBackBtn");
 
-		volumeBar = new Slider(minVolume, maxVolume, defaultVolume);
-		// the volumeBar's valueProperty registers a listener, that is notified
-		// when
-		// that property is invalidated. Invalidation is caused by e.g. the
-		// value
-		// property not being equal to the slider's position
+		volumeBar = new SliderVX(MINVOLUME, MAXVOLUME, DEFAULTVOLUME);
 		volumeBar.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
-				double currentVol = volumeBar.getValue() / maxVolume;
-				// gets the current value represented by the slider
+				double currentVol = volumeBar.getValue() / MAXVOLUME;
 				mediaView.getMediaPlayer().setVolume(currentVol);
-				// updates the volume in mediaplayer to be equal to the slider
-				// value
 			}
 		});
 
