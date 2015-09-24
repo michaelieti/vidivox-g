@@ -7,19 +7,20 @@ import javafx.stage.Stage;
 
 /**
  * This class will act as the controller class for the application
+ * 
  * @author adav194
- *
+ * 
  */
 public class VidivoxLauncher extends Application {
-	
-	/*Developer-configurable fields for application*/
+
+	/* Developer-configurable fields for application */
 	public static final boolean GRID_IS_VISIBLE = false;
 	public static final String DEFAULT_TITLE = "Vidivox V1";
-	
+
 	protected final FileChooser fileChooser = new FileChooser();
 	private MainStage ms;
 	private EditPanel editorPanel;
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -32,12 +33,12 @@ public class VidivoxLauncher extends Application {
 		primaryStage.show();
 		editorPanel.show();
 	}
-	
+
 	public EditPanel getEditor() {
 		return editorPanel;
 	}
-	
-	public VidivoxMedia getView(){
+
+	public VidivoxMedia getView() {
 		return ms.getMediaPane();
 	}
 

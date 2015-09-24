@@ -11,28 +11,28 @@ import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-
 public class SubtitleTab extends BindableTab {
 	final private static int btnSpacing = 20;
-	
+
 	private Text msg;
 	private TextArea userField;
 	private Button playBtn, previewBtn, overlayBtn;
-	
+
 	public SubtitleTab(MediaView mv, String title, String message) {
 		super(mv, title);
 		msg = new Text(message);
 		userField = new TextArea();
-		//Initializing Button Event handlers
+		// Initializing Button Event handlers
 		playBtn = new Button("Play");
 		playBtn.setOnAction(null);
 		previewBtn = new Button("Preview");
 		previewBtn.setOnAction(null);
 		overlayBtn = new Button("Overlay");
 		overlayBtn.setOnAction(null);
-		
+
 		GridPane subtitlePane = new GridPane();
-		subtitlePane.setGridLinesVisible(player.VidivoxLauncher.GRID_IS_VISIBLE);
+		subtitlePane
+				.setGridLinesVisible(player.VidivoxLauncher.GRID_IS_VISIBLE);
 		subtitlePane.setVgap(10);
 		subtitlePane.setHgap(10);
 		subtitlePane.setPadding(new Insets(10, 10, 10, 10));
@@ -43,11 +43,11 @@ public class SubtitleTab extends BindableTab {
 		subtitleBtns.setSpacing(btnSpacing);
 		subtitleBtns.getChildren().addAll(playBtn, previewBtn, overlayBtn);
 		subtitlePane.add(subtitleBtns, 0, 4, 3, 1);
-		
+
 		this.setContent(subtitlePane);
-		
+
 	}
-	
+
 	public void setBind(Stage toBindTo) {
 		msg.wrappingWidthProperty().bind(toBindTo.widthProperty().subtract(20));
 		return;
@@ -68,16 +68,13 @@ public class SubtitleTab extends BindableTab {
 	@Override
 	public void publishStage(StagedMedia media) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void initStagedMedia() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-
-
 }
-
