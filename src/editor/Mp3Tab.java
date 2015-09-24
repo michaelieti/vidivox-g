@@ -20,6 +20,7 @@ import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -30,7 +31,7 @@ public class Mp3Tab extends BindableTab {
 	
 	private Text msg;
 	private Stage binder;
-	private Button browseBtn,okBtn;
+	private Button browseBtn,overlayBtn;
 	private final FileChooser fc = new FileChooser();
 	private File userFile = null;
 	private StringProperty filePath = new SimpleStringProperty();
@@ -54,8 +55,9 @@ public class Mp3Tab extends BindableTab {
 			}
 			
 		});
-		okBtn = new Button("Ok");
-		okBtn.setOnAction(new EventHandler<ActionEvent>() {
+		overlayBtn = new Button("Overlay");
+		overlayBtn.setTooltip(new Tooltip("Click to overlay the mp3 with the current video and play the result"));
+		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				if (userFile != null) {
@@ -79,7 +81,7 @@ public class Mp3Tab extends BindableTab {
 		HBox mp3Buttons = new HBox();
 		mp3Buttons.setAlignment(Pos.CENTER);
 		mp3Buttons.setSpacing(btnSpacing);
-		mp3Buttons.getChildren().add(okBtn);
+		mp3Buttons.getChildren().add(overlayBtn);
 		mp3Pane.add(browseBtn, 0, 1);
 		mp3Pane.add(currentFile, 1, 1);
 		mp3Pane.add(mp3Buttons, 0, 2, 2, 1);

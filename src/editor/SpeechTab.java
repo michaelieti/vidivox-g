@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
@@ -44,7 +45,8 @@ public class SpeechTab extends BindableTab {
 		f = new FileChooser();
 		f.setTitle("Save");
 		// Initializing Button Event handlers
-		playBtn = new Button("Play");
+		playBtn = new Button("Preview speech");
+		playBtn.setTooltip(new Tooltip("Preview the speech in the text box"));
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent arg0) {
@@ -53,6 +55,7 @@ public class SpeechTab extends BindableTab {
 
 		});
 		saveBtn = new Button("Save Speech");
+		saveBtn.setTooltip(new Tooltip("Save the text to a wav file"));
 		saveBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -67,6 +70,7 @@ public class SpeechTab extends BindableTab {
 
 		});
 		cancelBtn = new Button("Cancel Speech");
+		cancelBtn.setTooltip(new Tooltip("Halt the speech prematurely"));
 		cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -76,6 +80,7 @@ public class SpeechTab extends BindableTab {
 
 		});
 		overlayBtn = new Button("Overlay");
+		overlayBtn.setTooltip(new Tooltip("Overlay the speech with the current video and play the resulting video"));
 		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
