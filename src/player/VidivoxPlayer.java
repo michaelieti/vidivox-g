@@ -84,7 +84,7 @@ public class VidivoxPlayer {
 	}
 	
 	/* METHODS CALLED FROM INITIALIZE */
-	public void bindTimeline(SliderVX mediaTimeline){
+	public void bindTimeline(final SliderVX mediaTimeline){
 		mediaTimeline.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {

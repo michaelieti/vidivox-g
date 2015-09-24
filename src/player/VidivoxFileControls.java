@@ -2,18 +2,11 @@ package player;
 
 import java.io.File;
 import java.net.URI;
-import java.util.concurrent.ExecutionException;
-
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaException;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 
 /**
@@ -30,7 +23,7 @@ public class VidivoxFileControls extends HBox {
 	private File currentFile = null;
 	private final FileChooser fileChooser = new FileChooser();
 	
-	public VidivoxFileControls(final MainStage ms, VidivoxMedia vvm) {
+	public VidivoxFileControls(final MainStage ms, final VidivoxMedia vvm) {
 		super();
 		VidivoxPlayer.getVidivoxPlayer().setFilePanel(this);
 		this.setId("fileControls");
