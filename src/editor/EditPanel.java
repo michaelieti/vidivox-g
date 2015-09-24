@@ -24,14 +24,15 @@ public class EditPanel extends Stage {
 	public EditPanel(MediaView mv, String title) {
 		super();
 		this.setTitle(title);
-		HBox root = new HBox();	//the overall panel
+	/*	//[PREVIEW PANEL] Uncomment 1 of 2 for Preview Panel
+ 		HBox root = new HBox();	//the overall panel
 		VBox previewPanel = new VBox();
 		
 			MediaView previewView = PreviewMedia.getPreviewMedia().getView();
 			StackPane sp = new StackPane(previewView);
 			PreviewControls previewControls = new PreviewControls();
 				PreviewMedia.getPreviewMedia().setControls(previewControls);
-				
+	*/			
 		TabPane pane = new TabPane();
 		speech = new SpeechTab(mv, "Speech","Some shit that will introduce this tab and what you can do");
 		subtitle = new SubtitleTab(mv, "Subtitles","Some shit different place");
@@ -40,9 +41,12 @@ public class EditPanel extends Stage {
 		subtitle.setBind(this);
 		mp3.setBind(this);
 		pane.getTabs().addAll(speech, subtitle, mp3);
-		previewPanel.getChildren().addAll(sp, previewControls);
+	/*	//[PREVIEW PANEL] Uncomment 2 of 2 for Preview Panel
+	 * 	//	ALSO: change Scene(pane) to Scene(root)
+	  	previewPanel.getChildren().addAll(sp, previewControls);
 		root.getChildren().addAll(pane, previewPanel);
-		Scene scene = new Scene(root);
+	*/
+		Scene scene = new Scene(pane);
 		
 		this.setScene(scene);
 		/*
