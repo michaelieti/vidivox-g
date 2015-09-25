@@ -1,5 +1,7 @@
 package player;
 
+import java.io.IOException;
+
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

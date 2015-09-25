@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class VidivoxVideoControls extends HBox {
@@ -98,7 +100,7 @@ public class VidivoxVideoControls extends HBox {
 			}
 		});
 		skipBackBtn.setId("skipBackBtn");
-
+		
 		volumeBar = new SliderVX(MINVOLUME, MAXVOLUME, DEFAULTVOLUME);
 		volumeBar.valueProperty().addListener(new InvalidationListener() {
 			@Override
@@ -107,11 +109,16 @@ public class VidivoxVideoControls extends HBox {
 				mediaView.getMediaPlayer().setVolume(currentVol);
 			}
 		});
-
+		HBox volSlide = new HBox();
+		volSlide.setAlignment(Pos.CENTER);
+		volSlide.setSpacing(5);
+		Text t = new Text("Volume");
+		t.setFill(Color.LIGHTGRAY);
+		volSlide.getChildren().addAll(t,volumeBar);
 		this.setAlignment(Pos.CENTER);
 		this.setSpacing(10);
 		this.getChildren().addAll(skipBackBtn, stopBtn, playBtn, skipFwdBtn,
-				volumeBar);
+				volSlide);
 		
 		this.getStyleClass().add("blue");
 		// This can be changed to BlueSkin GreenSkin PurpleSkin or OrangeSkin

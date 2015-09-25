@@ -44,6 +44,7 @@ public class Mp3Tab extends BindableTab {
 		prog = new ProgressBar();
 		//Initializing Button Event handlers
 		browseBtn = new Button("Browse");
+		browseBtn.setTooltip(new Tooltip("Select an mp3 file"));
 		browseBtn.setOnAction(new EventHandler<ActionEvent>(){
 			public void handle(ActionEvent event) {
 				//open up file chooser & get user selection as File object

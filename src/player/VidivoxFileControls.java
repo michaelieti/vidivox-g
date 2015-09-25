@@ -119,6 +119,7 @@ public class VidivoxFileControls extends HBox {
 		editPanelBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				ms.getLauncher().getEditor().hide();
 				ms.getLauncher().getEditor().show();
 			}
 
