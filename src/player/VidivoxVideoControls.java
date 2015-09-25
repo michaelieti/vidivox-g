@@ -2,6 +2,7 @@ package player;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -21,6 +22,7 @@ public class VidivoxVideoControls extends HBox {
 
 	/* Status flags for the Application */
 	private boolean mediaEnded = false;
+	private boolean rwd = false;
 
 	final public static double MINVOLUME = 0.0;
 	final public static double MAXVOLUME = 10.0;
@@ -38,6 +40,7 @@ public class VidivoxVideoControls extends HBox {
 		playBtn.setId("playBtn");
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				rwd = false;
 				MediaPlayer mp = mediaView.getMediaPlayer();
 				// if the rate is not currently 1.0, set to 1.0 and then return
 				// to pause.
@@ -70,7 +73,9 @@ public class VidivoxVideoControls extends HBox {
 
 		stopBtn = new Button();
 		stopBtn.setOnAction(new EventHandler<ActionEvent>() {
+			
 			public void handle(ActionEvent event) {
+				rwd = false;
 				stopVideo();
 				playBtn.setId("playBtn");
 			}
@@ -80,6 +85,7 @@ public class VidivoxVideoControls extends HBox {
 		skipFwdBtn = new Button();
 		skipFwdBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				rwd = false;
 				ffwdVideo();
 			}
 		});
@@ -127,12 +133,29 @@ public class VidivoxVideoControls extends HBox {
 	}
 
 	public void rwdVideo() {
-		MediaPlayer mp = mediaView.getMediaPlayer();
-		if (mp.getRate() != 1.0) {
-			mp.setRate(1.0);
-			return;
+		if (rwd) {
+			rwd = false;
+		} else {
+			rwd = true;
+			Task<Void> t = new Task<Void>() {
+				@Override
+				protected Void call() throws Exception {
+					MediaPlayer mp = mediaView.getMediaPlayer();
+					mp.setRate(0.0001);
+					mp.setMute(true);
+					while (rwd) {
+						mp.seek(mp.getCurrentTime().subtract(Duration.seconds(1)));
+						Thread.sleep(500);
+					}
+					mp.setMute(false);
+					mp.play();
+					return null;
+				}
+			};
+			Thread th = new Thread(t);
+			th.setDaemon(true);
+			th.start();
 		}
-		mp.seek(mp.getCurrentTime().subtract(Duration.seconds(10)));
 	}
 
 }
