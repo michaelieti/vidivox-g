@@ -156,6 +156,7 @@ public class VidivoxVideoControls extends HBox {
 					}
 					mp.setMute(false);
 					mp.play();
+					mp.setRate(1.0);
 					return null;
 				}
 			};
