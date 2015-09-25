@@ -2,6 +2,19 @@
      -fx-background-image: url("BG_3.png");
 }
 
+/* EDITOR PANEL */
+.tabPane {
+	-fx-background-color: black;
+}
+
+/* SKIN MENU STUFF STARTS HERE */
+#skin-menu{
+	-fx-background-color: black;
+}
+#skin-menu .label {
+	-fx-text-fill: darkgrey;
+}
+
 #fileControls{
 	-fx-background-color: black;
 }
