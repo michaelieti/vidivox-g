@@ -11,4 +11,14 @@ this can be achieved by:
 chmod u+x runme.sh
 ./runme.sh
 
+HOW TO USE OUR PROTOTYPE:
 
+1) First you must open a file using the 'open file' button.
+
+2) Next you can make changes to your video using the tools available in
+the editor panel.
+
+3) When you are satisified with the edits you have made, save your video to
+a suitable location using 'save file' button.
+
+At any point you can change the skin with 'Select Skin' button.
