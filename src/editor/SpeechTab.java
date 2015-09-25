@@ -201,7 +201,7 @@ public class SpeechTab extends BindableTab {
 	 * @param path
 	 */
 	private void textToSpeech(String msg, String path) {
-		String expansion = "`echo " + msg + " | text2wave > " + path + "`";
+		String expansion = "`echo \"" + msg + "\" | text2wave > " + path + "`";
 		String[] cmd = { "bash", "-c", expansion };
 		ProcessBuilder build = new ProcessBuilder(cmd);
 		try {
