@@ -1,0 +1,14 @@
+Assignment 3 Vidivox Prototype
+Authors: Arran Davis and Michael Ieti
+
+
+HOW TO RUN:
+
+In this you will need to run the runme.sh. You must first set executable privillages for this script. 
+
+this can be achieved by:
+
+chmod u+x runme.sh
+./runme.sh
+
+
