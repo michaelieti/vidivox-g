@@ -2,6 +2,17 @@
 # VIDIVOX PLANNING - 01.02 #
 =============================
 
+## FEEDBACK ##
+Feedback from Nasser, Oct 1:
+* Mute while fast forward (similar to rewind).
+* Disable all speech controls until there is actually text in the text area (i.e. until there is actually something to overlay/speak).
+* Hide "Cancel Speech" button till festival actually starts speaking. 
+* Think of a better way to communicate the Overlay button (e.g. make it clear that Overlay will commit the overlay to the video).
+* Top menu is slightly obtrusive?? I mean I don't think it is but okay whatevs nasser
+* Saving system is not entirely intuitive, needs to be changed
+
+## END FEEDBACK ##
+
 The video player must be able to:
 
 * play video
