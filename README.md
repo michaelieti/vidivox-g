@@ -4,6 +4,7 @@
 
 ## FEEDBACK ##
 Feedback from Nasser, Oct 1:
+
 * Mute while fast forward (similar to rewind).
 * Disable all speech controls until there is actually text in the text area (i.e. until there is actually something to overlay/speak).
 * Hide "Cancel Speech" button till festival actually starts speaking. 
