@@ -14,6 +14,19 @@ Feedback from Nasser, Oct 1:
 
 ## END FEEDBACK ##
 
+## FEATURES ##
+* Rotate Video
+* Shia La Boooof
+* Convert Video to other formats
+* View Layers (Some sort of visual representation of Additions made to the original file)
+* View History (With some sort of diff format which contains 
+* Pre-Loader. When you first open the application what does it do?
+* Settings and some way of saving these settings
+
+
+
+## END FEATURES ##
+
 The video player must be able to:
 
 * play video
