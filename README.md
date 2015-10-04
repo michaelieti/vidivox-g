@@ -23,6 +23,11 @@ Feedback from Nasser, Oct 1:
 * Pre-Loader. When you first open the application what does it do?
 * Settings and some way of saving these settings
 
+* Cut videos (nested within Editor panel. Start and end positions (change colour of timeline)
+* Stick videos together (Browse, cut straight to next video.)
+* Reorder (Have a list and reorder components. Somehow will need to keep previous edits (festival etc))
+
+* John is reskinning to allow for volume bar
 
 
 ## END FEATURES ##
