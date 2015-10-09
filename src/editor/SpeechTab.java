@@ -104,7 +104,7 @@ public class SpeechTab extends BindableTab {
 		});
 
 		GridPane speechPane = new GridPane();
-		speechPane.setGridLinesVisible(player.VidivoxLauncher.GRID_IS_VISIBLE);
+		speechPane.setGridLinesVisible(player.Launcher.GRID_IS_VISIBLE);
 		speechPane.setVgap(10);
 		speechPane.setHgap(10);
 		speechPane.setPadding(new Insets(10, 10, 10, 10));

@@ -29,18 +29,18 @@ public class MainStage extends Stage {
 	private VidivoxMedia vidiMedia;
 	private VidivoxVideoControls vidiVidCtrl;
 	private VidivoxFileControls vidiFileCtrl;
-	private VidivoxLauncher launcher;
+	private Launcher launcher;
 
-	public MainStage(VidivoxLauncher vl) {
+	public MainStage(Launcher vl) {
 		super();
-		this.setTitle(VidivoxLauncher.DEFAULT_TITLE);
+		this.setTitle(Launcher.DEFAULT_TITLE);
 		launcher = vl;
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setVgap(10);
 		grid.setHgap(10);
 		grid.setPadding(new Insets(0, 0, 15, 0));
-		grid.setGridLinesVisible(VidivoxLauncher.GRID_IS_VISIBLE);
+		grid.setGridLinesVisible(Launcher.GRID_IS_VISIBLE);
 
 		vidiMedia = new VidivoxMedia();
 
@@ -81,7 +81,7 @@ public class MainStage extends Stage {
 		return vidiVidCtrl;
 	}
 
-	public VidivoxLauncher getLauncher() {
+	public Launcher getLauncher() {
 		return launcher;
 	}
 	

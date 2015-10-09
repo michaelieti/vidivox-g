@@ -10,7 +10,7 @@ import javafx.stage.Stage;
  * @author adav194
  * 
  */
-public class VidivoxLauncher extends Application {
+public class Launcher extends Application {
 
 	/* Developer-configurable fields for application */
 	public static final boolean GRID_IS_VISIBLE = false;
