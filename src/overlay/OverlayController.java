@@ -1,5 +1,6 @@
 package overlay;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -43,6 +44,12 @@ public class OverlayController {
 		//TODO: creates the mp3/wav/whatever
 		// from the list of commentaries
 		//and sticks it onto the current video
+	}
+	
+	public File createCommentaryFile(){
+		//TODO: creates a formatted commentary file
+		//that can be read easily from the command line or bash
+		return null;
 	}
 	
 	
