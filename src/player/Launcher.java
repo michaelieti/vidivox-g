@@ -36,7 +36,7 @@ public class Launcher extends Application {
 		return editorPanel;
 	}
 
-	public VidivoxMedia getView() {
+	public MediaPanel getView() {
 		return ms.getMediaPane();
 	}
 

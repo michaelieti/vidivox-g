@@ -31,7 +31,7 @@ public class VidivoxFileControls extends HBox {
 	protected Button openFileBtn, saveFileBtn, editPanelBtn;
 	private final FileChooser fileChooser = new FileChooser();
 
-	public VidivoxFileControls(final MainStage ms, final VidivoxMedia vvm) {
+	public VidivoxFileControls(final MainStage ms, final MediaPanel vvm) {
 		super();
 		VidivoxPlayer.getVidivoxPlayer().setFilePanel(this);
 		this.setId("fileControls");

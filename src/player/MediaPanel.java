@@ -7,7 +7,7 @@ import javafx.scene.media.MediaView;
  * The panel holding the media player.
  * 
  */
-public class VidivoxMedia extends VBox {
+public class MediaPanel extends VBox {
 	protected VidivoxPlayer vp = VidivoxPlayer.getVidivoxPlayer();
 	protected SliderVX mediaTimeline;
 
@@ -15,7 +15,7 @@ public class VidivoxMedia extends VBox {
 	protected static final double MAXTIME = 100.0;
 	protected static final double STARTTIME = 0.0;
 
-	public VidivoxMedia() {
+	public MediaPanel() {
 		super();
 		vp.setMediaPanel(this);
 		MediaView mv = vp.getMediaView();

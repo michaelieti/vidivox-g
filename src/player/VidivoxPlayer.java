@@ -27,7 +27,7 @@ public class VidivoxPlayer {
 
 	private MediaView mv;
 	
-	private VidivoxMedia mediaPanel;
+	private MediaPanel mediaPanel;
 	private VidivoxVideoControls controlPanel;
 	private VidivoxFileControls filePanel;
 
@@ -49,7 +49,7 @@ public class VidivoxPlayer {
 
 	/* PANEL INTERACTORS */
 	/* MUST BE CALLED DURING STAGE CONSTRUCTION */
-	public void setMediaPanel(VidivoxMedia mediaPanel) {
+	public void setMediaPanel(MediaPanel mediaPanel) {
 		this.mediaPanel = mediaPanel;
 	}
 
@@ -113,7 +113,7 @@ public class VidivoxPlayer {
 					Duration mediaLength = getMedia().getDuration();
 					getMediaPlayer().seek(
 							mediaLength.multiply(mediaTimeline.getValue()
-									/ VidivoxMedia.MAXTIME));
+									/ MediaPanel.MAXTIME));
 					mediaTimeline.resetSliderFlag();
 				}
 			}

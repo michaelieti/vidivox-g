@@ -26,7 +26,7 @@ public class MainStage extends Stage {
 			return x;
 		}
 	}
-	private VidivoxMedia vidiMedia;
+	private MediaPanel vidiMedia;
 	private VidivoxVideoControls vidiVidCtrl;
 	private VidivoxFileControls vidiFileCtrl;
 	private Launcher launcher;
@@ -42,7 +42,7 @@ public class MainStage extends Stage {
 		grid.setPadding(new Insets(0, 0, 15, 0));
 		grid.setGridLinesVisible(Launcher.GRID_IS_VISIBLE);
 
-		vidiMedia = new VidivoxMedia();
+		vidiMedia = new MediaPanel();
 
 		// FILE CONTROL BAR: ADDED TO TOP
 		vidiFileCtrl = new VidivoxFileControls(this, vidiMedia);
@@ -73,7 +73,7 @@ public class MainStage extends Stage {
 		});
 	}
 
-	public VidivoxMedia getMediaPane() {
+	public MediaPanel getMediaPane() {
 		return vidiMedia;
 	}
 	
