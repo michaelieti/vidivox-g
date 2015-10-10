@@ -128,7 +128,7 @@ public class VidivoxPlayer {
 				}
 			}
 		});
-		mv.getMediaPlayer().currentTimeProperty()
+		getMediaPlayer().currentTimeProperty()
 				.addListener(new InvalidationListener() {
 					@Override
 					public void invalidated(Observable observable) {
@@ -168,11 +168,21 @@ public class VidivoxPlayer {
 	private void setInitialVolume(final SliderVX volumeBar){
 		getMediaPlayer().setVolume(initialVolume);
 	}
+	
 	private void bindCurrentTimeLabel(final Text t){
 		//TODO: bind the time label to mediaPlayer.currentTimeProperty
+		getMediaPlayer().currentTimeProperty()
+		.addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				Duration timePassed = getMediaPlayer().getCurrentTime();
+				String timePassedAsString = formatTime(timePassed);
+				t.setText(timePassedAsString);
+			}
+		});
+		
 	}
 	private void setDurationLabel(final Text t){
-		//TODO: set the duration label to equal to duration of media
 		Duration totalDuration = getMedia().getDuration();
 		String totalDurationString = formatTime(totalDuration);
 		t.setText(totalDurationString);
@@ -186,8 +196,39 @@ public class VidivoxPlayer {
 
 	/* UTILITY METHODS */
 	private String formatTime(Duration d){
+		if (d.isIndefinite() || d.isUnknown()){
+			return "UNKNOWN";
+		}
 		StringBuilder sb = new StringBuilder();
-		sb.append(d.toHours());
+		int hours = (int) d.toHours(); //truncate hours
+		int minutes = (int) (d.toMinutes() % 60.0);
+		int seconds = (int) (d.toSeconds() % 60.0);
+		String hString, mString, sString;
+		
+		if (hours < 10) {
+			hString = "0"+hours;
+		} else {
+			hString = String.valueOf(hours);
+		}
+		
+		if (minutes < 10) {
+			mString = "0"+minutes;
+		} else {
+			mString = String.valueOf(minutes);
+		}
+		
+		if (seconds < 10) {
+			sString = "0"+seconds;
+		} else {
+			sString = String.valueOf(seconds);
+		}
+		
+		String separator = ":";
+		
+		sb.append(hString).append(separator)
+		.append(mString).append(separator)
+		.append(sString);
+	
 		return sb.toString();
 	}
 }
