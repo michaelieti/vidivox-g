@@ -133,6 +133,7 @@ public class VidivoxVideoControls extends HBox {
 	}
 
 	public void ffwdVideo() {
+		mediaView.getMediaPlayer().play();
 		System.out.println("Pressed Fast Foward Wow!");
 		MediaPlayer mp = mediaView.getMediaPlayer();
 		Double currentRate = mp.getRate();
