@@ -1,6 +1,9 @@
 package player;
 
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.WritableObjectValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,6 +29,7 @@ public class MainStage extends Stage {
 			return x;
 		}
 	}
+	private SkinColor currentSkinColor = SkinColor.BLUE;
 	private MediaPanel vidiMedia;
 	private VidivoxVideoControls vidiVidCtrl;
 	private VidivoxFileControls vidiFileCtrl;
@@ -86,9 +90,19 @@ public class MainStage extends Stage {
 	}
 	
 	public void changeSkin(SkinColor sc){
+		setCurrentSkinColor(sc);
 		Scene scene = this.getScene();
 		scene.getStylesheets().clear();			//remove all skins
 		scene.getStylesheets().add(sc.toURL());	//reinstate a skin
 	}
+
+	public SkinColor getCurrentSkinColor() {
+		return currentSkinColor;
+	}
+
+	public void setCurrentSkinColor(SkinColor currentSkinColor) {
+		this.currentSkinColor = currentSkinColor;
+	}
+
 
 }

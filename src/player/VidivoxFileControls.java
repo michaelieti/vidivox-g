@@ -7,9 +7,13 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import player.MainStage.SkinColor;
+
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -22,23 +26,46 @@ import javafx.stage.FileChooser;
  * The panel containing the file controls and other miscellaneous control items.
  * 
  */
-public class VidivoxFileControls extends HBox {
+public class VidivoxFileControls extends MenuBar {
 
 	/* User-configurable fields for application */
 	private boolean isAutoPlayEnabled = true;
 
 	protected MenuBar skinMenu;
-	protected Button openFileBtn, saveFileBtn, editPanelBtn;
 	private final FileChooser fileChooser = new FileChooser();
+
+	/**
+	 * This is a the top level Menu containers. Use Menu.getItems() to access
+	 * the children of this node rather than getChildren().
+	 */
+	protected Menu fileMenu, windowMenu, custMenu;
+	/**
+	 * This node belongs to the Menu container. In principle it has the same
+	 * features as a button.
+	 */
+	protected MenuItem open, save;
+	/**
+	 * A CheckMenuItem which represents whether a window is visible.
+	 */
+	protected CheckMenuItem edittor, overlay;
+	/**
+	 * A CheckMenuItem which represents whether a skin is currently being used.
+	 */
+	protected CheckMenuItem blueSkin, orangeSkin, purpleSkin, greenSkin;
 
 	public VidivoxFileControls(final MainStage ms, final MediaPanel vvm) {
 		super();
 		VidivoxPlayer.getVidivoxPlayer().setFilePanel(this);
 		this.setId("fileControls");
 		// OPEN FILE BUTTON STARTS HERE
-		openFileBtn = new Button("Open file");
-		openFileBtn.setId("fileBtns");
-		openFileBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+		fileMenu = new Menu("File");
+		windowMenu = new Menu("Window");
+		custMenu = new Menu("Customize");
+
+		open = new MenuItem("Open file");
+		open.setId("fileBtns");
+		open.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				System.out.println("File Opened Wow!");
 				URI mediaPath = null;
@@ -70,9 +97,9 @@ public class VidivoxFileControls extends HBox {
 		});
 
 		// SAVE FILE BUTTON STARTS HERE
-		saveFileBtn = new Button("Save file");
-		saveFileBtn.setId("fileBtns");
-		saveFileBtn.setOnAction(new EventHandler<ActionEvent>() {
+		save = new MenuItem("Save file");
+		save.setId("fileBtns");
+		save.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				Media toSave = VidivoxPlayer.getVidivoxPlayer()
 						.getMediaPlayer().getMedia();
@@ -114,61 +141,111 @@ public class VidivoxFileControls extends HBox {
 			}
 		});
 
-		editPanelBtn = new Button("Edit file");
-		editPanelBtn.setId("fileBtns");
-		editPanelBtn.setOnAction(new EventHandler<ActionEvent>() {
+		edittor = new CheckMenuItem("Editing Panel");
+		edittor.setId("fileBtns");
+		edittor.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.getLauncher().getEditor().hide();
-				ms.getLauncher().getEditor().show();
+				if (edittor.isSelected()) {
+					ms.getLauncher().getEditor().show();
+				} else {
+					ms.getLauncher().getEditor().hide();
+				}
 			}
 
 		});
-		MenuItem blueSkin = new MenuItem("Blue");
+		edittor.setSelected(true);
+
+		overlay = new CheckMenuItem("Overlay Panel");
+		overlay.setId("fileBtns");
+		overlay.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				if (overlay.isSelected()) {
+					ms.getLauncher().getOverlay().show();
+				} else {
+					ms.getLauncher().getOverlay().hide();
+				}
+			}
+
+		});
+		overlay.setSelected(true);
+
+		blueSkin = new CheckMenuItem("Blue");
 		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				ms.changeSkin(MainStage.SkinColor.BLUE);
+				// Insures that only one skin is shown as selected at a time.
+				for (MenuItem m : custMenu.getItems()) {
+					if (!m.equals(blueSkin)) {
+						((CheckMenuItem) (m)).setSelected(false);
+					}
+				}
 			}
-			
+
 		});
-		MenuItem greenSkin = new MenuItem("Green");
+		blueSkin.setSelected(ms.getCurrentSkinColor().equals(
+				MainStage.SkinColor.BLUE));
+
+		greenSkin = new CheckMenuItem("Green");
 		greenSkin.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
 				ms.changeSkin(MainStage.SkinColor.GREEN);
+				for (MenuItem m : custMenu.getItems()) {
+					if (!m.equals(greenSkin)) {
+						((CheckMenuItem) (m)).setSelected(false);
+					}
+				}
 			}
-			
+
 		});
-		MenuItem orangeSkin = new MenuItem("Orange");
+		greenSkin.setSelected(ms.getCurrentSkinColor().equals(
+				MainStage.SkinColor.GREEN));
+		orangeSkin = new CheckMenuItem("Orange");
 		orangeSkin.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
 				ms.changeSkin(MainStage.SkinColor.ORANGE);
+				for (MenuItem m : custMenu.getItems()) {
+					if (!m.equals(orangeSkin)) {
+						((CheckMenuItem) (m)).setSelected(false);
+					}
+				}
 			}
-			
+
 		});
-		MenuItem purpleSkin = new MenuItem("Purple");
+		orangeSkin.setSelected(ms.getCurrentSkinColor().equals(
+				MainStage.SkinColor.ORANGE));
+		purpleSkin = new CheckMenuItem("Purple");
 		purpleSkin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				ms.changeSkin(MainStage.SkinColor.PURPLE);
+				for (MenuItem m : custMenu.getItems()) {
+					if (!m.equals(purpleSkin)) {
+						((CheckMenuItem) (m)).setSelected(false);
+					}
+				}
 			}
-			
+
 		});
-		
-		skinMenu = new MenuBar();
-		skinMenu.setId("skin-menu");	//menu bar id set
-		Menu selectSkin = new Menu("Select Skin");
-		selectSkin.setId("skin-select");//menu id set
-		skinMenu.getMenus().addAll(selectSkin);
-		selectSkin.getItems().addAll(blueSkin, greenSkin, orangeSkin, purpleSkin);
-		for (MenuItem mi: selectSkin.getItems()){
-			mi.setStyle("-fx-text-fill: black;");
-		}
-		this.setSpacing(8.0);
-		this.getChildren().addAll(openFileBtn, saveFileBtn, editPanelBtn, skinMenu);
+		purpleSkin.setSelected(ms.getCurrentSkinColor().equals(
+				MainStage.SkinColor.PURPLE));
+
+		/*
+		 * Heres the code you had here before Michael
+		 * skinMenu.setId("skin-menu"); //menu bar id set
+		 * selectSkin.setId("skin-select");//menu id set for (MenuItem mi:
+		 * selectSkin.getItems()){ mi.setStyle("-fx-text-fill: black;"); }
+		 */
+		fileMenu.getItems().addAll(open, save);
+		windowMenu.getItems().addAll(edittor, overlay);
+		custMenu.getItems().addAll(blueSkin, greenSkin, orangeSkin, purpleSkin);
+		this.getMenus().addAll(fileMenu, windowMenu, custMenu);
+
 	}
 }

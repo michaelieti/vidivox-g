@@ -51,6 +51,10 @@ public class Launcher extends Application {
 	public EditPanel getEditor() {
 		return editorPanel;
 	}
+	
+	public OverlayPanel getOverlay() {
+		return overlayPanel;
+	}
 
 	public MediaPanel getView() {
 		return ms.getMediaPane();

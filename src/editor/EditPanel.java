@@ -71,6 +71,7 @@ public class EditPanel extends Stage {
 				s.hide();
 			}
 		});
+		
 	}
 
 }
