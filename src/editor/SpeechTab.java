@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import utility.StagedAudio;
 import utility.StagedMedia;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,7 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import player.VidivoxPlayer;
 
 public class SpeechTab extends BindableTab {
 
@@ -31,7 +31,7 @@ public class SpeechTab extends BindableTab {
 
 	private Text msg;
 	private TextArea userField;
-	private Button playBtn, cancelBtn, saveBtn, overlayBtn;
+	private Button speechBtn, saveBtn, overlayBtn;
 	private FileChooser f;
 	private Stage stage;
 	private ProgressBar progBar = new ProgressBar();
@@ -45,15 +45,7 @@ public class SpeechTab extends BindableTab {
 		f = new FileChooser();
 		f.setTitle("Save");
 		// Initializing Button Event handlers
-		playBtn = new Button("Preview speech");
-		playBtn.setTooltip(new Tooltip("Preview the speech in the text box"));
-		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 
-			public void handle(ActionEvent arg0) {
-				playSpeech();
-			}
-
-		});
 		saveBtn = new Button("Save Speech");
 		saveBtn.setTooltip(new Tooltip("Save the text to a wav file"));
 		saveBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -69,18 +61,32 @@ public class SpeechTab extends BindableTab {
 			}
 
 		});
-		cancelBtn = new Button("Cancel Speech");
-		cancelBtn.setTooltip(new Tooltip("Halt the speech prematurely"));
-		cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+		saveBtn.disableProperty().bind(userField.lengthProperty().isEqualTo(0));
 
-			@Override
+		/*
+		 * Initializes the Speech button, which toggles between Preview and
+		 * Cancel.
+		 */
+		speechBtn = new Button();
+		setSpeechState(false);
+		speechBtn.setOnAction(new EventHandler<ActionEvent>() {
+
 			public void handle(ActionEvent arg0) {
-				cancelSpeech();
+				if (pid == -1) {
+					playSpeech();
+				} else {
+					cancelSpeech();
+				}
 			}
 
 		});
+		speechBtn.disableProperty().bind(
+				userField.lengthProperty().isEqualTo(0));
+
 		overlayBtn = new Button("Overlay");
-		overlayBtn.setTooltip(new Tooltip("Overlay the speech with the current video and play the resulting video"));
+		overlayBtn
+				.setTooltip(new Tooltip(
+						"Overlay the speech with the current video and play the resulting video"));
 		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -102,6 +108,8 @@ public class SpeechTab extends BindableTab {
 			}
 
 		});
+		overlayBtn.disableProperty().bind(
+				userField.lengthProperty().isEqualTo(0));
 
 		GridPane speechPane = new GridPane();
 		speechPane.setGridLinesVisible(player.Launcher.GRID_IS_VISIBLE);
@@ -113,13 +121,14 @@ public class SpeechTab extends BindableTab {
 		HBox speechBtns = new HBox();
 		speechBtns.setAlignment(Pos.CENTER);
 		speechBtns.setSpacing(btnSpacing);
-		speechBtns.getChildren()
-				.addAll(playBtn, cancelBtn, saveBtn, overlayBtn);
+		speechBtns.getChildren().addAll(speechBtn, saveBtn, overlayBtn);
 		speechPane.add(speechBtns, 0, 4, 3, 1);
 		progBar.setVisible(false);
 		speechPane.add(progBar, 0, 5);
 		speechPane.getStyleClass().add("gridPane");
-		speechPane.getStylesheets().add(getClass().getResource("/skins/EditPanel.css").toExternalForm());
+		speechPane.getStylesheets()
+				.add(getClass().getResource("/skins/EditPanel.css")
+						.toExternalForm());
 		this.setContent(speechPane);
 
 	}
@@ -131,7 +140,6 @@ public class SpeechTab extends BindableTab {
 
 	@Override
 	public MediaView getMediaView() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -154,18 +162,37 @@ public class SpeechTab extends BindableTab {
 						pid = f.getInt(p);
 						p.waitFor();
 						pid = -1;
+
 					}
 				} catch (IOException | NoSuchFieldException | SecurityException
 						| IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();
 				}
+
 				return null;
 			}
 
 		};
+		task.setOnRunning(new EventHandler<WorkerStateEvent>() {
+
+			@Override
+			public void handle(WorkerStateEvent arg0) {
+				setSpeechState(true);
+			}
+
+		});
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+
+			@Override
+			public void handle(WorkerStateEvent arg0) {
+				setSpeechState(false);
+			}
+
+		});
 
 		Thread th = new Thread(task);
 		th.setDaemon(true);
+
 		th.start();
 
 	}
@@ -185,6 +212,19 @@ public class SpeechTab extends BindableTab {
 			pid = -1;
 		}
 		return;
+	}
+
+	private void setSpeechState(boolean isSpeaking) {
+		if (isSpeaking) {
+			speechBtn.setText("Cancel");
+			speechBtn.setTooltip(new Tooltip("Halt the speech prematurely"));
+
+		} else {
+			speechBtn.setText("Preview");
+			speechBtn.setTooltip(new Tooltip(
+					"Preview the speech in the text box"));
+
+		}
 	}
 
 	@Override
