@@ -42,15 +42,6 @@ public class EditPanel extends Stage {
 	public EditPanel(MediaView mv, String title) {
 		super();
 		this.setTitle(title);
-		/*
-		 * //[PREVIEW PANEL] Uncomment 1 of 2 for Preview Panel HBox root = new
-		 * HBox(); //the overall panel VBox previewPanel = new VBox();
-		 * 
-		 * MediaView previewView = PreviewMedia.getPreviewMedia().getView();
-		 * StackPane sp = new StackPane(previewView); PreviewControls
-		 * previewControls = new PreviewControls();
-		 * PreviewMedia.getPreviewMedia().setControls(previewControls);
-		 */
 		TabPane pane = new TabPane();
 		
 		speech = new SpeechTab(mv, "Speech",

@@ -45,7 +45,6 @@ public class SpeechTab extends BindableTab {
 		f = new FileChooser();
 		f.setTitle("Save");
 		// Initializing Button Event handlers
-
 		saveBtn = new Button("Save Speech");
 		saveBtn.setTooltip(new Tooltip("Save the text to a wav file"));
 		saveBtn.setOnAction(new EventHandler<ActionEvent>() {
