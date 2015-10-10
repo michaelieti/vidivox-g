@@ -48,7 +48,7 @@ public class SpeechTab extends BindableTab {
 		playBtn = new Button("Preview speech");
 		playBtn.setTooltip(new Tooltip("Preview the speech in the text box"));
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
-
+			@Override
 			public void handle(ActionEvent arg0) {
 				playSpeech();
 			}
