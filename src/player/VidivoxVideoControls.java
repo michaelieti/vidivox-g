@@ -5,9 +5,12 @@ import javafx.beans.Observable;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
@@ -15,12 +18,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class VidivoxVideoControls extends HBox {
+public class VidivoxVideoControls extends VBox {
 
 	private MediaView mediaView;
-	protected Button playBtn, stopBtn, skipBackBtn, skipFwdBtn; // Video
-																// Playback
+	protected Button playBtn, stopBtn, skipBackBtn, skipFwdBtn;
 	protected SliderVX volumeBar;
+	protected SliderVX mediaTimeline; 
+	protected Text currentTimeLabel, totalDurationLabel;
+
 
 	/* Status flags for the Application */
 	private boolean mediaEnded = false;
@@ -30,12 +35,21 @@ public class VidivoxVideoControls extends HBox {
 	final public static double MAXVOLUME = 10.0;
 	final public static double DEFAULTVOLUME = 5.0;
 
+	protected static final double MINTIME = 0.0;
+	protected static final double MAXTIME = 100.0;
+	protected static final double STARTTIME = 0.0;
+
 	final private double playRateIncrement = 3.5;
+	
+	final public static String DEFAULT_SKIN = "blue";
 
 	public VidivoxVideoControls(MediaView mv) {
 		super();
 		VidivoxPlayer.getVidivoxPlayer().setControlPanel(this);
 		this.mediaView = mv;
+		
+		HBox timeSliderPanel = new HBox();
+		HBox videoControlPanel = new HBox();
 
 		// Buttons defined here (e.g. play button, pause button, stop button...)
 		playBtn = new Button();
@@ -48,6 +62,7 @@ public class VidivoxVideoControls extends HBox {
 				// to pause.
 				if (mp.getRate() != 1.0) {
 					mp.setRate(1.0);
+					mp.setMute(false);
 				}
 				Status status = mp.getStatus();
 				// CHECK ONE: possible error? nothing is done in these states
@@ -109,18 +124,42 @@ public class VidivoxVideoControls extends HBox {
 				mediaView.getMediaPlayer().setVolume(currentVol);
 			}
 		});
+		
+		/* VOLUME SLIDER HBOX (next to main controls) */
 		HBox volSlide = new HBox();
 		volSlide.setAlignment(Pos.CENTER);
 		volSlide.setSpacing(5);
 		Text t = new Text("Volume");
 		t.setFill(Color.LIGHTGRAY);
 		volSlide.getChildren().addAll(t,volumeBar);
-		this.setAlignment(Pos.CENTER);
-		this.setSpacing(10);
-		this.getChildren().addAll(skipBackBtn, stopBtn, playBtn, skipFwdBtn,
+		
+		/* TIME SLIDER PANEL SET UP */
+		mediaTimeline = new SliderVX(MINTIME, MAXTIME, STARTTIME);
+		currentTimeLabel = new Text("00:00:00");
+		currentTimeLabel.setFill(Color.LIGHTGRAY);
+		totalDurationLabel = new Text("99:99:99");
+		totalDurationLabel.setFill(Color.LIGHTGRAY);
+		
+		/* TIME SLIDER PANEL POSITIONAL SETTINGS */
+		timeSliderPanel.setAlignment(Pos.CENTER);
+		timeSliderPanel.setSpacing(10);
+		HBox.setHgrow(mediaTimeline, Priority.ALWAYS);
+		HBox.setMargin(currentTimeLabel, new Insets(2,8,2,8));
+		HBox.setMargin(totalDurationLabel, new Insets(2,8,2,8));
+		timeSliderPanel.getChildren().addAll(currentTimeLabel, mediaTimeline, totalDurationLabel);
+	//	timeSliderPanel.setStyle("-fx-background-color: black");
+		
+		/* VIDEO CONTROL PANEL POSITIONAL SETTINGS */
+		videoControlPanel.setAlignment(Pos.CENTER);
+		videoControlPanel.setSpacing(10);
+		videoControlPanel.getChildren().addAll(skipBackBtn, stopBtn, playBtn, skipFwdBtn,
 				volSlide);
 		
-		this.getStyleClass().add("blue");
+		/* MAIN COMPONENT POSITIONAL SETTINGS */
+		this.setAlignment(Pos.CENTER);
+		this.setSpacing(10);
+		this.getChildren().addAll(timeSliderPanel, videoControlPanel);
+		this.getStyleClass().add(DEFAULT_SKIN);
 		// This can be changed to BlueSkin GreenSkin PurpleSkin or OrangeSkin
 		//this.getStylesheets().add(getClass().getResource("/skins/BlueSkin.css").toExternalForm());
 	}
@@ -137,6 +176,7 @@ public class VidivoxVideoControls extends HBox {
 		MediaPlayer mp = mediaView.getMediaPlayer();
 		Double currentRate = mp.getRate();
 		mp.setRate(currentRate + playRateIncrement);
+		mp.setMute(true);
 	}
 
 	public void rwdVideo() {
@@ -164,6 +204,10 @@ public class VidivoxVideoControls extends HBox {
 			th.setDaemon(true);
 			th.start();
 		}
+	}
+	
+	public SliderVX getTimeline() {
+		return mediaTimeline;
 	}
 
 }

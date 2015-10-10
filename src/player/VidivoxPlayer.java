@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 /**
@@ -94,9 +95,18 @@ public class VidivoxPlayer {
 
 	/* INITIALIZER METHOD - CALLED AFTER A MediaPlayer OBJECT IS ASSIGNED */
 	public void initialize() {
-		bindTimeline(mediaPanel.getTimeline());
-		bindButtonId(controlPanel.playBtn);
-		setInitialVolume(controlPanel.volumeBar);
+		getMediaPlayer().setOnReady(new Runnable(){
+			@Override
+			public void run() {
+				bindTimeline(controlPanel.getTimeline());
+				bindButtonId(controlPanel.playBtn);
+				setInitialVolume(controlPanel.volumeBar);
+				bindCurrentTimeLabel(controlPanel.currentTimeLabel);
+				setDurationLabel(controlPanel.totalDurationLabel);
+			}
+			
+		});
+		
 	}
 	
 	/* DISPOSAL METHOD - CALLED JUST BEFORE DISPOSAL OF A MediaPlayer OBJECT */
@@ -113,7 +123,7 @@ public class VidivoxPlayer {
 					Duration mediaLength = getMedia().getDuration();
 					getMediaPlayer().seek(
 							mediaLength.multiply(mediaTimeline.getValue()
-									/ MediaPanel.MAXTIME));
+									/ VidivoxVideoControls.MAXTIME));
 					mediaTimeline.resetSliderFlag();
 				}
 			}
@@ -158,9 +168,26 @@ public class VidivoxPlayer {
 	private void setInitialVolume(final SliderVX volumeBar){
 		getMediaPlayer().setVolume(initialVolume);
 	}
+	private void bindCurrentTimeLabel(final Text t){
+		//TODO: bind the time label to mediaPlayer.currentTimeProperty
+	}
+	private void setDurationLabel(final Text t){
+		//TODO: set the duration label to equal to duration of media
+		Duration totalDuration = getMedia().getDuration();
+		String totalDurationString = formatTime(totalDuration);
+		t.setText(totalDurationString);
+	}
+	
 	
 	/* METHODS CALLED FROM PREDISPOSAL */
 	private void storeVolume(final SliderVX volumeBar){
 		initialVolume = volumeBar.getValue() / VidivoxVideoControls.MAXVOLUME;
+	}
+
+	/* UTILITY METHODS */
+	private String formatTime(Duration d){
+		StringBuilder sb = new StringBuilder();
+		sb.append(d.toHours());
+		return sb.toString();
 	}
 }
