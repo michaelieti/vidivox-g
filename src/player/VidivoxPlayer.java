@@ -195,7 +195,7 @@ public class VidivoxPlayer {
 	}
 
 	/* UTILITY METHODS */
-	private String formatTime(Duration d){
+	public static String formatTime(Duration d){
 		if (d.isIndefinite() || d.isUnknown()){
 			return "UNKNOWN";
 		}

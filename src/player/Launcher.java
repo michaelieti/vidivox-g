@@ -2,6 +2,8 @@ package player;
 
 import editor.EditPanel;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -28,6 +30,11 @@ public class Launcher extends Application {
 		ms = new MainStage(this);
 		editorPanel = new EditPanel(ms.getMediaPane().getMediaView());
 		primaryStage = ms;
+		
+		/* SCREEN POSITIONAL SET UP */
+		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+		editorPanel.setX(screenBounds.getMinX());
+		editorPanel.setY(screenBounds.getMaxY() / 2 - 200);
 		primaryStage.show();
 		editorPanel.show();
 	}
