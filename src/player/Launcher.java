@@ -2,6 +2,8 @@ package player;
 
 import editor.EditPanel;
 import javafx.application.Application;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -51,7 +53,7 @@ public class Launcher extends Application {
 	public EditPanel getEditor() {
 		return editorPanel;
 	}
-	
+
 	public OverlayPanel getOverlay() {
 		return overlayPanel;
 	}

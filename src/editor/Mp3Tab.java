@@ -70,6 +70,8 @@ public class Mp3Tab extends BindableTab {
 			}
 			
 		});
+		overlayBtn.disableProperty().bind(
+				filePath.length().isEqualTo(0));
 		TextField currentFile = new TextField("");
 		filePath.setValue("");
 		currentFile.textProperty().bind(filePath);

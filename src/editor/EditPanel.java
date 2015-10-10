@@ -1,5 +1,6 @@
 package editor;
 
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
@@ -22,6 +23,9 @@ public class EditPanel extends Stage {
 	/* Currently included Features */
 	BindableTab speech, subtitle, mp3;
 
+	public EditPanel() {
+		super();
+	}
 	/**
 	 * A convenience constructor which constructs the Editor Panel with the
 	 * default title.
@@ -73,5 +77,6 @@ public class EditPanel extends Stage {
 		});
 		
 	}
+	
 
 }

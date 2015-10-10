@@ -7,10 +7,18 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import editor.EditPanel;
+
 import player.MainStage.SkinColor;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
@@ -60,8 +68,30 @@ public class VidivoxFileControls extends MenuBar {
 		// OPEN FILE BUTTON STARTS HERE
 
 		fileMenu = new Menu("File");
+
 		windowMenu = new Menu("Window");
+		/*
+		 * This checks which windows are open before showing the menu. This particular implementation is inflexible.
+		 */
+		windowMenu.setOnShowing(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event arg0) {
+				for (MenuItem m : windowMenu.getItems()) {
+					if (m.equals(edittor)) {
+						((CheckMenuItem) m).setSelected(ms.getLauncher()
+								.getEditor().isShowing());
+					} else if (m.equals(overlay)) {
+						((CheckMenuItem) m).setSelected(ms.getLauncher()
+								.getOverlay().isShowing());
+					}
+				}
+
+			}
+
+		});
 		custMenu = new Menu("Customize");
+		//TODO: Consider similar structures for this menu
 
 		open = new MenuItem("Open file");
 		open.setId("fileBtns");
@@ -154,7 +184,6 @@ public class VidivoxFileControls extends MenuBar {
 			}
 
 		});
-		edittor.setSelected(true);
 
 		overlay = new CheckMenuItem("Overlay Panel");
 		overlay.setId("fileBtns");
@@ -169,7 +198,6 @@ public class VidivoxFileControls extends MenuBar {
 			}
 
 		});
-		overlay.setSelected(true);
 
 		blueSkin = new CheckMenuItem("Blue");
 		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
