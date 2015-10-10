@@ -29,10 +29,9 @@ public class VidivoxFileControls extends HBox {
 
 	protected MenuBar skinMenu;
 	protected Button openFileBtn, saveFileBtn, editPanelBtn;
-	private File currentFile = null;
 	private final FileChooser fileChooser = new FileChooser();
 
-	public VidivoxFileControls(final MainStage ms, final VidivoxMedia vvm) {
+	public VidivoxFileControls(final MainStage ms, final MediaPanel vvm) {
 		super();
 		VidivoxPlayer.getVidivoxPlayer().setFilePanel(this);
 		this.setId("fileControls");
@@ -43,6 +42,7 @@ public class VidivoxFileControls extends HBox {
 			public void handle(ActionEvent event) {
 				System.out.println("File Opened Wow!");
 				URI mediaPath = null;
+				File currentFile = null;
 				currentFile = fileChooser.showOpenDialog(ms);
 				if (currentFile != null) {
 					mediaPath = currentFile.toURI(); // converts to URI object
@@ -60,7 +60,7 @@ public class VidivoxFileControls extends HBox {
 					// file check!
 					System.out.println(mediaPath.toString());
 					// get the wrapper class, set the media
-					VidivoxPlayer vp = vvm.getPlayer();
+					VidivoxPlayer vp = VidivoxPlayer.getVidivoxPlayer();
 					vp.setMedia(media);
 
 					vp.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);

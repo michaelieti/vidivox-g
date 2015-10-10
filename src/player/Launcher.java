@@ -2,7 +2,6 @@ package player;
 
 import editor.EditPanel;
 import javafx.application.Application;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -11,13 +10,12 @@ import javafx.stage.Stage;
  * @author adav194
  * 
  */
-public class VidivoxLauncher extends Application {
+public class Launcher extends Application {
 
 	/* Developer-configurable fields for application */
 	public static final boolean GRID_IS_VISIBLE = false;
 	public static final String DEFAULT_TITLE = "Vidivox V1";
 
-	protected final FileChooser fileChooser = new FileChooser();
 	private MainStage ms;
 	private EditPanel editorPanel;
 
@@ -38,7 +36,7 @@ public class VidivoxLauncher extends Application {
 		return editorPanel;
 	}
 
-	public VidivoxMedia getView() {
+	public MediaPanel getView() {
 		return ms.getMediaPane();
 	}
 

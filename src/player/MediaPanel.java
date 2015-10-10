@@ -7,22 +7,17 @@ import javafx.scene.media.MediaView;
  * The panel holding the media player.
  * 
  */
-public class VidivoxMedia extends VBox {
+public class MediaPanel extends VBox {
 	protected VidivoxPlayer vp = VidivoxPlayer.getVidivoxPlayer();
-	protected SliderVX mediaTimeline;
 
-	protected static final double MINTIME = 0.0;
-	protected static final double MAXTIME = 100.0;
-	protected static final double STARTTIME = 0.0;
 
-	public VidivoxMedia() {
+	public MediaPanel() {
 		super();
 		vp.setMediaPanel(this);
 		MediaView mv = vp.getMediaView();
 		mv.setFitHeight(500);
 		mv.setFitWidth(800);
-		mediaTimeline = new SliderVX(MINTIME, MAXTIME, STARTTIME);
-		this.getChildren().addAll(mv, mediaTimeline);
+		this.getChildren().add(mv);
 	}
 
 	public MediaView getMediaView() {
@@ -33,8 +28,6 @@ public class VidivoxMedia extends VBox {
 		return vp;
 	}
 
-	public SliderVX getTimeline() {
-		return mediaTimeline;
-	}
+	
 
 }

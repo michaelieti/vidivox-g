@@ -34,7 +34,7 @@ public class SubtitleTab extends BindableTab {
 
 		GridPane subtitlePane = new GridPane();
 		subtitlePane
-				.setGridLinesVisible(player.VidivoxLauncher.GRID_IS_VISIBLE);
+				.setGridLinesVisible(player.Launcher.GRID_IS_VISIBLE);
 		subtitlePane.setVgap(10);
 		subtitlePane.setHgap(10);
 		subtitlePane.setPadding(new Insets(10, 10, 10, 10));

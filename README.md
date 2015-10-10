@@ -2,6 +2,36 @@
 # VIDIVOX PLANNING - 01.02 #
 =============================
 
+## FEEDBACK ##
+Feedback from Nasser, Oct 1:
+
+* Mute while fast forward (similar to rewind).
+* Disable all speech controls until there is actually text in the text area (i.e. until there is actually something to overlay/speak).
+* Hide "Cancel Speech" button till festival actually starts speaking. 
+* Think of a better way to communicate the Overlay button (e.g. make it clear that Overlay will commit the overlay to the video).
+* Top menu is slightly obtrusive?? I mean I don't think it is but okay whatevs nasser
+* Saving system is not entirely intuitive, needs to be changed
+
+## END FEEDBACK ##
+
+## FEATURES ##
+* Rotate Video
+* Shia La Boooof
+* Convert Video to other formats
+* View Layers (Some sort of visual representation of Additions made to the original file)
+* View History (With some sort of diff format which contains 
+* Pre-Loader. When you first open the application what does it do?
+* Settings and some way of saving these settings
+
+* Cut videos (nested within Editor panel. Start and end positions (change colour of timeline)
+* Stick videos together (Browse, cut straight to next video.)
+* Reorder (Have a list and reorder components. Somehow will need to keep previous edits (festival etc))
+
+* John is reskinning to allow for volume bar
+
+
+## END FEATURES ##
+
 The video player must be able to:
 
 * play video

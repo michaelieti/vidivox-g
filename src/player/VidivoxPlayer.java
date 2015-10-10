@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 /**
@@ -27,7 +28,7 @@ public class VidivoxPlayer {
 
 	private MediaView mv;
 	
-	private VidivoxMedia mediaPanel;
+	private MediaPanel mediaPanel;
 	private VidivoxVideoControls controlPanel;
 	private VidivoxFileControls filePanel;
 
@@ -49,7 +50,7 @@ public class VidivoxPlayer {
 
 	/* PANEL INTERACTORS */
 	/* MUST BE CALLED DURING STAGE CONSTRUCTION */
-	public void setMediaPanel(VidivoxMedia mediaPanel) {
+	public void setMediaPanel(MediaPanel mediaPanel) {
 		this.mediaPanel = mediaPanel;
 	}
 
@@ -94,9 +95,18 @@ public class VidivoxPlayer {
 
 	/* INITIALIZER METHOD - CALLED AFTER A MediaPlayer OBJECT IS ASSIGNED */
 	public void initialize() {
-		bindTimeline(mediaPanel.getTimeline());
-		bindButtonId(controlPanel.playBtn);
-		setInitialVolume(controlPanel.volumeBar);
+		getMediaPlayer().setOnReady(new Runnable(){
+			@Override
+			public void run() {
+				bindTimeline(controlPanel.getTimeline());
+				bindButtonId(controlPanel.playBtn);
+				setInitialVolume(controlPanel.volumeBar);
+				bindCurrentTimeLabel(controlPanel.currentTimeLabel);
+				setDurationLabel(controlPanel.totalDurationLabel);
+			}
+			
+		});
+		
 	}
 	
 	/* DISPOSAL METHOD - CALLED JUST BEFORE DISPOSAL OF A MediaPlayer OBJECT */
@@ -113,12 +123,12 @@ public class VidivoxPlayer {
 					Duration mediaLength = getMedia().getDuration();
 					getMediaPlayer().seek(
 							mediaLength.multiply(mediaTimeline.getValue()
-									/ VidivoxMedia.MAXTIME));
+									/ VidivoxVideoControls.MAXTIME));
 					mediaTimeline.resetSliderFlag();
 				}
 			}
 		});
-		mv.getMediaPlayer().currentTimeProperty()
+		getMediaPlayer().currentTimeProperty()
 				.addListener(new InvalidationListener() {
 					@Override
 					public void invalidated(Observable observable) {
@@ -159,8 +169,66 @@ public class VidivoxPlayer {
 		getMediaPlayer().setVolume(initialVolume);
 	}
 	
+	private void bindCurrentTimeLabel(final Text t){
+		//TODO: bind the time label to mediaPlayer.currentTimeProperty
+		getMediaPlayer().currentTimeProperty()
+		.addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				Duration timePassed = getMediaPlayer().getCurrentTime();
+				String timePassedAsString = formatTime(timePassed);
+				t.setText(timePassedAsString);
+			}
+		});
+		
+	}
+	private void setDurationLabel(final Text t){
+		Duration totalDuration = getMedia().getDuration();
+		String totalDurationString = formatTime(totalDuration);
+		t.setText(totalDurationString);
+	}
+	
+	
 	/* METHODS CALLED FROM PREDISPOSAL */
 	private void storeVolume(final SliderVX volumeBar){
 		initialVolume = volumeBar.getValue() / VidivoxVideoControls.MAXVOLUME;
+	}
+
+	/* UTILITY METHODS */
+	private String formatTime(Duration d){
+		if (d.isIndefinite() || d.isUnknown()){
+			return "UNKNOWN";
+		}
+		StringBuilder sb = new StringBuilder();
+		int hours = (int) d.toHours(); //truncate hours
+		int minutes = (int) (d.toMinutes() % 60.0);
+		int seconds = (int) (d.toSeconds() % 60.0);
+		String hString, mString, sString;
+		
+		if (hours < 10) {
+			hString = "0"+hours;
+		} else {
+			hString = String.valueOf(hours);
+		}
+		
+		if (minutes < 10) {
+			mString = "0"+minutes;
+		} else {
+			mString = String.valueOf(minutes);
+		}
+		
+		if (seconds < 10) {
+			sString = "0"+seconds;
+		} else {
+			sString = String.valueOf(seconds);
+		}
+		
+		String separator = ":";
+		
+		sb.append(hString).append(separator)
+		.append(mString).append(separator)
+		.append(sString);
+	
+		return sb.toString();
 	}
 }
