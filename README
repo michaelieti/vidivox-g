@@ -1,24 +1,38 @@
 Assignment 3 Vidivox Prototype
 Authors: Arran Davis and Michael Ieti
 
+=========================
+	HOW TO RUN:
+=========================
 
-HOW TO RUN:
+- Using the jar: Double click the jar file
 
-In this you will need to run the runme.sh. You must first set executable privillages for this script. 
+- From the source code: Run the following commands in bash
+	./compileme.sh
+	./runme.sh
 
-this can be achieved by:
+If errors occur: try setting executable privillages for this script. 
 
-chmod u+x runme.sh
-./runme.sh
+this can be achieved by running these commands in bash:
+	chmod u+x compileme.sh
+	chmod u+x runme.sh
 
-HOW TO USE OUR PROTOTYPE:
+=========================================
+	HOW TO USE OUR PROTOTYPE:
+=========================================
 
-1) First you must open a file using the 'open file' button.
+1) Open a file using the 'open file' button.
 
-2) Next you can make changes to your video using the tools available in
+2) Make changes to your video using the tools available in
 the editor panel.
+You can hover over each of the buttons to get more information.
 
-3) When you are satisified with the edits you have made, save your video to
-a suitable location using 'save file' button.
+3) When you are satisified with the edits you have made, save your video to a suitable location using 'save file' button.
 
-At any point you can change the skin with 'Select Skin' button.
+- At any point you can change the skin with 'Select Skin' button.
+- The Overlay Panel to the right of the screen will be updated with what edits you have made. This is not representative of the final product. This isn't even its final form.
+- The future overlay panel will have
+	> a selectable table of edits
+	> a 'Modify Edit' button and a 'Delete Edit' button
+	> a 'Commit Overlay' button.
+Tell us what you think : )
