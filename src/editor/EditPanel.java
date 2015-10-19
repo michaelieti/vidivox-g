@@ -1,6 +1,5 @@
 package editor;
 
-import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
@@ -62,7 +61,7 @@ public class EditPanel extends Stage {
 		 * previewControls); root.getChildren().addAll(pane, previewPanel);
 		 */
 		Scene scene = new Scene(pane);
-		scene.getStylesheets().add(getClass().getResource("/skins/EditPanel.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/skins/BlueSkin.css").toExternalForm());
 		this.setScene(scene);
 		/*
 		 * Setting the close operation for this window to simply hide it. This

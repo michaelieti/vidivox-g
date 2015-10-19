@@ -68,8 +68,11 @@ public class VidivoxFileControls extends MenuBar {
 		// OPEN FILE BUTTON STARTS HERE
 
 		fileMenu = new Menu("File");
+		fileMenu.setId("fileMenu");
+		
 
 		windowMenu = new Menu("Window");
+		windowMenu.setId("fileMenu");
 		/*
 		 * This checks which windows are open before showing the menu. This particular implementation is inflexible.
 		 */
@@ -91,6 +94,7 @@ public class VidivoxFileControls extends MenuBar {
 
 		});
 		custMenu = new Menu("Customize");
+		custMenu.setId("fileMenu");
 		//TODO: Consider similar structures for this menu
 
 		open = new MenuItem("Open file");
@@ -162,7 +166,7 @@ public class VidivoxFileControls extends MenuBar {
 						System.out.println(file.toURI().toString());
 						Media newMedia = new Media(file.toURI().toString());
 						VidivoxPlayer.getVidivoxPlayer().setMedia(newMedia);
-					} catch (IOException | InterruptedException e) {
+					} catch (IOException | InterruptedException e) {		
 						e.printStackTrace();
 					}
 
@@ -200,6 +204,7 @@ public class VidivoxFileControls extends MenuBar {
 		});
 
 		blueSkin = new CheckMenuItem("Blue");
+		blueSkin.setId("fileBtns");
 		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -217,6 +222,7 @@ public class VidivoxFileControls extends MenuBar {
 				MainStage.SkinColor.BLUE));
 
 		greenSkin = new CheckMenuItem("Green");
+		greenSkin.setId("fileBtns");
 		greenSkin.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -233,6 +239,7 @@ public class VidivoxFileControls extends MenuBar {
 		greenSkin.setSelected(ms.getCurrentSkinColor().equals(
 				MainStage.SkinColor.GREEN));
 		orangeSkin = new CheckMenuItem("Orange");
+		orangeSkin.setId("fileBtns");
 		orangeSkin.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -249,6 +256,7 @@ public class VidivoxFileControls extends MenuBar {
 		orangeSkin.setSelected(ms.getCurrentSkinColor().equals(
 				MainStage.SkinColor.ORANGE));
 		purpleSkin = new CheckMenuItem("Purple");
+		purpleSkin.setId("fileBtns");
 		purpleSkin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -264,12 +272,7 @@ public class VidivoxFileControls extends MenuBar {
 		purpleSkin.setSelected(ms.getCurrentSkinColor().equals(
 				MainStage.SkinColor.PURPLE));
 
-		/*
-		 * Heres the code you had here before Michael
-		 * skinMenu.setId("skin-menu"); //menu bar id set
-		 * selectSkin.setId("skin-select");//menu id set for (MenuItem mi:
-		 * selectSkin.getItems()){ mi.setStyle("-fx-text-fill: black;"); }
-		 */
+		
 		fileMenu.getItems().addAll(open, save);
 		windowMenu.getItems().addAll(edittor, overlay);
 		custMenu.getItems().addAll(blueSkin, greenSkin, orangeSkin, purpleSkin);

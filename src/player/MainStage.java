@@ -10,22 +10,23 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class MainStage extends Stage {
-	
+
 	public enum SkinColor {
-		BLUE("/skins/BlueSkin.css"), GREEN("/skins/GreenSkin.css"), 
-		ORANGE("/skins/OrangeSkin.css"), PURPLE("/skins/PurpleSkin.css");
-		
+		BLUE("/skins/BlueSkin.css"), GREEN("/skins/GreenSkin.css"), ORANGE(
+				"/skins/OrangeSkin.css"), PURPLE("/skins/PurpleSkin.css");
+
 		private String url;
 
 		private SkinColor(String url) {
 			this.url = url;
 		}
-		
+
 		public String toURL() {
 			String x = getClass().getResource(url).toExternalForm();
 			return x;
 		}
 	}
+
 	private SkinColor currentSkinColor = SkinColor.BLUE;
 	private MediaPanel vidiMedia;
 	private VidivoxVideoControls vidiVidCtrl;
@@ -61,7 +62,8 @@ public class MainStage extends Stage {
 		// grid complete, set scene
 		// MainStage contains the styling information for all the components of
 		// MainStage that do not change
-		s.getStylesheets().add(getClass().getResource("/skins/BlueSkin.css").toExternalForm());
+		s.getStylesheets().add(
+				getClass().getResource("/skins/BlueSkin.css").toExternalForm());
 		this.setScene(s);
 		/*
 		 * Setting the close action of this window to close the application
@@ -72,12 +74,13 @@ public class MainStage extends Stage {
 				Platform.exit();
 			}
 		});
+
 	}
 
 	public MediaPanel getMediaPane() {
 		return vidiMedia;
 	}
-	
+
 	public VidivoxVideoControls getVideoControls() {
 		return vidiVidCtrl;
 	}
@@ -85,12 +88,15 @@ public class MainStage extends Stage {
 	public Launcher getLauncher() {
 		return launcher;
 	}
-	
-	public void changeSkin(SkinColor sc){
+
+	public void changeSkin(SkinColor sc) {
 		setCurrentSkinColor(sc);
 		Scene scene = this.getScene();
-		scene.getStylesheets().clear();			//remove all skins
-		scene.getStylesheets().add(sc.toURL());	//reinstate a skin
+		scene.getStylesheets().clear(); // remove all skins
+		scene.getStylesheets().add(sc.toURL()); // reinstate a skin
+		Scene scene2 = launcher.getEditor().getScene();
+		scene2.getStylesheets().clear(); // remove all skins
+		scene2.getStylesheets().add(sc.toURL()); // reinstate a skin
 	}
 
 	public SkinColor getCurrentSkinColor() {
@@ -100,6 +106,5 @@ public class MainStage extends Stage {
 	public void setCurrentSkinColor(SkinColor currentSkinColor) {
 		this.currentSkinColor = currentSkinColor;
 	}
-
 
 }

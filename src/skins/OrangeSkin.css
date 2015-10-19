@@ -1,5 +1,82 @@
+/* ROOT PANEL */
+/* ROOT PANEL */
 .root {
      -fx-background-image: url("BG_3.png");
+     -fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+}
+
+.tab-content-area {
+	-fx-background-color: #e6e6e6;
+}
+
+.tab-header-area {
+   -fx-background-image: url("BG_3.png");
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.tab-pane {
+    -fx-tab-min-width:90px;
+}
+
+.tab-content-area {
+	 -fx-background-color: #3c3c3c;
+	 -fx-text-fill: darkgrey;
+}
+
+.tab {
+	-fx-background-color: #e6e6e6;
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #e6e6e6;
+}
+
+.tab *.tab-content-area {
+	-fx-background-color: #e6e6e6;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #3c3c3c;
+}
+
+
+.tab-pane.floating *.tab-header-area {
+	-fx-background-color: #3c3c3c;
+
+}
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #828282;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: darkorange;
+}
+
+.menu {
+	-fx-background-color: black;
+}
+
+.menu-item:hover .label {
+	-fx-background-color: black;
+	-fx-text-fill: darkorange;
+}
+
+.menu-item:focused .label {
+	-fx-background-color: black;
+	-fx-text-fill: darkorange;
+}
+
+.context-menu {
+	-fx-background-color: black;
 }
 
 /* EDITOR PANEL */
@@ -8,13 +85,15 @@
 }
 
 /* SKIN MENU STUFF STARTS HERE */
-#skin-menu{
+#skin-menu {
 	-fx-background-color: black;
 }
 #skin-menu .label {
 	-fx-text-fill: darkgrey;
 }
 
+
+/* FILE CONTROLS (NOT SKINS) */
 #fileControls{
 	-fx-background-color: black;
 }
@@ -23,9 +102,7 @@
 	-fx-background-color: black;
 	-fx-text-fill: darkgrey;
 }
-#fileBtns:hover {
-	-fx-text-fill:  aquamarine;
-}
+
 
 #playBtn {
 	-fx-graphic: url("/skins/orange_GUI/orange_01.png");
