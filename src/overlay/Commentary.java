@@ -13,6 +13,15 @@ public class Commentary implements Comparable<Commentary> {
 	private SimpleStringProperty timeStringProperty;
 	//can put in pitch/voice/stretch later
 	
+	public Commentary(){
+		this(Duration.ZERO, "<no text>");
+	}
+	
+	/**
+	 * Create a new Commentary object. Requires a Duration object with the time for insertion, and the text to be inserted.
+	 * @param time - Duration object of where the commentary begins.
+	 * @param text - String of what is to be said.
+	 */
 	public Commentary(Duration time, String text){
 		this.timeProperty = new SimpleObjectProperty<>(time);
 		this.textProperty = new SimpleStringProperty(text);
@@ -20,23 +29,38 @@ public class Commentary implements Comparable<Commentary> {
 		Bindings.bindBidirectional(timeStringProperty, timeProperty, new DurationConverter());
 	}
 	
+	/* Property getters/setters */
+	/**
+	 * Sets the time for insertion.
+	 * @param time
+	 */
 	public void setTime(Duration time){
-		this.timeProperty.set(time);
+		timeProperty.set(time);
+		setTimeString("");
 	}
-	
+	/**
+	 * Sets the text for the commentary
+	 * @param text
+	 */
 	public void setText(String text){
-		this.textProperty.set(text);
+		textProperty.set(text);
 	}
-	
+	/**
+	 * Sets the timestring. 
+	 * **note that the string to be passed doesn't have any effect on the timestring,
+	 * but rather will force it to be updated.
+	 * @param timeString
+	 */
 	public void setTimeString(String timeString){
-		//TODO: finish up the time string alteration
-		System.out.println("Not yet implemented!");
+		timeStringProperty.set(TimeUtility.formatTime(getTime()));
 	}
-	
+	/**
+	 * Returns a duration object representing the time of insertion.
+	 * @return
+	 */
 	public Duration getTime(){
 		return timeProperty.get();
 	}
-	
 	public String getTimeString(){
 		return timeStringProperty.get();
 	}
@@ -44,6 +68,12 @@ public class Commentary implements Comparable<Commentary> {
 		return textProperty.getValue();
 	}
 	
+	/**
+	 * Returns a string for this object, which is formatted in the following way:
+	 * - time (in format hh:mm:ss)
+	 * - text (in single line)
+	 * @return string representing a formatted commentary for a file
+	 */
 	public String toFileFormattedString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(TimeUtility.formatTime(timeProperty.get()));
@@ -53,11 +83,17 @@ public class Commentary implements Comparable<Commentary> {
 		return sb.toString();
 	}
 
+	/**
+	 * Returns a negative integer if the compared object comes before this object, with respect to timeline.
+	 * 	i.e. if the compared object has a shorter duration, it comes before this object.
+	 * Returns 0 if the compared object occurs at the same time.
+	 * Returns a positive integer if the compared object comes after this object.
+	 */
 	@Override
 	public int compareTo(Commentary o) {
 		double thisDuration = timeProperty.get().toMillis();
 		double otherDuration = o.timeProperty.get().toMillis();
-		return (int)(thisDuration - otherDuration);
+		return (int)(otherDuration - thisDuration);
 	}
 	
 	@Override
@@ -72,7 +108,13 @@ public class Commentary implements Comparable<Commentary> {
 			return false;
 	}
 	
-	private class DurationConverter extends StringConverter<Duration>{
+	/**
+	 * A class required for the use of bi-directional bindings.
+	 * Converts formatted strings to durations and vice versa.
+	 * @author michael
+	 *
+	 */
+	public class DurationConverter extends StringConverter<Duration>{
 
 		@Override
 		public String toString(Duration object) {
