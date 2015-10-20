@@ -40,9 +40,20 @@ public class SpeechTab extends BindableTab {
 	private Stage stage;
 	private ProgressBar progBar = new ProgressBar();
 	private int pid = -1;
+	private boolean editFlag = false;
+	private Commentary commentUnderEdit = null;
+	private static SpeechTab speechTab;
+	
+	public static SpeechTab getSpeechTab(){
+		return speechTab;
+	}
+	
 
 	public SpeechTab(final MediaView mv, String title, String message) {
 		super(mv, title);
+		
+		speechTab = this;
+		
 		msg = new Text(message);
 		msg.setFill(Color.LIGHTGRAY);
 		userField = new TextArea();
@@ -88,17 +99,27 @@ public class SpeechTab extends BindableTab {
 
 		overlayBtn = new Button("Add to overlay");
 		overlayBtn.setTooltip(new Tooltip(
-						"Overlay the speech with the current video and play the resulting video"));
+						"Add this commentary with the current time to the overlays."));
 		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 
+			/**
+			 * Create a new commentary and add it to the overlay list.
+			 * The table is updated automatically.
+				
+			 */
 			@Override
 			public void handle(ActionEvent arg) {
-				//Create a new commentary and add it to the overlay list.
-				//The table is updated automatically.
-				String text = userField.getText();
-				Duration time = VidivoxPlayer.getVidivoxPlayer().getMediaPlayer().getCurrentTime();
-				Commentary comment = new Commentary(time, text);
-				OverlayController.getOLController().addCommentary(comment);
+				
+				if (editFlag){	//if currently under editing, just edit the text, leave the time
+					commentUnderEdit.setText(userField.getText());
+					setEditFlag(false);
+				} else {
+					// not currently under editing: create new commentary, use the current time, and use new text
+					String text = userField.getText();
+					Duration time = VidivoxPlayer.getVidivoxPlayer().getMediaPlayer().getCurrentTime();
+					Commentary comment = new Commentary(time, text);
+					OverlayController.getOLController().addCommentary(comment);
+				}
 				/*
 				 * THE OLD IMPLEMENTATION OF SPEECH TAB
 				 * ADDS IN A COMMENTARY AT THE START OF THE VIDEO.
@@ -144,6 +165,17 @@ public class SpeechTab extends BindableTab {
 
 	}
 
+	public void editCommentary(Commentary commentary){
+		commentUnderEdit = commentary;
+		userField.setText(commentary.getText());
+		setEditFlag(true);
+	}
+	
+	private void setEditFlag(boolean x){
+		editFlag = x;
+	}
+	
+	
 	public void setBind(Stage toBindTo) {
 		msg.wrappingWidthProperty().bind(toBindTo.widthProperty().subtract(20));
 		return;

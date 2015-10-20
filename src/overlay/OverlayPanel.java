@@ -3,10 +3,14 @@ package overlay;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,6 +28,7 @@ public class OverlayPanel extends Stage {
 	private TableView<Commentary> tableView = new TableView<>();
 	private TableColumn<Commentary, String> typeCol, timeCol, nameCol;
 	
+	@SuppressWarnings("unchecked")
 	public OverlayPanel(){
 		super();
 		
@@ -43,15 +48,29 @@ public class OverlayPanel extends Stage {
 		nameCol = new TableColumn("Name/Text");
 		bindColumns();
 		tableView.getColumns().addAll(typeCol, timeCol, nameCol);
-		
 		olc.addCommentary(new Commentary(Duration.valueOf("1h"), "this is a test"));
 		
 		
 		//add in Edit button and Delete button in HBox
+		HBox editBox = new HBox();
+		Button editButton = new Button("Edit selected");
+		editButton.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				//get selected row
+				TableViewSelectionModel<Commentary> selectionModel = tableView.getSelectionModel();
+				//get the corresponding object
+				olc.editCommentary(selectionModel.getSelectedItem());
+			}
+			
+		});
+		editBox.getChildren().addAll(editButton);
+		
+		
 		//add in Commit Overlay button
 		
 		
-		mainPanel.getChildren().addAll(filterPanel,tableView);
+		mainPanel.getChildren().addAll(filterPanel,tableView, editBox);
 		
 		Scene sc = new Scene(mainPanel, 250, 600);
 		this.setScene(sc);
@@ -80,6 +99,7 @@ public class OverlayPanel extends Stage {
 		
 	}
 	
+	/* this works, don't touch it till absolutely necessary*/
 	private void bindColumns(){
 		ObservableList<Commentary> tableList = 
 				OverlayController.getOLController().getCommentaryList();

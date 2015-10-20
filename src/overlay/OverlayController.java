@@ -2,6 +2,7 @@ package overlay;
 
 import java.io.File;
 
+import editor.SpeechTab;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
@@ -36,6 +37,13 @@ public class OverlayController {
 	public void deleteCommentary(Commentary commentary){
 		commentaryList.remove(commentary);
 		updateTable();
+	}
+	public void editCommentary(Commentary commentary){
+		//gets the selected commentary from the table
+		//spits the commentary back out into the editor panel
+		SpeechTab.getSpeechTab().editCommentary(commentary);
+		//sets the edit flag to TRUE
+		//upon saving, resets the edit flag to FALSE
 	}
 	
 	public void updateTable(){
