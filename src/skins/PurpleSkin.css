@@ -83,6 +83,14 @@
 	-fx-background-color: black;
 }
 
+.menu:hover > .label {
+	-fx-text-fill: darkorchid;
+}
+
+.menu:showing > .label {
+	-fx-text-fill: darkorchid;
+}
+
 .menu-item:hover .label {
 	-fx-background-color: black;
 	-fx-text-fill: darkorchid;
@@ -124,21 +132,21 @@
 
 #playBtn {
 	-fx-border-color: transparent;
-	-fx-graphic: url("/skins/purple_GUI/purple_01.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_01.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #playBtn:hover {
-	-fx-graphic: url("/skins/purple_GUI/purple_06.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_07.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #playBtn:armed {
-	-fx-graphic: url("/skins/purple_GUI/purple_11.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_19.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -146,21 +154,21 @@
 
 #pauseBtn {
 	-fx-border-color: transparent;
-	-fx-graphic: url("/skins/purple_GUI/purple_02.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_02.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #pauseBtn:hover {
-	-fx-graphic: url("/skins/purple_GUI/purple_07.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_08.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #pauseBtn:armed {
-	-fx-graphic: url("/skins/purple_GUI/purple_12.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_20.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -168,21 +176,21 @@
 
 #stopBtn {
 	-fx-border-color: transparent;
-	-fx-graphic: url("/skins/purple_GUI/purple_03.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_03.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #stopBtn:hover {
-	-fx-graphic: url("/skins/purple_GUI/purple_08.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_09.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #stopBtn:armed {
-	-fx-graphic: url("/skins/purple_GUI/purple_13.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_21.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -190,21 +198,21 @@
 
 #skipFwdBtn {
 	-fx-border-color: transparent;
-	-fx-graphic: url("/skins/purple_GUI/purple_05.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_05.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #skipFwdBtn:hover {
-	-fx-graphic: url("/skins/purple_GUI/purple_10.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_11.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #skipFwdBtn:armed {
-	-fx-graphic: url("/skins/purple_GUI/purple_15.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_23.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -212,16 +220,16 @@
 
 #skipBackBtn {
 	-fx-border-color: transparent;
-	-fx-graphic: url("/skins/purple_GUI/purple_04.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_04.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #skipBackBtn:hover {
-	-fx-graphic: url("/skins/purple_GUI/purple_09.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_10.png");
 }
 
 #skipBackBtn:armed {
-	-fx-graphic: url("/skins/purple_GUI/purple_14.png");
+	-fx-graphic: url("/skins/purple_GUI/Purple_22.png");
 }

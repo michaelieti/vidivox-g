@@ -1,5 +1,7 @@
 package player;
 
+import java.io.File;
+
 import editor.EditPanel;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -25,8 +27,20 @@ public class Main extends Application {
 	private EditPanel editorPanel;
 	private OverlayPanel overlayPanel;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		/*Checks whether the temporary already exists. Cleans the directory if it does, and creates a new one */
+		File p = new File(System.getProperty("user.dir") + "/.temp");
+		if (p.exists()) {
+			System.out.println("Temporary directory already exists");
+			p.delete();
+			System.out.println("Deleting (" + p.getCanonicalPath() + ")...");
+		}
+		if (!p.mkdir()) {
+			throw new Exception("Unable to create temporary directory at '" + p.getCanonicalPath() + "'.");
+		}
+		
 		launch(args);
+		
 	}
 
 	@Override

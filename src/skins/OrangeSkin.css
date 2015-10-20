@@ -85,6 +85,14 @@
 	-fx-background-color: black;
 }
 
+.menu:hover > .label {
+	-fx-text-fill: darkorange;
+}
+
+.menu:showing > .label {
+	-fx-text-fill: darkorange;
+}
+
 .menu-item:hover .label {
 	-fx-background-color: black;
 	-fx-text-fill: darkorange;
@@ -126,21 +134,21 @@
 
 #playBtn {
 -fx-border-color: transparent;
-	-fx-graphic: url("/skins/orange_GUI/orange_01.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_01.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #playBtn:hover {
-	-fx-graphic: url("/skins/orange_GUI/orange_06.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_07.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #playBtn:armed {
-	-fx-graphic: url("/skins/orange_GUI/orange_11.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_19.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -148,21 +156,21 @@
 
 #pauseBtn {
 -fx-border-color: transparent;
-	-fx-graphic: url("/skins/orange_GUI/orange_02.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_02.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #pauseBtn:hover {
-	-fx-graphic: url("/skins/orange_GUI/orange_07.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_08.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #pauseBtn:armed {
-	-fx-graphic: url("/skins/orange_GUI/orange_12.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_20.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -170,21 +178,21 @@
 
 #stopBtn {
 -fx-border-color: transparent;
-	-fx-graphic: url("/skins/orange_GUI/orange_03.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_03.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #stopBtn:hover {
-	-fx-graphic: url("/skins/orange_GUI/orange_08.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_09.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #stopBtn:armed {
-	-fx-graphic: url("/skins/orange_GUI/orange_13.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_21.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -192,21 +200,21 @@
 
 #skipFwdBtn {
 -fx-border-color: transparent;
-	-fx-graphic: url("/skins/orange_GUI/orange_05.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_05.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #skipFwdBtn:hover {
-	-fx-graphic: url("/skins/orange_GUI/orange_10.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_11.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #skipFwdBtn:armed {
-	-fx-graphic: url("/skins/orange_GUI/orange_15.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_23.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -214,16 +222,16 @@
 
 #skipBackBtn {
 -fx-border-color: transparent;
-	-fx-graphic: url("/skins/orange_GUI/orange_04.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_04.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #skipBackBtn:hover {
-	-fx-graphic: url("/skins/orange_GUI/orange_09.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_10.png");
 }
 
 #skipBackBtn:armed {
-	-fx-graphic: url("/skins/orange_GUI/orange_14.png");
+	-fx-graphic: url("/skins/orange_GUI/Orange_22.png");
 }
