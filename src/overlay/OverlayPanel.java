@@ -43,12 +43,13 @@ public class OverlayPanel extends Stage {
 		this.setTitle("Overlay");
 		VBox mainPanel = new VBox();
 		
+
+		/* Filter Panel creation */
 		HBox filterPanel = new HBox();
 		Text filterLabel = new Text("Filter by: ");
-		//add in Filter text and filter box
 		filterPanel.getChildren().add(filterLabel);
 		
-		//add in Commentary table
+		/* Overlay Table creation */
 		typeCol = new TableColumn("Type");
 		timeCol = new TableColumn("Time");
 		nameCol = new TableColumn("Name/Text");
@@ -57,24 +58,30 @@ public class OverlayPanel extends Stage {
 		tableView.setPlaceholder(new Label("No commits added"));
 		
 		
-		//add in Edit button and Delete button in HBox
+		/* creation of overlay editor panel*/
 		HBox editBox = new HBox();
+			/* EDIT BUTTON*/
 		Button editButton = new Button("Edit selected");
 		editButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-				//get selected row
+				//gets the selected item and passes it to the overlay control
 				TableViewSelectionModel<Commentary> selectionModel = tableView.getSelectionModel();
-				//get the corresponding object
 				olc.editCommentary(selectionModel.getSelectedItem());
 			}
-			
+		});
+		
+			/* DELETE BUTTON*/
+		Button deleteButton = new Button("Delete selected");
+		deleteButton.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				TableViewSelectionModel<Commentary> selectionModel = tableView.getSelectionModel();
+				olc.deleteCommentary(selectionModel.getSelectedItem());
+			}
+		
 		});
 		editBox.getChildren().addAll(editButton);
-		
-		
-		//add in Commit Overlay button
-		
 		
 		mainPanel.getChildren().addAll(filterPanel,tableView, editBox);
 		

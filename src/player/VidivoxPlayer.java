@@ -36,7 +36,7 @@ public class VidivoxPlayer {
 	private double initialVolume = VidivoxVideoControls.DEFAULTVOLUME;
 	
 	/* SINGLETON CONSTRUCTOR */
-	public static VidivoxPlayer getVidivoxPlayer() {
+	public static VidivoxPlayer getVPlayer() {
 		if (singletonPlayer == null) {
 			singletonPlayer = new VidivoxPlayer();
 		}

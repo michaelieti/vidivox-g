@@ -45,7 +45,7 @@ public class VidivoxVideoControls extends VBox {
 
 	public VidivoxVideoControls(MediaView mv) {
 		super();
-		VidivoxPlayer.getVidivoxPlayer().setControlPanel(this);
+		VidivoxPlayer.getVPlayer().setControlPanel(this);
 		this.mediaView = mv;
 		
 		HBox timeSliderPanel = new HBox();

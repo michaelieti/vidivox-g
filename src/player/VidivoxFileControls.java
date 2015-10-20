@@ -63,7 +63,7 @@ public class VidivoxFileControls extends MenuBar {
 
 	public VidivoxFileControls(final MainStage ms, final MediaPanel vvm) {
 		super();
-		VidivoxPlayer.getVidivoxPlayer().setFilePanel(this);
+		VidivoxPlayer.getVPlayer().setFilePanel(this);
 		this.setId("fileControls");
 		// OPEN FILE BUTTON STARTS HERE
 
@@ -121,7 +121,7 @@ public class VidivoxFileControls extends MenuBar {
 					// file check!
 					System.out.println(mediaPath.toString());
 					// get the wrapper class, set the media
-					VidivoxPlayer vp = VidivoxPlayer.getVidivoxPlayer();
+					VidivoxPlayer vp = VidivoxPlayer.getVPlayer();
 					vp.setMedia(media);
 
 					vp.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);
@@ -135,7 +135,7 @@ public class VidivoxFileControls extends MenuBar {
 		save.setId("fileBtns");
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				Media toSave = VidivoxPlayer.getVidivoxPlayer()
+				Media toSave = VidivoxPlayer.getVPlayer()
 						.getMediaPlayer().getMedia();
 				FileChooser f = new FileChooser();
 				f.setTitle("Save");
@@ -165,7 +165,7 @@ public class VidivoxFileControls extends MenuBar {
 						p.waitFor();
 						System.out.println(file.toURI().toString());
 						Media newMedia = new Media(file.toURI().toString());
-						VidivoxPlayer.getVidivoxPlayer().setMedia(newMedia);
+						VidivoxPlayer.getVPlayer().setMedia(newMedia);
 					} catch (IOException | InterruptedException e) {		
 						e.printStackTrace();
 					}

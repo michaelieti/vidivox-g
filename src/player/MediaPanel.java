@@ -8,7 +8,7 @@ import javafx.scene.media.MediaView;
  * 
  */
 public class MediaPanel extends VBox {
-	protected VidivoxPlayer vp = VidivoxPlayer.getVidivoxPlayer();
+	protected VidivoxPlayer vp = VidivoxPlayer.getVPlayer();
 
 
 	public MediaPanel() {
