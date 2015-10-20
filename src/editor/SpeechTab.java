@@ -24,6 +24,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import overlay.Commentary;
+import overlay.OverlayController;
+import player.VidivoxPlayer;
 
 public class SpeechTab extends BindableTab {
 
@@ -82,18 +86,24 @@ public class SpeechTab extends BindableTab {
 		speechBtn.disableProperty().bind(
 				userField.lengthProperty().isEqualTo(0));
 
-		overlayBtn = new Button("Overlay");
-		overlayBtn
-				.setTooltip(new Tooltip(
+		overlayBtn = new Button("Add to overlay");
+		overlayBtn.setTooltip(new Tooltip(
 						"Overlay the speech with the current video and play the resulting video"));
 		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg) {
-				// TODO: THIS SHIT IS BROKEN AHHHH
-				// make temp wav file
-				// call mp3 to wav
-				// call overlay metho0d in mp3
+				//Create a new commentary and add it to the overlay list.
+				//The table is updated automatically.
+				String text = userField.getText();
+				Duration time = VidivoxPlayer.getVidivoxPlayer().getMediaPlayer().getCurrentTime();
+				Commentary comment = new Commentary(time, text);
+				OverlayController.getOLController().addCommentary(comment);
+				/*
+				 * THE OLD IMPLEMENTATION OF SPEECH TAB
+				 * ADDS IN A COMMENTARY AT THE START OF THE VIDEO.
+				 * THIS IS BEING REPLACED
+				 * 
 				try {
 					String msg = userField.getText();
 					StagedAudio stgAudio = MediaConverter.textToSpeech(msg);
@@ -103,13 +113,18 @@ public class SpeechTab extends BindableTab {
 					e.printStackTrace();
 					System.out.println("gg u screwed");
 				}
+				*/
+				
+				
 
 			}
 
 		});
+		//disables the button when no text in field
 		overlayBtn.disableProperty().bind(
 				userField.lengthProperty().isEqualTo(0));
 
+		/* placement starts here */
 		GridPane speechPane = new GridPane();
 		speechPane.setGridLinesVisible(player.Main.GRID_IS_VISIBLE);
 		speechPane.setVgap(10);
