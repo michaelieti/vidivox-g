@@ -188,7 +188,7 @@ public class SpeechTab extends BindableTab {
 		 * user defined message.
 		 */
 		StringBinding changeMsg;
-		changeMsg = new When(mv.mediaPlayerProperty().isNull()).then(
+		changeMsg = new When(VidivoxPlayer.getVidivoxPlayer().getMediaView().mediaPlayerProperty().isNull()).then(
 				"Please open a video file to proceed.")
 				.otherwise(msg.getText());
 		msg.textProperty().bind(changeMsg);
