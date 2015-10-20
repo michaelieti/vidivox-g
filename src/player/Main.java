@@ -15,7 +15,7 @@ import overlay.OverlayPanel;
  * @author adav194
  * 
  */
-public class Launcher extends Application {
+public class Main extends Application {
 
 	/* Developer-configurable fields for application */
 	public static final boolean GRID_IS_VISIBLE = false;

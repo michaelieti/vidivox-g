@@ -76,7 +76,7 @@ public class Mp3Tab extends BindableTab {
 		filePath.setValue("");
 		currentFile.textProperty().bind(filePath);
 		GridPane mp3Pane = new GridPane();
-		mp3Pane.setGridLinesVisible(player.Launcher.GRID_IS_VISIBLE);
+		mp3Pane.setGridLinesVisible(player.Main.GRID_IS_VISIBLE);
 		mp3Pane.setVgap(10);
 		mp3Pane.setHgap(10);
 		mp3Pane.setPadding(new Insets(10, 10, 10, 10));

@@ -11,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
@@ -64,6 +65,17 @@ public class OverlayPanel extends Stage {
 			public void handle(WindowEvent event) {
 				s.hide();
 			}
+		});
+		
+		this.setOnShowing(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent arg0) {
+				s.setX(Screen.getPrimary().getVisualBounds().getMaxX() - 250);
+				s.setY(Screen.getPrimary().getVisualBounds().getMaxY() / 2 - 200);
+				
+			}
+			
 		});
 		
 	}

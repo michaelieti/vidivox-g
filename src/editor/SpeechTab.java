@@ -111,7 +111,7 @@ public class SpeechTab extends BindableTab {
 				userField.lengthProperty().isEqualTo(0));
 
 		GridPane speechPane = new GridPane();
-		speechPane.setGridLinesVisible(player.Launcher.GRID_IS_VISIBLE);
+		speechPane.setGridLinesVisible(player.Main.GRID_IS_VISIBLE);
 		speechPane.setVgap(10);
 		speechPane.setHgap(10);
 		speechPane.setPadding(new Insets(10, 10, 10, 10));
@@ -125,9 +125,6 @@ public class SpeechTab extends BindableTab {
 		progBar.setVisible(false);
 		speechPane.add(progBar, 0, 5);
 		speechPane.getStyleClass().add("gridPane");
-		speechPane.getStylesheets()
-				.add(getClass().getResource("/skins/EditPanel.css")
-						.toExternalForm());
 		this.setContent(speechPane);
 
 	}

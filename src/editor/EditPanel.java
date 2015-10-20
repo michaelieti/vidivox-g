@@ -61,7 +61,7 @@ public class EditPanel extends Stage {
 		 * previewControls); root.getChildren().addAll(pane, previewPanel);
 		 */
 		Scene scene = new Scene(pane);
-		scene.getStylesheets().add(getClass().getResource("/skins/BlueSkin.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/skins/GreenSkin.css").toExternalForm());
 		this.setScene(scene);
 		/*
 		 * Setting the close operation for this window to simply hide it. This

@@ -5,6 +5,26 @@
 	-fx-faint-focus-color: transparent;
 }
 
+.button:hover {
+	-fx-text-fill: dodgerblue;
+}
+
+.button {
+	-fx-border-radius: 5;
+	-fx-border-width: 1;
+	-fx-border-color: dodgerblue;
+	-fx-background-color: #3c3c3c;
+	-fx-text-fill: darkgrey;
+}
+
+.button:disabled {
+	-fx-border-radius: 5;
+	-fx-border-width: 1;
+	-fx-border-color: darkgrey;
+	-fx-background-color: #3c3c3c;
+	-fx-text-fill: darkgrey;
+}
+
 .tab-content-area {
 	-fx-background-color: #e6e6e6;
 }
@@ -106,6 +126,7 @@
 
 /* VIDEO CONTROL BUTTONS */
 #playBtn {
+	-fx-border-color: transparent;
 	-fx-graphic: url("/skins/blue_GUI/blue_01.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
@@ -127,6 +148,7 @@
 }
 
 #pauseBtn {
+	-fx-border-color: transparent;
 	-fx-graphic: url("/skins/blue_GUI/blue_02.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
@@ -148,6 +170,7 @@
 }
 
 #stopBtn {
+	-fx-border-color: transparent;
 	-fx-graphic: url("/skins/blue_GUI/blue_03.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
@@ -169,6 +192,7 @@
 }
 
 #skipFwdBtn {
+	-fx-border-color: transparent;
 	-fx-graphic: url("/skins/blue_GUI/blue_05.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
@@ -190,6 +214,7 @@
 }
 
 #skipBackBtn {
+	-fx-border-color: transparent;
 	-fx-graphic: url("/skins/blue_GUI/blue_04.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;

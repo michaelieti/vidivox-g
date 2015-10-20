@@ -279,4 +279,5 @@ public class VidivoxFileControls extends MenuBar {
 		this.getMenus().addAll(fileMenu, windowMenu, custMenu);
 
 	}
+	
 }

@@ -21,7 +21,7 @@ abstract public class StagedMedia {
 	protected Media media; //To change media, use ffmpeg from processbuilder and output to file.getPath()
 	
 	protected void InitMedia() {
-		file = new File(System.getProperty("user.dir") + "/.temp/" + this.hashCode() + "." + getExtension());
+		file = new File(System.getProperty("user.dir") + "/.temp/" +  + this.hashCode() + "." + getExtension());
 		while (file.exists()) {
 			file = new File(System.getProperty("user.dir") + "/.temp/" + file.hashCode() + "." + getExtension());
 		}

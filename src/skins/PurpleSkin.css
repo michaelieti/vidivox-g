@@ -1,9 +1,28 @@
 /* ROOT PANEL */
-/* ROOT PANEL */
 .root {
-     -fx-background-image: url("BG_3.png");
-     -fx-focus-color: transparent;
+	-fx-background-image: url("BG_3.png");
+	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
+}
+
+.button:hover {
+	-fx-text-fill: darkorchid;
+}
+
+.button {
+	-fx-border-radius: 5;
+	-fx-border-width: 1;
+	-fx-border-color: darkorchid;
+	-fx-background-color: #3c3c3c;
+	-fx-text-fill: darkgrey;
+}
+
+.button:disabled {
+	-fx-border-radius: 5;
+	-fx-border-width: 1;
+	-fx-border-color: darkgrey;
+	-fx-background-color: #3c3c3c;
+	-fx-text-fill: darkgrey;
 }
 
 .tab-content-area {
@@ -104,6 +123,7 @@
 
 
 #playBtn {
+	-fx-border-color: transparent;
 	-fx-graphic: url("/skins/purple_GUI/purple_01.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
@@ -125,6 +145,7 @@
 }
 
 #pauseBtn {
+	-fx-border-color: transparent;
 	-fx-graphic: url("/skins/purple_GUI/purple_02.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
@@ -146,6 +167,7 @@
 }
 
 #stopBtn {
+	-fx-border-color: transparent;
 	-fx-graphic: url("/skins/purple_GUI/purple_03.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
@@ -167,6 +189,7 @@
 }
 
 #skipFwdBtn {
+	-fx-border-color: transparent;
 	-fx-graphic: url("/skins/purple_GUI/purple_05.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
@@ -188,6 +211,7 @@
 }
 
 #skipBackBtn {
+	-fx-border-color: transparent;
 	-fx-graphic: url("/skins/purple_GUI/purple_04.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
