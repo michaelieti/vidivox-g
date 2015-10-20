@@ -47,8 +47,7 @@ public class OverlayController {
 	}
 	
 	public void updateTable(){
-		//TODO: looks at the list and reupdates the table
-		
+		OverlayPanel.getOverlayPanel().reloadTable();
 	}
 	
 	public void setCommentaryTable(TableView<Commentary> table){

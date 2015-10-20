@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,11 +28,16 @@ public class OverlayPanel extends Stage {
 	//following StagedMedia's clearing up
 	private TableView<Commentary> tableView = new TableView<>();
 	private TableColumn<Commentary, String> typeCol, timeCol, nameCol;
+	private static OverlayPanel thisPanel = null;
+	
+	public static OverlayPanel getOverlayPanel(){
+		return thisPanel;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public OverlayPanel(){
 		super();
-		
+		thisPanel = this;
 		OverlayController olc = OverlayController.getOLController();
 		
 		this.setTitle("Overlay");
@@ -48,7 +54,7 @@ public class OverlayPanel extends Stage {
 		nameCol = new TableColumn("Name/Text");
 		bindColumns();
 		tableView.getColumns().addAll(typeCol, timeCol, nameCol);
-		olc.addCommentary(new Commentary(Duration.valueOf("1h"), "this is a test"));
+		tableView.setPlaceholder(new Label("No commits added"));
 		
 		
 		//add in Edit button and Delete button in HBox
@@ -98,6 +104,12 @@ public class OverlayPanel extends Stage {
 		});
 		
 	}
+	
+	protected void reloadTable(){
+		tableView.getColumns().clear();
+		tableView.getColumns().addAll(typeCol, timeCol, nameCol);
+	}
+	
 	
 	/* this works, don't touch it till absolutely necessary*/
 	private void bindColumns(){

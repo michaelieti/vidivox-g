@@ -125,6 +125,7 @@ public class SpeechTab extends BindableTab {
 				
 				if (editFlag){	//if currently under editing, just edit the text, leave the time
 					commentUnderEdit.setText(userField.getText());
+					OverlayController.getOLController().updateTable();
 					setEditFlag(false);
 				} else {
 					// not currently under editing: create new commentary, use the current time, and use new text
