@@ -9,6 +9,9 @@ import utility.StagedMedia;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.When;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
@@ -37,12 +40,12 @@ public class SpeechTab extends BindableTab {
 
 	private Text msg;
 	private TextArea userField;
-	private Button speechBtn, saveBtn, overlayBtn;
+	private Button speechBtn, saveBtn, overlayBtn, cancelOverlayBtn;
 	private FileChooser f;
 	private Stage stage;
 	private ProgressBar progBar = new ProgressBar();
 	private int pid = -1;
-	private boolean editFlag = false;
+	private SimpleBooleanProperty editFlag = new SimpleBooleanProperty(false);
 	private Commentary commentUnderEdit = null;
 	private static SpeechTab speechTab;
 	
@@ -103,7 +106,18 @@ public class SpeechTab extends BindableTab {
 		});
 		speechBtn.disableProperty().bind(
 				userField.lengthProperty().isEqualTo(0));
-
+		
+		cancelOverlayBtn = new Button("Cancel editing");
+		cancelOverlayBtn.setTooltip(new Tooltip("Cancel the editing of this tooltip, and go back to inserting new commentary."));
+		cancelOverlayBtn.setVisible(false);
+		cancelOverlayBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				editFlag.set(false);
+				commentUnderEdit = null;
+			}
+		});
+		
 		overlayBtn = new Button("Add to overlay");
 		overlayBtn.setTooltip(new Tooltip(
 						"Add this commentary with the current time to the overlays."));
@@ -118,12 +132,11 @@ public class SpeechTab extends BindableTab {
 			/**
 			 * Create a new commentary and add it to the overlay list.
 			 * The table is updated automatically.
-				
 			 */
 			@Override
 			public void handle(ActionEvent arg) {
 				
-				if (editFlag){	//if currently under editing, just edit the text, leave the time
+				if (editFlag.get()){	//if currently under editing, just edit the text, leave the time
 					commentUnderEdit.setText(userField.getText());
 					OverlayController.getOLController().updateTable();
 					setEditFlag(false);
@@ -151,6 +164,24 @@ public class SpeechTab extends BindableTab {
 		});
 		// disables the button when no text in field
 
+		editFlag.addListener(new ChangeListener<Boolean>(){
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if (newValue){
+					cancelOverlayBtn.setVisible(true);
+					overlayBtn.setText("Finish editing commentary");
+					overlayBtn.setTooltip(new Tooltip("Save this edit"));
+				}
+				else{
+					cancelOverlayBtn.setVisible(false);
+					overlayBtn.setText("Add to overlay list");
+					overlayBtn.setTooltip(new Tooltip("Add this commentary at the current time to the list of commentary to be overlaid"));
+				}
+				
+			}
+			
+		});
+		
 		/* placement starts here */
 		GridPane speechPane = new GridPane();
 		speechPane.setGridLinesVisible(player.Main.GRID_IS_VISIBLE);
@@ -162,7 +193,7 @@ public class SpeechTab extends BindableTab {
 		HBox speechBtns = new HBox();
 		speechBtns.setAlignment(Pos.CENTER);
 		speechBtns.setSpacing(btnSpacing);
-		speechBtns.getChildren().addAll(speechBtn, saveBtn, overlayBtn);
+		speechBtns.getChildren().addAll(speechBtn, saveBtn, overlayBtn, cancelOverlayBtn);
 		speechPane.add(speechBtns, 0, 4, 3, 1);
 		progBar.setVisible(false);
 		speechPane.add(progBar, 0, 5);
@@ -178,7 +209,7 @@ public class SpeechTab extends BindableTab {
 	}
 	
 	private void setEditFlag(boolean x){
-		editFlag = x;
+		editFlag.set(x);
 	}
 	
 	
