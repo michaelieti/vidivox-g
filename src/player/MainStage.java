@@ -36,10 +36,10 @@ public class MainStage extends Stage {
 	private VidivoxFileControls vidiFileCtrl;
 	private Main main;
 
-	public MainStage(Main vl) {
+	public MainStage(Main appLauncher) {
 		super();
 		this.setTitle(Main.DEFAULT_TITLE);
-		main = vl;
+		main = appLauncher;
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setVgap(10);

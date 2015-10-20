@@ -6,6 +6,9 @@ import java.lang.reflect.Field;
 
 import utility.StagedAudio;
 import utility.StagedMedia;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
+import javafx.beans.binding.When;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
@@ -18,7 +21,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -40,12 +42,19 @@ public class SpeechTab extends BindableTab {
 	private Stage stage;
 	private ProgressBar progBar = new ProgressBar();
 	private int pid = -1;
+	private MediaView mv;
 
 	public SpeechTab(final MediaView mv, String title, String message) {
 		super(mv, title);
+		this.mv = mv;
 		msg = new Text(message);
 		msg.setFill(Color.LIGHTGRAY);
 		userField = new TextArea();
+
+		// Making the userField not editable when there is no video attached to
+		// the media player
+		userField.editableProperty().bind(mv.mediaPlayerProperty().isNotNull());
+
 		f = new FileChooser();
 		f.setTitle("Save");
 		// Initializing Button Event handlers
@@ -87,42 +96,42 @@ public class SpeechTab extends BindableTab {
 				userField.lengthProperty().isEqualTo(0));
 
 		overlayBtn = new Button("Add to overlay");
-		overlayBtn.setTooltip(new Tooltip(
+		overlayBtn
+				.setTooltip(new Tooltip(
 						"Overlay the speech with the current video and play the resulting video"));
+
+		// Disables the overlay button when either there is no input text, or
+		// there is no attached video.
+		overlayBtn.disableProperty().bind(
+				Bindings.or(userField.lengthProperty().isEqualTo(0), mv
+						.mediaPlayerProperty().isNull()));
 		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg) {
-				//Create a new commentary and add it to the overlay list.
-				//The table is updated automatically.
+				// Create a new commentary and add it to the overlay list.
+				// The table is updated automatically.
 				String text = userField.getText();
-				Duration time = VidivoxPlayer.getVidivoxPlayer().getMediaPlayer().getCurrentTime();
+				Duration time = VidivoxPlayer.getVidivoxPlayer()
+						.getMediaPlayer().getCurrentTime();
 				Commentary comment = new Commentary(time, text);
 				OverlayController.getOLController().addCommentary(comment);
 				/*
-				 * THE OLD IMPLEMENTATION OF SPEECH TAB
-				 * ADDS IN A COMMENTARY AT THE START OF THE VIDEO.
-				 * THIS IS BEING REPLACED
+				 * THE OLD IMPLEMENTATION OF SPEECH TAB ADDS IN A COMMENTARY AT
+				 * THE START OF THE VIDEO. THIS IS BEING REPLACED
 				 * 
-				try {
-					String msg = userField.getText();
-					StagedAudio stgAudio = MediaConverter.textToSpeech(msg);
-					Media video = mv.getMediaPlayer().getMedia();
-					MediaConverter.mergeVideoAndAudio(video, stgAudio, progBar);
-				} catch (Exception e) {
-					e.printStackTrace();
-					System.out.println("gg u screwed");
-				}
-				*/
-				
-				
+				 * try { String msg = userField.getText(); StagedAudio stgAudio
+				 * = MediaConverter.textToSpeech(msg); Media video =
+				 * mv.getMediaPlayer().getMedia();
+				 * MediaConverter.mergeVideoAndAudio(video, stgAudio, progBar);
+				 * } catch (Exception e) { e.printStackTrace();
+				 * System.out.println("gg u screwed"); }
+				 */
 
 			}
 
 		});
-		//disables the button when no text in field
-		overlayBtn.disableProperty().bind(
-				userField.lengthProperty().isEqualTo(0));
+		// disables the button when no text in field
 
 		/* placement starts here */
 		GridPane speechPane = new GridPane();
@@ -145,7 +154,19 @@ public class SpeechTab extends BindableTab {
 	}
 
 	public void setBind(Stage toBindTo) {
+		/*
+		 * This creates a custom string property. The property will say
+		 * "Please open..." if there is no video. Otherwise it will display the
+		 * user defined message.
+		 */
+		StringBinding changeMsg;
+		changeMsg = new When(mv.mediaPlayerProperty().isNull()).then(
+				"Please open a video file to proceed.")
+				.otherwise(msg.getText());
+		msg.textProperty().bind(changeMsg);
+
 		msg.wrappingWidthProperty().bind(toBindTo.widthProperty().subtract(20));
+
 		return;
 	}
 
