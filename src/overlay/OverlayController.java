@@ -1,10 +1,19 @@
 package overlay;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
+import editor.SpeechTab;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
+import player.VidivoxPlayer;
 
 /**
  * Co-ordinates message sending between the OverlayWindow and the Editor Panel,
@@ -37,10 +46,16 @@ public class OverlayController {
 		commentaryList.remove(commentary);
 		updateTable();
 	}
+	public void editCommentary(Commentary commentary){
+		//gets the selected commentary from the table
+		//spits the commentary back out into the editor panel
+		SpeechTab.getSpeechTab().editCommentary(commentary);
+		//sets the edit flag to TRUE
+		//upon saving, resets the edit flag to FALSE
+	}
 	
 	public void updateTable(){
-		//TODO: looks at the list and reupdates the table
-		
+		OverlayPanel.getOverlayPanel().reloadTable();
 	}
 	
 	public void setCommentaryTable(TableView<Commentary> table){
@@ -64,9 +79,29 @@ public class OverlayController {
 		 * */
 	}
 	
-	public File createCommentaryFile(){
+	public File createCommentaryFile() throws UnsupportedEncodingException, FileNotFoundException {
 		//TODO: creates a formatted commentary file
 		//that can be read easily from the command line or bash
+		
+		//get name of file, add 'commentary' or some extension e.g. 'cmt'
+		String originalFileURI = VidivoxPlayer.getVPlayer().getMedia().getSource();
+		
+		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+		new FileOutputStream("filename.txt"), "utf-8"))) {
+			bw.write("");
+		} catch (IOException e){
+			//TODO: do something to handle IOexception
+			e.printStackTrace();
+		}
+		
+		//open up a file writer type object
+		//create text file
+		//for each Commentary in commentaryList
+		//string = commentary.toFileFormattedString
+		//append this string to the file
+		//return the file object
+		
+		
 		return null;
 	}
 	

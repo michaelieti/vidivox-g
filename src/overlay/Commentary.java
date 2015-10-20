@@ -77,9 +77,9 @@ public class Commentary implements Comparable<Commentary> {
 	public String toFileFormattedString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(TimeUtility.formatTime(timeProperty.get()));
-		sb.append("\n");
+		sb.append(System.getProperty("line.separator"));
 		sb.append(textProperty);
-		sb.append("\n");
+		sb.append(System.getProperty("line.separator"));
 		return sb.toString();
 	}
 

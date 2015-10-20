@@ -95,6 +95,7 @@ public class MainStage extends Stage {
 			}
 		});
 		final Stage current = this;
+		//TODO: comment this, wtf is this even
 		this.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> ov,

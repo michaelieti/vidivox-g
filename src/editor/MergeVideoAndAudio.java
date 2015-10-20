@@ -75,8 +75,8 @@ public class MergeVideoAndAudio extends Task<StagedMedia> {
 			p.waitFor();
 			this.updateProgress(video.getDuration().toSeconds(), video
 					.getDuration().toSeconds());
-			VidivoxPlayer.getVidivoxPlayer().setMedia(output.getMedia());
-			VidivoxPlayer.getVidivoxPlayer().getMediaPlayer().play();
+			VidivoxPlayer.getVPlayer().setMedia(output.getMedia());
+			VidivoxPlayer.getVPlayer().getMediaPlayer().play();
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
