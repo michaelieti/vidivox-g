@@ -1,6 +1,13 @@
 package overlay;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 import editor.SpeechTab;
 import javafx.collections.FXCollections;
@@ -71,9 +78,29 @@ public class OverlayController {
 		 * */
 	}
 	
-	public File createCommentaryFile(){
+	public File createCommentaryFile() throws UnsupportedEncodingException, FileNotFoundException {
 		//TODO: creates a formatted commentary file
 		//that can be read easily from the command line or bash
+		
+		//get name of file, add 'commentary' or some extension e.g. 'cmt'
+		
+		
+		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+		new FileOutputStream("filename.txt"), "utf-8"))) {
+			bw.write("");
+		} catch (IOException e){
+			//TODO: do something to handle IOexception
+			e.printStackTrace();
+		}
+		
+		//open up a file writer type object
+		//create text file
+		//for each Commentary in commentaryList
+		//string = commentary.toFileFormattedString
+		//append this string to the file
+		//return the file object
+		
+		
 		return null;
 	}
 	
