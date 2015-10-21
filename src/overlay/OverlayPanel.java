@@ -38,7 +38,7 @@ public class OverlayPanel extends Stage {
 	public OverlayPanel(){
 		super();
 		thisPanel = this;
-		OverlayController olc = OverlayController.getOLController();
+		final OverlayController olc = OverlayController.getOLController();
 		
 		this.setTitle("Overlay");
 		VBox mainPanel = new VBox();
