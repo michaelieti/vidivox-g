@@ -5,6 +5,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
@@ -33,5 +34,9 @@ public interface MainModelable {
 	public SkinColor getCurrentSkinColor();
 	
 	public ObjectProperty<SkinColor> getCurrentSkinColorProperty();
+	
+	public StringProperty getTitleProperty();
+	
+	public String getTitle();
 
 }

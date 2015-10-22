@@ -1,6 +1,7 @@
 package main.control;
 
 import player.VidivoxPlayer;
+import main.MainView;
 import main.model.MainModelable;
 import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
@@ -12,11 +13,23 @@ import skins.SkinColor;
 public class MainControl implements MainControllable {
 
 	MainModelable model;
+	MainView view;
 	private Double playRateIncrement = 3.5;
 	private double rwdRate = 0;
 
 	public MainControl(MainModelable model) {
 		this.model = model;
+	}
+	
+	@Override
+	public boolean initialize() {
+		if (model == null || view == null) {
+			return false;
+		} else {
+			view.titleProperty().bind(model.getTitleProperty());
+			
+			return true;
+		}
 	}
 
 	@Override
@@ -43,6 +56,7 @@ public class MainControl implements MainControllable {
 
 	@Override
 	public void rwd() {
+		System.out.println("Hello");
 		if (rwdRate == 0) {
 			rwdRate = 1;
 		} else if (rwdRate < 8.0) {
@@ -105,7 +119,18 @@ public class MainControl implements MainControllable {
 	@Override
 	public void setAutoPlay(boolean auto) {
 		model.getMediaPlayer().setAutoPlay(auto);
-		
 	}
+
+	@Override
+	public void setModel(MainModelable model) {
+		this.model = model;
+	}
+
+	@Override
+	public void setView(MainView view) {
+		this.view = view;
+	}
+
+	
 
 }
