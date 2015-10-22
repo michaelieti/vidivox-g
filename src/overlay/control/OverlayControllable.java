@@ -1,12 +1,20 @@
 package overlay.control;
 
+import overlay.Commentary;
+
 public interface OverlayControllable {
 	
 	public void filterList(OverlayType olType);
 	
-	public void editSelected();
+	public void editSelectedCommentary();
 	
-	public void deleteSelected();
+	public void addCommentary(Commentary commentary);
+	
+	public void editCommentary(Commentary commentary);
+	
+	public void deleteSelectedCommentary();
+	
+	public void deleteCommentary(Commentary commentary);
 	
 	public void commitOverlay();
 }

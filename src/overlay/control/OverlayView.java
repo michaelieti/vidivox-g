@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -25,9 +26,9 @@ import overlay.Commentary;
  */
 public class OverlayView extends Stage {
 	
-	private TableView<Commentary> tableView = new TableView<>();
-	private TableColumn<Commentary, String> typeCol, timeCol, nameCol;
-	private Button editButton, deleteButton, commitButton;
+	TableView<Commentary> tableView = new TableView<>();
+	TableColumn<Commentary, String> typeCol, timeCol, nameCol;
+	Button editButton, deleteButton, commitButton;
 	
 	@SuppressWarnings("unchecked")
 	public OverlayView(){
@@ -56,12 +57,16 @@ public class OverlayView extends Stage {
 		/* DELETE BUTTON*/
 		deleteButton = new Button("Delete selected");
 		editBox.getChildren().addAll(editButton, deleteButton);
+		/* COMMIT BUTTON */
+		commitButton = new Button("Commit and apply overlay");
+		
 		
 		mainPanel.getChildren().addAll(filterPanel,tableView, editBox, commitButton);
 		
 		Scene sc = new Scene(mainPanel, 250, 600);
 		this.setScene(sc);
 		
+		/* setting default close/open events */
 		final Stage s = this;
 		this.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
@@ -71,22 +76,23 @@ public class OverlayView extends Stage {
 		});
 		
 		this.setOnShowing(new EventHandler<WindowEvent>() {
-
 			@Override
 			public void handle(WindowEvent arg0) {
 				s.setX(Screen.getPrimary().getVisualBounds().getMaxX() - 250);
 				s.setY(Screen.getPrimary().getVisualBounds().getMaxY() / 2 - 200);
-				
 			}
-			
 		});
-		
 	}
 
 	@SuppressWarnings("unchecked")
 	public void reloadTable(){
 		tableView.getColumns().clear();
 		tableView.getColumns().addAll(typeCol, timeCol, nameCol);
+	}
+	
+	public TableViewSelectionModel<Commentary> getSelection(){
+		TableViewSelectionModel<Commentary> selectionModel = tableView.getSelectionModel();
+		return selectionModel;
 	}
 
 	

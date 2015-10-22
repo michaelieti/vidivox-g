@@ -18,4 +18,5 @@ public interface OverlayModellable {
 	 */
 	public OverlayType getFilterType();
 	
+	
 }
