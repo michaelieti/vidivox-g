@@ -8,6 +8,8 @@ public interface OverlayControllable {
 	
 	public void editSelectedCommentary();
 	
+	public void addCommentary(Commentary commentary);
+	
 	public void editCommentary(Commentary commentary);
 	
 	public void deleteSelectedCommentary();

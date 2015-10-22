@@ -38,7 +38,6 @@ public class OverlayController implements OverlayControllable {
 	}
 	
 	/* singleton getter */
-
 	public static OverlayController getOLController(){
 		if (singletonObject == null){
 			singletonObject = new OverlayController();
@@ -73,6 +72,12 @@ public class OverlayController implements OverlayControllable {
 		//TODO: sets filter off or onto a selected overlay type
 	}
 
+	@Override
+	public void addCommentary(Commentary comment){
+		model.getOverlayList().add(comment);
+		view.reloadTable();
+	}
+	
 	@Override
 	public void editSelectedCommentary() {
 		SelectionModel<Commentary> selectionModel = view.getSelection();

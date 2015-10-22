@@ -12,7 +12,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import overlay.OverlayPanel;
 import overlay.control.OverlayController;
 import overlay.control.OverlayView;
 import overlay.model.OverlayModel;
@@ -61,6 +60,7 @@ public class Main extends Application {
 		olView = new OverlayView();
 		olController.setView(olView);	//sets the controller's associated view
 		olController.initialize();		//initializes event handlers etc between view and model
+		/* finish overlay set up*/
 		
 		primaryStage = ms;
 		
