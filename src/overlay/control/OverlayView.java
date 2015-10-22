@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -25,9 +26,9 @@ import overlay.Commentary;
  */
 public class OverlayView extends Stage {
 	
-	private TableView<Commentary> tableView = new TableView<>();
-	private TableColumn<Commentary, String> typeCol, timeCol, nameCol;
-	private Button editButton, deleteButton, commitButton;
+	TableView<Commentary> tableView = new TableView<>();
+	TableColumn<Commentary, String> typeCol, timeCol, nameCol;
+	Button editButton, deleteButton, commitButton;
 	
 	@SuppressWarnings("unchecked")
 	public OverlayView(){
@@ -87,6 +88,11 @@ public class OverlayView extends Stage {
 	public void reloadTable(){
 		tableView.getColumns().clear();
 		tableView.getColumns().addAll(typeCol, timeCol, nameCol);
+	}
+	
+	public TableViewSelectionModel<Commentary> getSelection(){
+		TableViewSelectionModel<Commentary> selectionModel = tableView.getSelectionModel();
+		return selectionModel;
 	}
 
 	
