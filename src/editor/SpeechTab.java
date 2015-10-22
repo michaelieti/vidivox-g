@@ -39,7 +39,7 @@ public class SpeechTab extends BindableTab {
 
 	final private static int BUTTON_SPACING = 20;
 
-	private Text msg;
+	private Text mainMessage;		//main message shown
 	private TextArea userField;
 	private Button speechBtn, saveBtn, overlayBtn, cancelOverlayBtn;
 	private FileChooser f;
@@ -54,13 +54,13 @@ public class SpeechTab extends BindableTab {
 	}
 	
 
-	public SpeechTab(final MediaView mv, String title, String message) {
+	public SpeechTab(final MediaView mv, String title, String msg) {
 		super(mv, title);
 
 		speechTab = this;
 		
-		msg = new Text(message);
-		msg.setFill(Color.LIGHTGRAY);
+		mainMessage = new Text(msg);
+		mainMessage.setFill(Color.LIGHTGRAY);
 		userField = new TextArea();
 
 		// Making the userField not editable when there is no video attached to
@@ -189,7 +189,7 @@ public class SpeechTab extends BindableTab {
 		speechPane.setVgap(10);
 		speechPane.setHgap(10);
 		speechPane.setPadding(new Insets(10, 10, 10, 10));
-		speechPane.add(msg, 0, 0, 3, 1);
+		speechPane.add(message, 0, 0, 3, 1);
 		speechPane.add(userField, 0, 1, 3, 3);
 		HBox speechBtns = new HBox();
 		speechBtns.setAlignment(Pos.CENTER);
