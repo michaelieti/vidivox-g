@@ -39,7 +39,7 @@ public class SpeechTab extends BindableTab {
 
 	final private static int BUTTON_SPACING = 20;
 
-	private Text mainMessage;		//main message shown
+	private Text mainMessage; // main message shown
 	private TextArea userField;
 	private Button speechBtn, saveBtn, overlayBtn, cancelOverlayBtn;
 	private FileChooser f;
@@ -48,17 +48,16 @@ public class SpeechTab extends BindableTab {
 	private SimpleBooleanProperty editFlag = new SimpleBooleanProperty(false);
 	private Commentary commentUnderEdit = null;
 	private static SpeechTab speechTab;
-	
-	public static SpeechTab getSpeechTab(){
+
+	public static SpeechTab getSpeechTab() {
 		return speechTab;
 	}
-	
 
 	public SpeechTab(final MediaView mv, String title, String msg) {
 		super(mv, title);
 
 		speechTab = this;
-		
+
 		mainMessage = new Text(msg);
 		mainMessage.setFill(Color.LIGHTGRAY);
 		userField = new TextArea();
@@ -106,21 +105,23 @@ public class SpeechTab extends BindableTab {
 		});
 		speechBtn.disableProperty().bind(
 				userField.lengthProperty().isEqualTo(0));
-		
+
 		cancelOverlayBtn = new Button("Cancel editing");
-		cancelOverlayBtn.setTooltip(new Tooltip("Cancel the editing of this tooltip, and go back to inserting new commentary."));
+		cancelOverlayBtn
+				.setTooltip(new Tooltip(
+						"Cancel the editing of this tooltip, and go back to inserting new commentary."));
 		cancelOverlayBtn.setVisible(false);
-		cancelOverlayBtn.setOnAction(new EventHandler<ActionEvent>(){
+		cancelOverlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				editFlag.set(false);
 				commentUnderEdit = null;
 			}
 		});
-		
+
 		overlayBtn = new Button("Add to overlay");
 		overlayBtn.setTooltip(new Tooltip(
-						"Add this commentary with the current time to the overlays."));
+				"Add this commentary with the current time to the overlays."));
 
 		// Disables the overlay button when either there is no input text, or
 		// there is no attached video.
@@ -130,21 +131,25 @@ public class SpeechTab extends BindableTab {
 		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
 
 			/**
-			 * Create a new commentary and add it to the overlay list.
-			 * The table is updated automatically.
+			 * Create a new commentary and add it to the overlay list. The table
+			 * is updated automatically.
 			 */
 			@Override
 			public void handle(ActionEvent arg) {
-				
-				if (editFlag.get()){	//if currently under editing, just edit the text, leave the time
+
+				if (editFlag.get()) { // if currently under editing, just edit
+										// the text, leave the time
 					commentUnderEdit.setText(userField.getText());
-					//reload table - is this needed?
+					// reload table - is this needed?
 					setEditFlag(false);
 				} else {
-					// not currently under editing: create new commentary, use the current time, and use new text
+					// not currently under editing: create new commentary, use
+					// the current time, and use new text
 					String text = userField.getText();
-					Duration time = VidivoxPlayer.getVPlayer(null).getMediaPlayer().getCurrentTime();
-					Commentary comment = new Commentary(time, text, OverlayType.TTS);
+					Duration time = VidivoxPlayer.getVPlayer(null)
+							.getMediaPlayer().getCurrentTime();
+					Commentary comment = new Commentary(time, text,
+							OverlayType.TTS);
 
 					OverlayController.getOLController().addCommentary(comment);
 				}
@@ -165,24 +170,26 @@ public class SpeechTab extends BindableTab {
 		});
 		// disables the button when no text in field
 
-		editFlag.addListener(new ChangeListener<Boolean>(){
+		editFlag.addListener(new ChangeListener<Boolean>() {
 			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if (newValue){
+			public void changed(ObservableValue<? extends Boolean> observable,
+					Boolean oldValue, Boolean newValue) {
+				if (newValue) {
 					cancelOverlayBtn.setVisible(true);
 					overlayBtn.setText("Finish editing commentary");
 					overlayBtn.setTooltip(new Tooltip("Save this edit"));
-				}
-				else{
+				} else {
 					cancelOverlayBtn.setVisible(false);
 					overlayBtn.setText("Add to overlay list");
-					overlayBtn.setTooltip(new Tooltip("Add this commentary at the current time to the list of commentary to be overlaid"));
+					overlayBtn
+							.setTooltip(new Tooltip(
+									"Add this commentary at the current time to the list of commentary to be overlaid"));
 				}
-				
+
 			}
-			
+
 		});
-		
+
 		/* placement starts here */
 		GridPane speechPane = new GridPane();
 		speechPane.setGridLinesVisible(player.Main.GRID_IS_VISIBLE);
@@ -194,7 +201,8 @@ public class SpeechTab extends BindableTab {
 		HBox speechBtns = new HBox();
 		speechBtns.setAlignment(Pos.CENTER);
 		speechBtns.setSpacing(BUTTON_SPACING);
-		speechBtns.getChildren().addAll(speechBtn, saveBtn, overlayBtn, cancelOverlayBtn);
+		speechBtns.getChildren().addAll(speechBtn, saveBtn, overlayBtn,
+				cancelOverlayBtn);
 		speechPane.add(speechBtns, 0, 4, 3, 1);
 		progBar.setVisible(false);
 		speechPane.add(progBar, 0, 5);
@@ -203,17 +211,16 @@ public class SpeechTab extends BindableTab {
 
 	}
 
-	public void editCommentary(Commentary commentary){
+	public void editCommentary(Commentary commentary) {
 		commentUnderEdit = commentary;
 		userField.setText(commentary.getText());
 		setEditFlag(true);
 	}
-	
-	private void setEditFlag(boolean x){
+
+	private void setEditFlag(boolean x) {
 		editFlag.set(x);
 	}
-	
-	
+
 	public void setBind(Stage toBindTo) {
 		/*
 		 * This creates a custom string property. The property will say
@@ -221,7 +228,8 @@ public class SpeechTab extends BindableTab {
 		 * user defined message.
 		 */
 		StringBinding changeMsg;
-		changeMsg = new When(VidivoxPlayer.getVPlayer(null).getMediaView().mediaPlayerProperty().isNull()).then(
+		changeMsg = new When(VidivoxPlayer.getVPlayer(null).getMediaView()
+				.mediaPlayerProperty().isNull()).then(
 				"Please open a video file to proceed.")
 				.otherwise(msg.getText());
 		msg.textProperty().bind(changeMsg);

@@ -8,5 +8,7 @@ public interface SpeechModelable extends TabModelable {
 	public String getUserInputText();
 
 	public StringProperty getUserInputTextProperty();
+	
+	public int getPID();
 
 }
