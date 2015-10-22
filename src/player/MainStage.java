@@ -2,9 +2,19 @@ package player;
 
 import java.io.File;
 
+import main.control.MainControllable;
+import skins.SkinColor;
+import main.model.MainModelable;
+
 import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.When;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -13,28 +23,16 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
-public class MainStage extends Stage {
+public class MainStage extends Stage implements MainControllable, MainModelable {
 
-	public enum SkinColor {
-		BLUE("/skins/BlueSkin.css"), GREEN("/skins/GreenSkin.css"), ORANGE(
-				"/skins/OrangeSkin.css"), PURPLE("/skins/PurpleSkin.css");
-
-		private String url;
-
-		private SkinColor(String url) {
-			this.url = url;
-		}
-
-		public String toURL() {
-			String x = getClass().getResource(url).toExternalForm();
-			return x;
-		}
-	}
-
-	private SkinColor currentSkinColor = SkinColor.BLUE;
+	private SkinColor currentSkinColor = skins.SkinColor.BLUE;
 	private MediaPanel vidiMedia;
 	private VidivoxVideoControls vidiVidCtrl;
 	private VidivoxFileControls vidiFileCtrl;
@@ -52,7 +50,6 @@ public class MainStage extends Stage {
 		grid.setGridLinesVisible(Main.GRID_IS_VISIBLE);
 
 		vidiMedia = new MediaPanel();
-		
 
 		// FILE CONTROL BAR: ADDED TO TOP
 		vidiFileCtrl = new VidivoxFileControls(this, vidiMedia);
@@ -70,9 +67,8 @@ public class MainStage extends Stage {
 		// grid complete, set scene
 		// MainStage contains the styling information for all the components of
 		// MainStage that do not change
-		s.getStylesheets()
-				.add(getClass().getResource("/skins/BlueSkin.css")
-						.toExternalForm());
+		s.getStylesheets().add(
+				getClass().getResource("/skins/BlueSkin.css").toExternalForm());
 		this.setScene(s);
 		/*
 		 * Setting the close action of this window to close the application
@@ -95,7 +91,7 @@ public class MainStage extends Stage {
 			}
 		});
 		final Stage current = this;
-		//TODO: comment this, wtf is this even
+		// TODO: comment this, wtf is this even
 		this.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> ov,
@@ -114,14 +110,12 @@ public class MainStage extends Stage {
 		});
 		setCurrentSkinColor(SkinColor.BLUE);
 		/*
-		StringBinding currentMedia = new When(vidiMedia.getMediaView()
-				.mediaPlayerProperty().isNull()).then(Main.DEFAULT_TITLE)
-				.otherwise(
-						Main.DEFAULT_TITLE
-								+ " - "
-								+ vidiMedia.getMediaView().getMediaPlayer()
-										.getMedia().getSource());
-		this.titleProperty().bind(currentMedia); */
+		 * StringBinding currentMedia = new When(vidiMedia.getMediaView()
+		 * .mediaPlayerProperty().isNull()).then(Main.DEFAULT_TITLE) .otherwise(
+		 * Main.DEFAULT_TITLE + " - " +
+		 * vidiMedia.getMediaView().getMediaPlayer() .getMedia().getSource());
+		 * this.titleProperty().bind(currentMedia);
+		 */
 	}
 
 	public MediaPanel getMediaPane() {
@@ -155,5 +149,99 @@ public class MainStage extends Stage {
 	public void setCurrentSkinColor(SkinColor currentSkinColor) {
 		this.currentSkinColor = currentSkinColor;
 	}
+
+	@Override
+	public MediaView getMediaView() {
+		return vidiMedia.getMediaView();
+	}
+
+	@Override
+	public MediaPlayer getMediaPlayer() {
+		return getMediaView().getMediaPlayer();
+	}
+
+	@Override
+	public Media getMedia() {
+		return getMediaPlayer().getMedia();
+	}
+
+	@Override
+	public Duration getDuration() {
+		return getMedia().getDuration();
+	}
+
+	@Override
+	public ReadOnlyObjectProperty<Duration> getCurrentTimeProperty() {
+		return getMediaPlayer().currentTimeProperty();
+	}
+
+	@Override
+	public DoubleProperty getVolumeProperty() {
+		return getMediaPlayer().volumeProperty();
+	}
+
+	@Override
+	public void setMedia(Media media) {
+		VidivoxPlayer.getVPlayer().setMedia(media);
+	}
+
+	@Override
+	public void setTime(Duration time) {
+		getMediaPlayer().seek(time);
+	}
+
+	@Override
+	public void setVolume(double vol) {
+		getMediaPlayer().setVolume(vol);
+
+	}
+
+	@Override
+	public void setMute(boolean mute) {
+		getMediaPlayer().setMute(mute);
+
+	}
+
+	@Override
+	public BooleanProperty hasMedia() {
+		BooleanBinding validMediaBinding = new When(getMediaPlayer()
+				.statusProperty().isEqualTo(MediaPlayer.Status.UNKNOWN)).then(
+				false).otherwise(true);
+		BooleanBinding mediaBinding = new When(getMediaView()
+				.mediaPlayerProperty().isNull()).then(false).otherwise(
+				validMediaBinding);
+		BooleanProperty mediaProperty = new SimpleBooleanProperty(false);
+		mediaProperty.bind(mediaBinding);
+		return mediaProperty;
+	}
+
+	@Override
+	public void play() {
+		getMediaPlayer().play();
+	}
+
+	@Override
+	public void ffwd() {
+
+	}
+
+	@Override
+	public void rwd() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void stop() {
+		getMediaPlayer().stop();
+
+	}
+
+	@Override
+	public void setSkinColor(SkinColor color) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

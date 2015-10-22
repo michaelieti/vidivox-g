@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 
 import editor.EditPanel;
 
-import player.MainStage.SkinColor;
+import skins.SkinColor;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -208,7 +208,7 @@ public class VidivoxFileControls extends MenuBar {
 		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.changeSkin(MainStage.SkinColor.BLUE);
+				ms.changeSkin(SkinColor.BLUE);
 				// Insures that only one skin is shown as selected at a time.
 				for (MenuItem m : custMenu.getItems()) {
 					if (!m.equals(blueSkin)) {
@@ -219,7 +219,7 @@ public class VidivoxFileControls extends MenuBar {
 
 		});
 		blueSkin.setSelected(ms.getCurrentSkinColor().equals(
-				MainStage.SkinColor.BLUE));
+				SkinColor.BLUE));
 
 		greenSkin = new CheckMenuItem("Green");
 		greenSkin.setId("fileBtns");
@@ -227,7 +227,7 @@ public class VidivoxFileControls extends MenuBar {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.changeSkin(MainStage.SkinColor.GREEN);
+				ms.changeSkin(SkinColor.GREEN);
 				for (MenuItem m : custMenu.getItems()) {
 					if (!m.equals(greenSkin)) {
 						((CheckMenuItem) (m)).setSelected(false);
@@ -237,14 +237,14 @@ public class VidivoxFileControls extends MenuBar {
 
 		});
 		greenSkin.setSelected(ms.getCurrentSkinColor().equals(
-				MainStage.SkinColor.GREEN));
+				SkinColor.GREEN));
 		orangeSkin = new CheckMenuItem("Orange");
 		orangeSkin.setId("fileBtns");
 		orangeSkin.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.changeSkin(MainStage.SkinColor.ORANGE);
+				ms.changeSkin(SkinColor.ORANGE);
 				for (MenuItem m : custMenu.getItems()) {
 					if (!m.equals(orangeSkin)) {
 						((CheckMenuItem) (m)).setSelected(false);
@@ -254,13 +254,13 @@ public class VidivoxFileControls extends MenuBar {
 
 		});
 		orangeSkin.setSelected(ms.getCurrentSkinColor().equals(
-				MainStage.SkinColor.ORANGE));
+				SkinColor.ORANGE));
 		purpleSkin = new CheckMenuItem("Purple");
 		purpleSkin.setId("fileBtns");
 		purpleSkin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.changeSkin(MainStage.SkinColor.PURPLE);
+				ms.changeSkin(SkinColor.PURPLE);
 				for (MenuItem m : custMenu.getItems()) {
 					if (!m.equals(purpleSkin)) {
 						((CheckMenuItem) (m)).setSelected(false);
@@ -270,7 +270,7 @@ public class VidivoxFileControls extends MenuBar {
 
 		});
 		purpleSkin.setSelected(ms.getCurrentSkinColor().equals(
-				MainStage.SkinColor.PURPLE));
+				SkinColor.PURPLE));
 
 		
 		fileMenu.getItems().addAll(open, save);
@@ -279,5 +279,7 @@ public class VidivoxFileControls extends MenuBar {
 		this.getMenus().addAll(fileMenu, windowMenu, custMenu);
 
 	}
+	
+
 	
 }

@@ -169,6 +169,7 @@ public class VidivoxVideoControls extends VBox {
 	public void stopVideo() {
 		System.out.println("Pressed Stop Wow!");
 		mediaView.getMediaPlayer().stop();
+		
 	}
 
 	public void ffwdVideo() {

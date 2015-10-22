@@ -56,7 +56,7 @@ public class SpeechTab extends BindableTab {
 
 	public SpeechTab(final MediaView mv, String title, String message) {
 		super(mv, title);
-		
+
 		speechTab = this;
 		
 		msg = new Text(message);
