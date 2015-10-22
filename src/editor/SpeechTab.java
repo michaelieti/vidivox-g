@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import overlay.Commentary;
 import overlay.OverlayController;
+import overlay.control.OverlayType;
 import player.VidivoxPlayer;
 
 public class SpeechTab extends BindableTab {
@@ -144,7 +145,7 @@ public class SpeechTab extends BindableTab {
 					// not currently under editing: create new commentary, use the current time, and use new text
 					String text = userField.getText();
 					Duration time = VidivoxPlayer.getVPlayer().getMediaPlayer().getCurrentTime();
-					Commentary comment = new Commentary(time, text);
+					Commentary comment = new Commentary(time, text, OverlayType.TTS);
 					OverlayController.getOLController().addCommentary(comment);
 				}
 				/*

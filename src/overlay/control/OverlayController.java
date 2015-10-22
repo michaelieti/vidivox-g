@@ -88,7 +88,9 @@ public class OverlayController implements OverlayControllable {
 	public void deleteSelectedCommentary() {
 		SelectionModel<Commentary> selModel = view.getSelection();
 		//delete the comment from the list
-		model.getOverlayList().remove(selModel.getSelectedItem());
+		if (selModel.getSelectedItem() != null){
+			model.getOverlayList().remove(selModel.getSelectedItem());
+		}
 	}
 
 	@Override
@@ -106,16 +108,13 @@ public class OverlayController implements OverlayControllable {
 	/* private initializer methods */
 	
 	private void bindTableModel(){
-		ObservableList<Commentary> list = model.getOverlayList();		/* bind in all columns */
-		view.typeCol.setCellValueFactory(new Callback(){
-			@Override
-			public SimpleStringProperty call(Object param) {
-				//TODO: supposedly should return the type of the object.
-				return new SimpleStringProperty("TTS");
-			}
-		});
+		ObservableList<Commentary> list = model.getOverlayList();
+		view.typeCol.setCellValueFactory(new PropertyValueFactory<Commentary, String>("type"));
 		view.timeCol.setCellValueFactory(new PropertyValueFactory<Commentary, String>("timeString"));
 		view.nameCol.setCellValueFactory(new PropertyValueFactory<Commentary, String>("text"));
+		
+		view.tableView.setItems(list);
+		view.reloadTable();
 		
 	}
 	

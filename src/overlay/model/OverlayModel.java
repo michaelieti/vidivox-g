@@ -2,6 +2,7 @@ package overlay.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Duration;
 import overlay.Commentary;
 import overlay.control.OverlayType;
 
@@ -19,6 +20,7 @@ public class OverlayModel implements OverlayModellable {
 	
 	public OverlayModel(){
 		super();
+		commentaryList.add(new Commentary(Duration.seconds(10.0), "Test string", OverlayType.TTS));
 	}
 	
 	@Override

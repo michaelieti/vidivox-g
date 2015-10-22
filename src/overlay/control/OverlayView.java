@@ -57,12 +57,16 @@ public class OverlayView extends Stage {
 		/* DELETE BUTTON*/
 		deleteButton = new Button("Delete selected");
 		editBox.getChildren().addAll(editButton, deleteButton);
+		/* COMMIT BUTTON */
+		commitButton = new Button("Commit and apply overlay");
+		
 		
 		mainPanel.getChildren().addAll(filterPanel,tableView, editBox, commitButton);
 		
 		Scene sc = new Scene(mainPanel, 250, 600);
 		this.setScene(sc);
 		
+		/* setting default close/open events */
 		final Stage s = this;
 		this.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
@@ -72,16 +76,12 @@ public class OverlayView extends Stage {
 		});
 		
 		this.setOnShowing(new EventHandler<WindowEvent>() {
-
 			@Override
 			public void handle(WindowEvent arg0) {
 				s.setX(Screen.getPrimary().getVisualBounds().getMaxX() - 250);
 				s.setY(Screen.getPrimary().getVisualBounds().getMaxY() / 2 - 200);
-				
 			}
-			
 		});
-		
 	}
 
 	@SuppressWarnings("unchecked")

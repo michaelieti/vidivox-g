@@ -5,16 +5,18 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
+import overlay.control.OverlayType;
 
 public class Commentary implements Comparable<Commentary> {
 	
+	private SimpleObjectProperty<OverlayType> typeProperty;
 	private SimpleObjectProperty<Duration> timeProperty;
 	private SimpleStringProperty textProperty;
 	private SimpleStringProperty timeStringProperty;
 	//can put in pitch/voice/stretch later
 	
 	public Commentary(){
-		this(Duration.ZERO, "<no text>");
+		this(Duration.ZERO, "<no text>", OverlayType.NO_TYPE);
 	}
 	
 	/**
@@ -22,10 +24,11 @@ public class Commentary implements Comparable<Commentary> {
 	 * @param time - Duration object of where the commentary begins.
 	 * @param text - String of what is to be said.
 	 */
-	public Commentary(Duration time, String text){
+	public Commentary(Duration time, String text, OverlayType type){
 		this.timeProperty = new SimpleObjectProperty<>(time);
 		this.textProperty = new SimpleStringProperty(text);
 		this.timeStringProperty = new SimpleStringProperty(TimeUtility.formatTime(time));
+		this.typeProperty = new SimpleObjectProperty<>(type);
 		Bindings.bindBidirectional(timeStringProperty, timeProperty, new DurationConverter());
 	}
 	
@@ -38,6 +41,11 @@ public class Commentary implements Comparable<Commentary> {
 		timeProperty.set(time);
 		setTimeString("");
 	}
+	
+	public void setType(OverlayType type){
+		typeProperty.set(type);
+	}
+	
 	/**
 	 * Sets the text for the commentary
 	 * @param text
@@ -63,6 +71,9 @@ public class Commentary implements Comparable<Commentary> {
 	}
 	public String getTimeString(){
 		return timeStringProperty.get();
+	}
+	public OverlayType getType(){
+		return typeProperty.get();
 	}
 	public String getText(){
 		return textProperty.getValue();
