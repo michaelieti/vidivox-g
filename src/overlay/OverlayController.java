@@ -47,11 +47,9 @@ public class OverlayController {
 		updateTable();
 	}
 	public void editCommentary(Commentary commentary){
-		//gets the selected commentary from the table
-		//spits the commentary back out into the editor panel
+		//takes the commentary from the overlay panel
+		//sends it off to speech tab to be processed.
 		SpeechTab.getSpeechTab().editCommentary(commentary);
-		//sets the edit flag to TRUE
-		//upon saving, resets the edit flag to FALSE
 	}
 	
 	public void updateTable(){
