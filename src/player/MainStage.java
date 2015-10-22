@@ -49,7 +49,7 @@ public class MainStage extends Stage {
 		grid.setPadding(new Insets(0, 0, 15, 0));
 		grid.setGridLinesVisible(Main.GRID_IS_VISIBLE);
 
-		vidiMedia = new MediaPanel();
+		vidiMedia = new MediaPanel(model);
 
 		// FILE CONTROL BAR: ADDED TO TOP
 		vidiFileCtrl = new VidivoxFileControls(this, vidiMedia);

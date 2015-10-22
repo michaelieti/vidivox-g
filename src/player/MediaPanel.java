@@ -1,5 +1,6 @@
 package player;
 
+import main.model.MainModelable;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaView;
 
@@ -11,7 +12,7 @@ public class MediaPanel extends VBox {
 	protected VidivoxPlayer vp = VidivoxPlayer.getVPlayer();
 
 
-	public MediaPanel() {
+	public MediaPanel(MainModelable model) {
 		super();
 		vp.setMediaPanel(this);
 		MediaView mv = vp.getMediaView();

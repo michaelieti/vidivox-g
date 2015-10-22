@@ -1,23 +1,16 @@
 package main.model;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.ObjectBinding;
-import javafx.beans.binding.When;
+import player.VidivoxPlayer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.ReadOnlyObjectPropertyBase;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 import skins.SkinColor;
@@ -29,25 +22,41 @@ public class MainModel implements MainModelable {
 	private ObjectProperty<SkinColor> skinProperty;
 
 	public MainModel() {
-		view = new MediaView();
+		view = VidivoxPlayer.getVPlayer().getMediaView();
 
-		ObjectBinding<MediaPlayer.Status> Status = new When(view
-				.mediaPlayerProperty().isNull()).then(
-				MediaPlayer.Status.UNKNOWN).otherwise(getStatus());
-		BooleanProperty sb = new SimpleBooleanProperty(false);
-		BooleanBinding b = new When(view.mediaPlayerProperty().isNull()).then(
-				true).otherwise(false);
-		System.out.println(Status.getValue() + "    \n    "
-				+ view.getMediaPlayer());
-		BooleanBinding correctMedia = view.mediaPlayerProperty().isNotNull()
-				.and(Status.isNotEqualTo(MediaPlayer.Status.UNKNOWN));
-
-		BooleanBinding mediaBinding = new When(correctMedia).then(true)
-				.otherwise(false);
-
+		/*
+		 * Creates a property initially set to false. This is set to true
+		 * whenever MediaViews media player is changed
+		 */
 		mediaProperty = new SimpleBooleanProperty(false);
-		mediaProperty.bind(mediaBinding);
+		view.mediaPlayerProperty().addListener(new ChangeListener<Object>() {
+			@Override
+			public void changed(ObservableValue<?> property, Object oldValue,
+					Object newValue) {
+				MediaPlayer v1 = (MediaPlayer) oldValue;
+				MediaPlayer v2 = (MediaPlayer) newValue;
+				/*
+				 * Given the old value is null, then we should be changing to a
+				 * new mediaplayer.
+				 */
+				if (v1 == null) {
+					mediaProperty.setValue(true);
+				}
+				/*
+				 * However this change could be from null -> null (when v2 is
+				 * null)
+				 */
+				if (v2 == null) {
+					mediaProperty.setValue(false);
+					return;
+				}
+			}
+		});
 
+		/*
+		 * Initializing the Skin Property Ideally all skins should be syched
+		 * with this property
+		 */
 		skinProperty = new SimpleObjectProperty<SkinColor>(SkinColor.BLUE);
 	}
 
@@ -98,15 +107,6 @@ public class MainModel implements MainModelable {
 	@Override
 	public ObjectProperty<SkinColor> getCurrentSkinColorProperty() {
 		return skinProperty;
-	}
-
-	public ObservableObjectValue<Status> getStatus() {
-		if (getMediaPlayer() == null) {
-			return new When(new SimpleBooleanProperty(true)).then(
-					MediaPlayer.Status.UNKNOWN).otherwise(
-					MediaPlayer.Status.UNKNOWN);
-		}
-		return getMediaPlayer().statusProperty();
 	}
 
 }
