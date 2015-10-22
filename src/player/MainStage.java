@@ -8,11 +8,10 @@ import main.model.MainModelable;
 
 import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.When;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -21,7 +20,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -30,16 +28,18 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
-public class MainStage extends Stage implements MainControllable, MainModelable {
+public class MainStage extends Stage {
 
 	private SkinColor currentSkinColor = skins.SkinColor.BLUE;
 	private MediaPanel vidiMedia;
 	private VidivoxVideoControls vidiVidCtrl;
 	private VidivoxFileControls vidiFileCtrl;
 	private Main main;
+	private MainModelable model;
 
-	public MainStage(Main appLauncher) {
+	public MainStage(Main appLauncher, MainModelable model) {
 		super();
+		this.model = model;
 		this.setTitle(Main.DEFAULT_TITLE);
 		main = appLauncher;
 		GridPane grid = new GridPane();
@@ -59,7 +59,7 @@ public class MainStage extends Stage implements MainControllable, MainModelable 
 		grid.add(vidiMedia, 0, 1);
 
 		// CONTROL PANEL ADDED: BOTTOM
-		vidiVidCtrl = new VidivoxVideoControls(vidiMedia.getMediaView());
+		vidiVidCtrl = new VidivoxVideoControls(vidiMedia.getMediaView(), model);
 		grid.add(vidiVidCtrl, 0, 2);
 
 		Scene s = new Scene(grid);
@@ -139,7 +139,6 @@ public class MainStage extends Stage implements MainControllable, MainModelable 
 		Scene editScene = main.getEditor().getScene();
 		editScene.getStylesheets().clear(); // remove all skins
 		editScene.getStylesheets().add(sc.toURL()); // reinstate a skin
-
 	}
 
 	public SkinColor getCurrentSkinColor() {
@@ -150,98 +149,6 @@ public class MainStage extends Stage implements MainControllable, MainModelable 
 		this.currentSkinColor = currentSkinColor;
 	}
 
-	@Override
-	public MediaView getMediaView() {
-		return vidiMedia.getMediaView();
-	}
-
-	@Override
-	public MediaPlayer getMediaPlayer() {
-		return getMediaView().getMediaPlayer();
-	}
-
-	@Override
-	public Media getMedia() {
-		return getMediaPlayer().getMedia();
-	}
-
-	@Override
-	public Duration getDuration() {
-		return getMedia().getDuration();
-	}
-
-	@Override
-	public ReadOnlyObjectProperty<Duration> getCurrentTimeProperty() {
-		return getMediaPlayer().currentTimeProperty();
-	}
-
-	@Override
-	public DoubleProperty getVolumeProperty() {
-		return getMediaPlayer().volumeProperty();
-	}
-
-	@Override
-	public void setMedia(Media media) {
-		VidivoxPlayer.getVPlayer().setMedia(media);
-	}
-
-	@Override
-	public void setTime(Duration time) {
-		getMediaPlayer().seek(time);
-	}
-
-	@Override
-	public void setVolume(double vol) {
-		getMediaPlayer().setVolume(vol);
-
-	}
-
-	@Override
-	public void setMute(boolean mute) {
-		getMediaPlayer().setMute(mute);
-
-	}
-
-	@Override
-	public BooleanProperty hasMedia() {
-		BooleanBinding validMediaBinding = new When(getMediaPlayer()
-				.statusProperty().isEqualTo(MediaPlayer.Status.UNKNOWN)).then(
-				false).otherwise(true);
-		BooleanBinding mediaBinding = new When(getMediaView()
-				.mediaPlayerProperty().isNull()).then(false).otherwise(
-				validMediaBinding);
-		BooleanProperty mediaProperty = new SimpleBooleanProperty(false);
-		mediaProperty.bind(mediaBinding);
-		return mediaProperty;
-	}
-
-	@Override
-	public void play() {
-		getMediaPlayer().play();
-	}
-
-	@Override
-	public void ffwd() {
-
-	}
-
-	@Override
-	public void rwd() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void stop() {
-		getMediaPlayer().stop();
-
-	}
-
-	@Override
-	public void setSkinColor(SkinColor color) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 }

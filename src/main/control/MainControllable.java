@@ -25,6 +25,6 @@ public interface MainControllable {
 	
 	public void setSkinColor(SkinColor color);
 	
-	public BooleanProperty hasMedia();
+	public BooleanProperty hasMediaProperty();
 
 }

@@ -1,5 +1,6 @@
 package player;
 
+import main.model.MainModelable;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.concurrent.Task;
@@ -43,21 +44,25 @@ public class VidivoxVideoControls extends VBox {
 	
 	final public static String DEFAULT_SKIN = "blue";
 
-	public VidivoxVideoControls(MediaView mv) {
+	private MainModelable model;
+	
+	public VidivoxVideoControls(MediaView mv, final MainModelable model) {
 		super();
 		VidivoxPlayer.getVPlayer().setControlPanel(this);
 		this.mediaView = mv;
 		
 		HBox timeSliderPanel = new HBox();
 		HBox videoControlPanel = new HBox();
-
+		
+		videoControlPanel.disableProperty().bind(model.hasMediaProperty());
+		
 		// Buttons defined here (e.g. play button, pause button, stop button...)
 		playBtn = new Button();
 		playBtn.setId("playBtn");
 		playBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				rwd = false;
-				MediaPlayer mp = mediaView.getMediaPlayer();
+				MediaPlayer mp = model.getMediaPlayer();
 				// if the rate is not currently 1.0, set to 1.0 and then return
 				// to pause.
 				if (mp.getRate() != 1.0) {

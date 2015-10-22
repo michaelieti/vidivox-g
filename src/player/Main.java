@@ -2,6 +2,9 @@ package player;
 
 import java.io.File;
 
+import main.model.MainModel;
+import main.model.MainModelable;
+
 import editor.EditPanel;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -45,7 +48,8 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		ms = new MainStage(this);
+		MainModelable model = new MainModel();
+		ms = new MainStage(this,model);
 		editorPanel = new EditPanel(ms.getMediaPane().getMediaView());
 		overlayPanel = new OverlayPanel();
 		
