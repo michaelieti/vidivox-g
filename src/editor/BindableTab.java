@@ -36,8 +36,7 @@ abstract public class BindableTab extends Tab {
 	}
 	
 	/**
-	 * This method specifies the specific type of StagedMedia which this tab shall generate.
-	 * @return
+	 * Specifies the type of StagedMedia which this tab generates.
 	 */
 	protected abstract void initStagedMedia();
 	
