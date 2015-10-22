@@ -48,13 +48,13 @@ public class VidivoxVideoControls extends VBox {
 	
 	public VidivoxVideoControls(MediaView mv, final MainModelable model) {
 		super();
-		VidivoxPlayer.getVPlayer().setControlPanel(this);
+		VidivoxPlayer.getVPlayer(null).setControlPanel(this);
 		this.mediaView = mv;
 		
 		HBox timeSliderPanel = new HBox();
 		HBox videoControlPanel = new HBox();
 		
-		videoControlPanel.disableProperty().bind(model.hasMediaProperty());
+		videoControlPanel.disableProperty().bind(model.hasMediaProperty().not());
 		
 		// Buttons defined here (e.g. play button, pause button, stop button...)
 		playBtn = new Button();

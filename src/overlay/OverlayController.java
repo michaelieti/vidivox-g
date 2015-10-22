@@ -84,7 +84,7 @@ public class OverlayController {
 		//that can be read easily from the command line or bash
 		
 		//get name of file, add 'commentary' or some extension e.g. 'cmt'
-		String originalFileURI = VidivoxPlayer.getVPlayer().getMedia().getSource();
+		String originalFileURI = VidivoxPlayer.getVPlayer(null).getMedia().getSource();
 		
 		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 		new FileOutputStream("filename.txt"), "utf-8"))) {

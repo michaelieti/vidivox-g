@@ -143,7 +143,7 @@ public class SpeechTab extends BindableTab {
 				} else {
 					// not currently under editing: create new commentary, use the current time, and use new text
 					String text = userField.getText();
-					Duration time = VidivoxPlayer.getVPlayer().getMediaPlayer().getCurrentTime();
+					Duration time = VidivoxPlayer.getVPlayer(null).getMediaPlayer().getCurrentTime();
 					Commentary comment = new Commentary(time, text);
 					OverlayController.getOLController().addCommentary(comment);
 				}
@@ -220,7 +220,7 @@ public class SpeechTab extends BindableTab {
 		 * user defined message.
 		 */
 		StringBinding changeMsg;
-		changeMsg = new When(VidivoxPlayer.getVPlayer().getMediaView().mediaPlayerProperty().isNull()).then(
+		changeMsg = new When(VidivoxPlayer.getVPlayer(null).getMediaView().mediaPlayerProperty().isNull()).then(
 				"Please open a video file to proceed.")
 				.otherwise(msg.getText());
 		msg.textProperty().bind(changeMsg);

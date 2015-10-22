@@ -22,7 +22,7 @@ public class MainModel implements MainModelable {
 	private ObjectProperty<SkinColor> skinProperty;
 
 	public MainModel() {
-		view = VidivoxPlayer.getVPlayer().getMediaView();
+		view = VidivoxPlayer.getVPlayer(null).getMediaView();
 
 		/*
 		 * Creates a property initially set to false. This is set to true
@@ -58,6 +58,14 @@ public class MainModel implements MainModelable {
 		 * with this property
 		 */
 		skinProperty = new SimpleObjectProperty<SkinColor>(SkinColor.BLUE);
+		skinProperty.addListener(new ChangeListener<Object>() {
+			@Override
+			public void changed(ObservableValue<? extends Object> property,
+					Object oldValue, Object newValue) {
+				
+			} 
+			
+		});
 	}
 
 	public boolean hasMedia() {

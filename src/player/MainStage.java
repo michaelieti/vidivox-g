@@ -37,9 +37,17 @@ public class MainStage extends Stage {
 	private Main main;
 	private MainModelable model;
 
-	public MainStage(Main appLauncher, MainModelable model) {
+	public MainStage(Main appLauncher, MainModelable model, MainControllable control) {
 		super();
 		this.model = model;
+		final MainStage current = this;
+		model.getCurrentSkinColorProperty().addListener(new ChangeListener<SkinColor>() {
+			@Override
+			public void changed(ObservableValue<? extends SkinColor> property,
+					SkinColor oldColor, SkinColor newColor) {
+				current.changeSkin(newColor);
+			}
+		});
 		this.setTitle(Main.DEFAULT_TITLE);
 		main = appLauncher;
 		GridPane grid = new GridPane();
@@ -52,7 +60,7 @@ public class MainStage extends Stage {
 		vidiMedia = new MediaPanel(model);
 
 		// FILE CONTROL BAR: ADDED TO TOP
-		vidiFileCtrl = new VidivoxFileControls(this, vidiMedia);
+		vidiFileCtrl = new VidivoxFileControls(this, vidiMedia, control);
 		grid.add(vidiFileCtrl, 0, 0);
 
 		// MEDIA VIEW NODE ADDED: CENTER
@@ -90,8 +98,12 @@ public class MainStage extends Stage {
 				Platform.exit();
 			}
 		});
-		final Stage current = this;
-		// TODO: comment this, wtf is this even
+		
+		/*
+		 * Iconified is called when you minimize the window. This change
+		 * listener is called when you minimize the main window. The intended
+		 * effect is for all windows to minimized and unminimized together.
+		 */
 		this.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> ov,
@@ -148,7 +160,5 @@ public class MainStage extends Stage {
 	public void setCurrentSkinColor(SkinColor currentSkinColor) {
 		this.currentSkinColor = currentSkinColor;
 	}
-
-
 
 }
