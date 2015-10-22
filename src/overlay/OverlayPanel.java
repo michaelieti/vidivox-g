@@ -112,7 +112,7 @@ public class OverlayPanel extends Stage {
 		
 	}
 	
-	protected void reloadTable(){
+	public void reloadTable(){
 		tableView.getColumns().clear();
 		tableView.getColumns().addAll(typeCol, timeCol, nameCol);
 	}
