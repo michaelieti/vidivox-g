@@ -1,5 +1,6 @@
 package player;
 
+import main.model.MainModelable;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.control.Button;
@@ -32,11 +33,12 @@ public class VidivoxPlayer {
 	private MediaPanel mediaPanel;
 	private VidivoxVideoControls controlPanel;
 	private VidivoxFileControls filePanel;
+	private MainModelable model;
 
 	private double initialVolume = VidivoxVideoControls.DEFAULTVOLUME;
 	
 	/* SINGLETON CONSTRUCTOR */
-	public static VidivoxPlayer getVPlayer() {
+	public static VidivoxPlayer getVPlayer(MainModelable model) {
 		if (singletonPlayer == null) {
 			singletonPlayer = new VidivoxPlayer();
 		}

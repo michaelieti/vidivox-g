@@ -21,7 +21,7 @@ public class MainControl implements MainControllable {
 
 	@Override
 	public void setMedia(Media media) {
-		VidivoxPlayer.getVPlayer().setMedia(media);
+		VidivoxPlayer.getVPlayer(model).setMedia(media);
 
 	}
 
@@ -100,6 +100,12 @@ public class MainControl implements MainControllable {
 	@Override
 	public BooleanProperty hasMediaProperty() {
 		return model.hasMediaProperty();
+	}
+
+	@Override
+	public void setAutoPlay(boolean auto) {
+		model.getMediaPlayer().setAutoPlay(auto);
+		
 	}
 
 }

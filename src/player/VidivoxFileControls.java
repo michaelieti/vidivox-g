@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import main.control.MainControllable;
+import main.model.MainModelable;
+
 import skins.SkinColor;
 
 import javafx.event.ActionEvent;
@@ -50,9 +53,9 @@ public class VidivoxFileControls extends MenuBar {
 	 */
 	protected CheckMenuItem blueSkin, orangeSkin, purpleSkin, greenSkin;
 
-	public VidivoxFileControls(final MainStage ms, final MediaPanel vvm) {
+	public VidivoxFileControls(final MainStage ms, final MediaPanel vvm, final MainControllable control) {
 		super();
-		VidivoxPlayer.getVPlayer().setFilePanel(this);
+		VidivoxPlayer.getVPlayer(null).setFilePanel(this);
 		this.setId("fileControls");
 		// OPEN FILE BUTTON STARTS HERE
 
@@ -110,10 +113,8 @@ public class VidivoxFileControls extends MenuBar {
 					// file check!
 					System.out.println(mediaPath.toString());
 					// get the wrapper class, set the media
-					VidivoxPlayer vp = VidivoxPlayer.getVPlayer();
-					vp.setMedia(media);
-
-					vp.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);
+					control.setMedia(media);
+					control.setAutoPlay(isAutoPlayEnabled);
 				}
 			}
 
@@ -124,7 +125,7 @@ public class VidivoxFileControls extends MenuBar {
 		save.setId("fileBtns");
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				Media toSave = VidivoxPlayer.getVPlayer()
+				Media toSave = VidivoxPlayer.getVPlayer(null)
 						.getMediaPlayer().getMedia();
 				FileChooser f = new FileChooser();
 				f.setTitle("Save");
@@ -154,7 +155,7 @@ public class VidivoxFileControls extends MenuBar {
 						p.waitFor();
 						System.out.println(file.toURI().toString());
 						Media newMedia = new Media(file.toURI().toString());
-						VidivoxPlayer.getVPlayer().setMedia(newMedia);
+						VidivoxPlayer.getVPlayer(null).setMedia(newMedia);
 					} catch (IOException | InterruptedException e) {		
 						e.printStackTrace();
 					}
@@ -197,7 +198,7 @@ public class VidivoxFileControls extends MenuBar {
 		blueSkin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.changeSkin(SkinColor.BLUE);
+				control.setSkinColor(SkinColor.BLUE);
 				// Insures that only one skin is shown as selected at a time.
 				for (MenuItem m : custMenu.getItems()) {
 					if (!m.equals(blueSkin)) {
@@ -216,7 +217,7 @@ public class VidivoxFileControls extends MenuBar {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.changeSkin(SkinColor.GREEN);
+				control.setSkinColor(SkinColor.GREEN);
 				for (MenuItem m : custMenu.getItems()) {
 					if (!m.equals(greenSkin)) {
 						((CheckMenuItem) (m)).setSelected(false);
@@ -233,7 +234,7 @@ public class VidivoxFileControls extends MenuBar {
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.changeSkin(SkinColor.ORANGE);
+				control.setSkinColor(SkinColor.ORANGE);
 				for (MenuItem m : custMenu.getItems()) {
 					if (!m.equals(orangeSkin)) {
 						((CheckMenuItem) (m)).setSelected(false);
@@ -249,7 +250,7 @@ public class VidivoxFileControls extends MenuBar {
 		purpleSkin.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				ms.changeSkin(SkinColor.PURPLE);
+				control.setSkinColor(SkinColor.PURPLE);
 				for (MenuItem m : custMenu.getItems()) {
 					if (!m.equals(purpleSkin)) {
 						((CheckMenuItem) (m)).setSelected(false);

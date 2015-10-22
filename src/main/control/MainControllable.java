@@ -9,6 +9,8 @@ public interface MainControllable {
 
 	public void setMedia(Media media);
 	
+	public void setAutoPlay(boolean auto);
+	
 	public void play();
 	
 	public void ffwd();
