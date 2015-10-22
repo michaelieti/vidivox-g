@@ -5,7 +5,6 @@ import java.io.File;
 import utility.StagedAudio;
 import utility.StagedMedia;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.When;
 import javafx.beans.property.SimpleStringProperty;

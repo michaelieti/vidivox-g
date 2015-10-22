@@ -83,6 +83,14 @@
 	-fx-background-color: black;
 }
 
+.menu:hover > .label {
+	-fx-text-fill: greenyellow;
+}
+
+.menu:showing > .label {
+	-fx-text-fill: greenyellow;
+}
+
 .menu-item:hover .label {
 	-fx-background-color: black;
 	-fx-text-fill: greenyellow;
@@ -124,21 +132,21 @@
 
 #playBtn {
 	-fx-border-color: transparent;
-	-fx-graphic: url("/skins/green_GUI/green_01.png");
+	-fx-graphic: url("/skins/green_GUI/Green_01.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #playBtn:hover {
-	-fx-graphic: url("/skins/green_GUI/green_06.png");
+	-fx-graphic: url("/skins/green_GUI/Green_07.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #playBtn:armed {
-	-fx-graphic: url("/skins/green_GUI/green_11.png");
+	-fx-graphic: url("/skins/green_GUI/Green_19.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -146,21 +154,21 @@
 
 #pauseBtn {
 	-fx-border-color: transparent;
-	-fx-graphic: url("/skins/green_GUI/green_02.png");
+	-fx-graphic: url("/skins/green_GUI/Green_02.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #pauseBtn:hover {
-	-fx-graphic: url("/skins/green_GUI/green_07.png");
+	-fx-graphic: url("/skins/green_GUI/Green_08.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #pauseBtn:armed {
-	-fx-graphic: url("/skins/green_GUI/green_12.png");
+	-fx-graphic: url("/skins/green_GUI/Green_20.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -168,21 +176,21 @@
 
 #stopBtn {
 	-fx-border-color: transparent;
-	-fx-graphic: url("/skins/green_GUI/green_03.png");
+	-fx-graphic: url("/skins/green_GUI/Green_03.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #stopBtn:hover {
-	-fx-graphic: url("/skins/green_GUI/green_08.png");
+	-fx-graphic: url("/skins/green_GUI/Green_09.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #stopBtn:armed {
-	-fx-graphic: url("/skins/green_GUI/green_13.png");
+	-fx-graphic: url("/skins/green_GUI/Green_21.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -190,21 +198,21 @@
 
 #skipFwdBtn {
 	-fx-border-color: transparent;
-	-fx-graphic: url("/skins/green_GUI/green_05.png");
+	-fx-graphic: url("/skins/green_GUI/Green_05.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #skipFwdBtn:hover {
-	-fx-graphic: url("/skins/green_GUI/green_10.png");
+	-fx-graphic: url("/skins/green_GUI/Green_11.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #skipFwdBtn:armed {
-	-fx-graphic: url("/skins/green_GUI/green_15.png");
+	-fx-graphic: url("/skins/green_GUI/Green_23.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -212,16 +220,16 @@
 
 #skipBackBtn {
 	-fx-border-color: transparent;
-	-fx-graphic: url("/skins/green_GUI/green_04.png");
+	-fx-graphic: url("/skins/green_GUI/Green_04.png");
 	-fx-background-color: transparent;
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
 }
 
 #skipBackBtn:hover {
-	-fx-graphic: url("/skins/green_GUI/green_09.png");
+	-fx-graphic: url("/skins/green_GUI/Green_10.png");
 }
 
 #skipBackBtn:armed {
-	-fx-graphic: url("/skins/green_GUI/green_14.png");
+	-fx-graphic: url("/skins/green_GUI/Green_22.png");
 }
