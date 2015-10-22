@@ -37,13 +37,12 @@ import player.VidivoxPlayer;
 
 public class SpeechTab extends BindableTab {
 
-	final private static int btnSpacing = 20;
+	final private static int BUTTON_SPACING = 20;
 
 	private Text msg;
 	private TextArea userField;
 	private Button speechBtn, saveBtn, overlayBtn, cancelOverlayBtn;
 	private FileChooser f;
-	private Stage stage;
 	private ProgressBar progBar = new ProgressBar();
 	private int pid = -1;
 	private SimpleBooleanProperty editFlag = new SimpleBooleanProperty(false);
@@ -193,7 +192,7 @@ public class SpeechTab extends BindableTab {
 		speechPane.add(userField, 0, 1, 3, 3);
 		HBox speechBtns = new HBox();
 		speechBtns.setAlignment(Pos.CENTER);
-		speechBtns.setSpacing(btnSpacing);
+		speechBtns.setSpacing(BUTTON_SPACING);
 		speechBtns.getChildren().addAll(speechBtn, saveBtn, overlayBtn, cancelOverlayBtn);
 		speechPane.add(speechBtns, 0, 4, 3, 1);
 		progBar.setVisible(false);
