@@ -1,5 +1,7 @@
 package main.control;
 
+import main.MainView;
+import main.model.MainModelable;
 import skins.SkinColor;
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.media.Media;
@@ -28,5 +30,11 @@ public interface MainControllable {
 	public void setSkinColor(SkinColor color);
 	
 	public BooleanProperty hasMediaProperty();
+	
+	public void setModel(MainModelable model);
+	
+	public void setView(MainView view);
+	
+	public boolean initialize();
 
 }

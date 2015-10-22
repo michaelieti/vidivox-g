@@ -7,6 +7,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.media.Media;
@@ -17,9 +19,13 @@ import skins.SkinColor;
 
 public class MainModel implements MainModelable {
 
+	private static SkinColor DEFAULT_SKIN = SkinColor.BLUE;
+	private static String DEFAULT_TITLE = "Vidivox V1";
+
 	private MediaView view;
 	private BooleanProperty mediaProperty;
 	private ObjectProperty<SkinColor> skinProperty;
+	private StringProperty titleProperty;
 
 	public MainModel() {
 		view = VidivoxPlayer.getVPlayer(null).getMediaView();
@@ -58,14 +64,8 @@ public class MainModel implements MainModelable {
 		 * with this property
 		 */
 		skinProperty = new SimpleObjectProperty<SkinColor>(SkinColor.BLUE);
-		skinProperty.addListener(new ChangeListener<Object>() {
-			@Override
-			public void changed(ObservableValue<? extends Object> property,
-					Object oldValue, Object newValue) {
-				
-			} 
-			
-		});
+
+		titleProperty = new SimpleStringProperty(DEFAULT_TITLE);
 	}
 
 	public boolean hasMedia() {
@@ -115,6 +115,16 @@ public class MainModel implements MainModelable {
 	@Override
 	public ObjectProperty<SkinColor> getCurrentSkinColorProperty() {
 		return skinProperty;
+	}
+
+	@Override
+	public String getTitle() {
+		return titleProperty.getValue();
+	}
+
+	@Override
+	public StringProperty getTitleProperty() {
+		return titleProperty; 
 	}
 
 }
