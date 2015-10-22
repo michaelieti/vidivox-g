@@ -15,8 +15,8 @@ public class OverlayController implements OverlayControllable {
 
 
 	private static OverlayController singletonObject;
-	//the list of commentaries
-	final private ObservableList<Commentary> commentaryList = FXCollections.observableArrayList();
+	final private ObservableList<Commentary> commentaryList = 
+			FXCollections.observableArrayList();
 	
 	@Override
 	public void filterList(OverlayType olType) {
