@@ -17,11 +17,22 @@ import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 import skins.SkinColor;
 
+/**
+ * A model of data from which MainStage is built off. MainModel is primarily
+ * concerned with retrieving data from Model, not changing it. (See
+ * MainControl).
+ * 
+ * @author adav194
+ * 
+ */
 public class MainModel implements MainModelable {
 
+	/** The Default Skin for this window. */
 	private static SkinColor DEFAULT_SKIN = SkinColor.BLUE;
+	/** The Default Title for this window */
 	private static String DEFAULT_TITLE = "Vidivox V1";
 
+	/* The Data from which this Model is based */
 	private MediaView view;
 	private BooleanProperty mediaProperty;
 	private ObjectProperty<SkinColor> skinProperty;
@@ -65,66 +76,121 @@ public class MainModel implements MainModelable {
 		 */
 		skinProperty = new SimpleObjectProperty<SkinColor>(SkinColor.BLUE);
 
+		/*
+		 * Initializing the title property to be set to Default Title.
+		 */
 		titleProperty = new SimpleStringProperty(DEFAULT_TITLE);
 	}
 
+	/**
+	 * Returns true if the current MediaPlayer has a valid Media Source (one
+	 * which has loaded and is non null).
+	 */
+	@Override
 	public boolean hasMedia() {
 		return mediaProperty.getValue();
 	}
 
+	/**
+	 * A Boolean Property whose state is True if and only if the current
+	 * MediaPlayer has a valid Media Source, which is loaded and ready to use.
+	 */
 	@Override
 	public BooleanProperty hasMediaProperty() {
 		return mediaProperty;
 	}
 
+	/**
+	 * Returns the MediaView for this Model.
+	 */
 	@Override
 	public MediaView getMediaView() {
 		return view;
 	}
 
+	/**
+	 * Returns the current MediaPlayer. If there is no valid Media (i.e.
+	 * hasMedia returns false), this method will return null.
+	 */
 	@Override
 	public MediaPlayer getMediaPlayer() {
 		return getMediaView().getMediaPlayer();
 	}
 
+	/**
+	 * Returns the current Media, loaded into the MediaPlayer.
+	 * 
+	 * @throws NullPointerException
+	 *             In the case where hasMedia() returns false.
+	 */
 	@Override
 	public Media getMedia() {
 		return getMediaPlayer().getMedia();
 	}
 
+	/**
+	 * Returns the current Duration of the loaded Media.
+	 * 
+	 * @throws NullPointerException
+	 *             In the case where hasMedia() returns false.
+	 */
 	@Override
 	public Duration getDuration() {
 		return getMedia().getDuration();
 	}
 
+	/**
+	 * A property representing the current time of the loaded Media.
+	 * 
+	 * @throws NullPointerException
+	 *             In the case where hasMedia() returns false.
+	 */
 	@Override
 	public ReadOnlyObjectProperty<Duration> getCurrentTimeProperty() {
 		return getMediaPlayer().currentTimeProperty();
 	}
 
+	/**
+	 * A property representing the current volume of the loaded Media.
+	 * 
+	 * @throws NullPointerException
+	 *             In the case where hasMedia() returns false.
+	 */
 	@Override
 	public DoubleProperty getVolumeProperty() {
 		return getMediaPlayer().volumeProperty();
 	}
-
+	
+	/**
+	 * Returns the current color scheme.
+	 */
 	@Override
 	public SkinColor getCurrentSkinColor() {
 		return skinProperty.getValue();
 	}
 
+	/**
+	 * A property representing the current color scheme.
+	 */
 	@Override
 	public ObjectProperty<SkinColor> getCurrentSkinColorProperty() {
 		return skinProperty;
 	}
 
+	/**
+	 * Returns the title of the MainStage window.
+	 */
 	@Override
 	public String getTitle() {
 		return titleProperty.getValue();
 	}
-
+	
+	/**
+	 * A property representing the current
+	 */
 	@Override
 	public StringProperty getTitleProperty() {
-		return titleProperty; 
+		return titleProperty;
 	}
 
 }
