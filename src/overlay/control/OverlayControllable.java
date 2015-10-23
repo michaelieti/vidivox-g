@@ -17,4 +17,6 @@ public interface OverlayControllable {
 	public void deleteCommentary(Commentary commentary);
 	
 	public void commitOverlay();
+	
+	public void iconify(boolean b);
 }

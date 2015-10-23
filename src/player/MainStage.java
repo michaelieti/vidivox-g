@@ -77,6 +77,7 @@ public class MainStage extends Stage {
 		// MainStage that do not change
 		s.getStylesheets().add(
 				getClass().getResource("/skins/BlueSkin.css").toExternalForm());
+		
 		this.setScene(s);
 		/*
 		 * Setting the close action of this window to close the application

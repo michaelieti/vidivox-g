@@ -38,7 +38,7 @@ public class OverlayController implements OverlayControllable {
 	}
 	
 	/* singleton getter */
-	public static OverlayController getOLController(){
+	public static OverlayController getController(){
 		if (singletonObject == null){
 			singletonObject = new OverlayController();
 		}
@@ -139,6 +139,11 @@ public class OverlayController implements OverlayControllable {
 				deleteSelectedCommentary();
 			}
 		});
+	}
+
+	@Override
+	public void iconify(boolean b) {
+		view.setIconified(b);
 	}
 	
 	

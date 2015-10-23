@@ -1,6 +1,6 @@
 package main.control;
 
-import main.MainView;
+import main.control.viewcomponents.MainView;
 import main.model.MainModelable;
 import skins.SkinColor;
 import javafx.beans.property.BooleanProperty;
@@ -36,5 +36,7 @@ public interface MainControllable {
 	public void setView(MainView view);
 	
 	public boolean initialize();
+	
+	public void iconify(boolean b);
 
 }

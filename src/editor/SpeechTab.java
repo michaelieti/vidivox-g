@@ -146,7 +146,7 @@ public class SpeechTab extends BindableTab {
 					Duration time = VidivoxPlayer.getVPlayer(null).getMediaPlayer().getCurrentTime();
 					Commentary comment = new Commentary(time, text, OverlayType.TTS);
 
-					OverlayController.getOLController().addCommentary(comment);
+					OverlayController.getController().addCommentary(comment);
 				}
 				/*
 				 * THE OLD IMPLEMENTATION OF SPEECH TAB ADDS IN A COMMENTARY AT

@@ -61,23 +61,7 @@ public class MainControl implements MainControllable {
 			rwdRate = 1;
 		} else if (rwdRate < 8.0) {
 			rwdRate++;
-			Task<Void> t = new Task<Void>() {
-				@Override
-				protected Void call() throws Exception {
-					MediaPlayer mp = model.getMediaPlayer();
-					mp.setRate(0.0001);
-					mp.setMute(true);
-					while (mp.getRate() < 1.0) {
-						mp.seek(mp.getCurrentTime().subtract(
-								Duration.seconds(rwdRate)));
-						Thread.sleep(500);
-					}
-					mp.setMute(false);
-					mp.play();
-					mp.setRate(1.0);
-					return null;
-				}
-			};
+			Task<Void> t = new RewindTask();	//reclassed this down to bottom
 			Thread th = new Thread(t);
 			th.setDaemon(true);
 			th.start();
@@ -131,6 +115,22 @@ public class MainControl implements MainControllable {
 		this.view = view;
 	}
 
-	
+	private class RewindTask extends Task<Void> {
+		@Override
+		protected Void call() throws Exception {
+			MediaPlayer mp = model.getMediaPlayer();
+			mp.setRate(0.0001);
+			mp.setMute(true);
+			while (mp.getRate() < 1.0) {
+				mp.seek(mp.getCurrentTime().subtract(
+						Duration.seconds(rwdRate)));
+				Thread.sleep(500);
+			}
+			mp.setMute(false);
+			mp.play();
+			mp.setRate(1.0);
+			return null;
+		}
+	};
 
 }
