@@ -65,88 +65,37 @@ public class FilePanel extends MenuBar{
 			save.setOnAction(new SaveFileHandler());
 		
 		/* window menu items: editor panel, overlay panel */
-			editor = new CheckMenuItem("Editing Panel");
-			editor.setId("fileBtns");
-			editor.setOnAction(new EditorOpenStatusHandler());		
-			
-			overlay = new CheckMenuItem("Overlay Panel");
-			overlay.setId("fileBtns");
-			overlay.setOnAction(new OverlayOpenStatusHandler());
-			
+		editor = new CheckMenuItem("Editing Panel");
+		editor.setId("fileBtns");
+		editor.setOnAction(new EditorOpenStatusHandler());		
+		
+		overlay = new CheckMenuItem("Overlay Panel");
+		overlay.setId("fileBtns");
+		overlay.setOnAction(new OverlayOpenStatusHandler());
+		
 
-			blueSkin = new CheckMenuItem("Blue");
-			blueSkin.setId("fileBtns");
-			blueSkin.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent arg0) {
-					control.setSkinColor(SkinColor.BLUE);
-					// Insures that only one skin is shown as selected at a time.
-					for (MenuItem m : custMenu.getItems()) {
-						if (!m.equals(blueSkin)) {
-							((CheckMenuItem) (m)).setSelected(false);
-						}
-					}
-				}
+		blueSkin = new CheckMenuItem("Blue");
+		blueSkin.setId("fileBtns");
+		
+		greenSkin = new CheckMenuItem("Green");
+		greenSkin.setId("fileBtns");
+		
+		orangeSkin = new CheckMenuItem("Orange");
+		orangeSkin.setId("fileBtns");
 
-			});
-			blueSkin.setSelected(ms.getCurrentSkinColor().equals(
-					SkinColor.BLUE));
-
-			greenSkin = new CheckMenuItem("Green");
-			greenSkin.setId("fileBtns");
-			greenSkin.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent arg0) {
-					control.setSkinColor(SkinColor.GREEN);
-					for (MenuItem m : custMenu.getItems()) {
-						if (!m.equals(greenSkin)) {
-							((CheckMenuItem) (m)).setSelected(false);
-						}
-					}
-				}
-
-			});
-			greenSkin.setSelected(ms.getCurrentSkinColor().equals(
-					SkinColor.GREEN));
-			orangeSkin = new CheckMenuItem("Orange");
-			orangeSkin.setId("fileBtns");
-			orangeSkin.setOnAction(new EventHandler<ActionEvent>() {
-
-				@Override
-				public void handle(ActionEvent arg0) {
-					control.setSkinColor(SkinColor.ORANGE);
-					for (MenuItem m : custMenu.getItems()) {
-						if (!m.equals(orangeSkin)) {
-							((CheckMenuItem) (m)).setSelected(false);
-						}
-					}
-				}
-
-			});
-			orangeSkin.setSelected(ms.getCurrentSkinColor().equals(
-					SkinColor.ORANGE));
-			purpleSkin = new CheckMenuItem("Purple");
-			purpleSkin.setId("fileBtns");
-			purpleSkin.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent arg0) {
-					control.setSkinColor(SkinColor.PURPLE);
-					for (MenuItem m : custMenu.getItems()) {
-						if (!m.equals(purpleSkin)) {
-							((CheckMenuItem) (m)).setSelected(false);
-						}
-					}
-				}
-
-			});
-			purpleSkin.setSelected(ms.getCurrentSkinColor().equals(
-					SkinColor.PURPLE));
-
-			
+		purpleSkin = new CheckMenuItem("Purple");
+		purpleSkin.setId("fileBtns");
+		
+		/* add in all items */
+		fileMenu.getItems().addAll(open, save);
+		windowMenu.getItems().addAll(editor, overlay);
+		custMenu.getItems().addAll(blueSkin, greenSkin, orangeSkin, purpleSkin);
+		
+		getMenus().addAll(fileMenu, windowMenu, custMenu);
 	}
 	
 	/* refactor into controller class later */
+		
 	public class WindowCheckBoxHandler implements EventHandler<Event> {
 
 		@Override
@@ -261,5 +210,5 @@ public class FilePanel extends MenuBar{
 			}
 		}
 
-	});
+	}
 }
