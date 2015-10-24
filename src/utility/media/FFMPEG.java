@@ -55,11 +55,13 @@ class FFmpegTask extends Task<Void> {
 
 	@Override
 	protected Void call() throws Exception {
-		String[] cmd = { "bash", "-c", input };
-		ProcessBuilder build = new ProcessBuilder(cmd);
+		//String[] cmd = { "bash", "-c", input };
+		ProcessBuilder build = new ProcessBuilder(input);
 		build.redirectErrorStream(true);
 		Process p = build.start();
 		currentlyProcessed(p.getInputStream());
+		p.waitFor();
+		System.out.println("done");
 		return null;
 	}
 

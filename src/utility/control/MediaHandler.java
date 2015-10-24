@@ -22,10 +22,12 @@ public class MediaHandler {
 	
 	public static void main(String[] args) {
 		MediaHandler mh = new MediaHandler();
-		MediaFile out1 = new MediaFile(new File(System.getProperty("user-home") + "SoftEng206/ffmpeg/out1.mp3"));
-		MediaFile out2 = new MediaFile(new File(System.getProperty("user-home") + "SoftEng206/ffmpeg/out2.mp3"));
-		MediaFile out3 = new MediaFile(new File(System.getProperty("user-home") + "SoftEng206/ffmpeg/out3.mp3"));
-		MediaFile outputFinal = MediaFile.createMediaContainer(MediaFormat.MP3, new File(System.getProperty("user-home") + "SoftEng206/ffmpeg/FinalDest.mp3"));
+		MediaFile out1 = new MediaFile(new File(System.getProperty("user.home") + "/SoftEng206/ffmpeg/out1.mp3"));
+		MediaFile out2 = new MediaFile(new File(System.getProperty("user.home") + "/SoftEng206/ffmpeg/out2.mp3"));
+		MediaFile out3 = new MediaFile(new File(System.getProperty("user.home") + "/SoftEng206/ffmpeg/out3.mp3"));
+		MediaFile outputFinal = MediaFile.createMediaContainer(MediaFormat.MP3, new File(System.getProperty("user.home") + "/SoftEng206/ffmpeg/FinalDest.mp3"));
+		mh.mergeAudio(outputFinal, out1, out2, out3);
+		
 	}
 
 	public MediaHandler() {
@@ -64,19 +66,19 @@ public class MediaHandler {
 	 * @return
 	 */
 	public void mergeAudio(MediaFile destination, MediaFile... files) {
-		Double longestDuration = 0.0;
+		Double longestDuration = 0.0; 
 		String ffmpegCommand = "ffmpeg -y ";
 		for (MediaFile f : files) {
-			ffmpegCommand.concat("-i " + f.getPath().getAbsolutePath() + " ");
+			ffmpegCommand = ffmpegCommand.concat("-i " + f.getPath().getAbsolutePath() + " ");
 			if (longestDuration < f.getLength()) {
 				longestDuration = f.getLength();
 			}
 		}
-		ffmpegCommand.concat("-filter_complex \"amix=inputs=" + files.length
+		ffmpegCommand = ffmpegCommand.concat("-filter_complex \"amix=inputs=" + files.length
 				+ "\" " + destination.getPath().getAbsolutePath());
 		System.out.println(ffmpegCommand);
 		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, longestDuration);
-		cmd.start();
+		cmd.start(); 
 	}
 
 }
