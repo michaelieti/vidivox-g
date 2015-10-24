@@ -9,7 +9,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import overlay.OverlayPanel;
+import overlay.control.OverlayController;
+import overlay.control.OverlayView;
+import overlay.model.OverlayModel;
 
 /**
  * This class will act as the controller class for the application
@@ -25,7 +27,7 @@ public class Main extends Application {
 
 	private MainStage ms;
 	private EditPanel editorPanel;
-	private OverlayPanel overlayPanel;
+	private OverlayView olView;
 	
 	public static void main(String[] args) throws Exception {
 		/*Checks whether the temporary already exists. Cleans the directory if it does, and creates a new one */
@@ -49,29 +51,35 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		ms = new MainStage(this);
 		editorPanel = new EditPanel(ms.getMediaPane().getMediaView());
-		overlayPanel = new OverlayPanel();
+		olView = new OverlayView();
 		
 		primaryStage = ms;
+		
+		OverlayModel olModel = new OverlayModel();	//initializes overlay data model
+		OverlayController olController = new OverlayController(olModel);	//initializes the controller
+		olView = new OverlayView();
+		olController.setView(olView);	//sets the controller's associated view
+		olController.initialize();		//initializes event handlers etc between view and model
 		
 		/* SCREEN POSITIONAL SET UP */
 		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 		editorPanel.setX(screenBounds.getMinX());
 		editorPanel.setY(screenBounds.getMaxY() / 2 - 200);
 		
-		overlayPanel.setX(screenBounds.getMaxX() - 250);
-		overlayPanel.setY(screenBounds.getMaxY() / 2 - 200);
+		olView.setX(screenBounds.getMaxX() - 250);
+		olView.setY(screenBounds.getMaxY() / 2 - 200);
 		
 		primaryStage.show();
 		editorPanel.show();
-		overlayPanel.show();
+		olView.show();
 	}
 
 	public EditPanel getEditor() {
 		return editorPanel;
 	}
 
-	public OverlayPanel getOverlay() {
-		return overlayPanel;
+	public OverlayView getOverlay() {
+		return olView;
 	}
 
 	public MediaPanel getView() {
