@@ -6,6 +6,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import overlay.Commentary;
+import player.VidivoxPlayer;
 
 /**
  * The EditPanel is the users interface with the video editting functionality.
@@ -18,12 +20,21 @@ import javafx.stage.WindowEvent;
 public class EditPanel extends Stage {
 
 	final private static String DEFAULT_TITLE = "Editing Window";
-
+	private static EditPanel singletonObject;
+	
 	/* Currently included Features */
 	BindableTab speech, subtitle, mp3;
 
+	/* singleton getter */
+	public static EditPanel getEditPanel(){
+		if (singletonObject == null){
+			singletonObject = new EditPanel();
+		}
+		return singletonObject;
+	}
+	
 	public EditPanel() {
-		super();
+		this(VidivoxPlayer.getVPlayer().getMediaView(), DEFAULT_TITLE);
 	}
 	/**
 	 * A convenience constructor which constructs the Editor Panel with the
@@ -77,5 +88,20 @@ public class EditPanel extends Stage {
 		
 	}
 	
-
+	public void editCommentary(Commentary commentary){
+		//switch to speech tab
+		//output comment to text field
+		//set the CommentUnderEdit field
+		//set the currentlyEditing flag in speechTab
+	}
+	
+	public void editMp3(){
+		//TODO: finish the method signature
+		//switch to mp3 tab
+		//output filepath to field
+		//set currently editing flag in mp3 tab
+	}
+	
+	
+	
 }
