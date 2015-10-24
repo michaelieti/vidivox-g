@@ -13,17 +13,18 @@ import overlay.TimeUtility;
 
 /**
  * A wrapper class for the vidivox player, provides extra power in terms of
- * accessibility
+ * accessibility.
+ * Usage is as follows:
+ * - instantiate a new VidivoxPlayer
+ * - set the MediaPanel, the ControlPanel and the FilePanel that it will interact with
+ * 	NOTE: VidivoxPlayer class will not work if these three have not yet been set!
+ * - getMediaView() returns a MediaView object to embed into the application
+ * - use setMedia() or setMediaPlayer() to begin
  * 
  * @author michael
  * 
  */
 public class VidivoxPlayer {
-
-	// has a MediaView
-	// sets up the event handlers for buttons and sliders in
-	// - the VidivoxVideoControl class
-	// - the VidivoxMedia class
 
 	/* REQUIRES CONTROL CLASSES */
 	private static VidivoxPlayer singletonPlayer;

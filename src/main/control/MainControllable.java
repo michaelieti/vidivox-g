@@ -37,6 +37,6 @@ public interface MainControllable {
 	
 	public boolean initialize();
 	
-	public void iconify(boolean b);
+	public void setIconified(boolean b);
 
 }

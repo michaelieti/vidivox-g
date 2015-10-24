@@ -2,7 +2,7 @@ package player;
 
 import java.io.File;
 
-import main.control.MainControl;
+import main.control.MainController;
 import main.control.MainControllable;
 import main.model.MainModel;
 import main.model.MainModelable;
@@ -53,7 +53,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		MainModelable model = new MainModel();
-		MainControllable control = new MainControl(model);
+		MainControllable control = new MainController(model);
 		ms = new MainStage(this,model, control);
 		editorPanel = new EditPanel(ms.getMediaPane().getMediaView());
 	

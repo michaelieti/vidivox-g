@@ -41,6 +41,7 @@ public class MainStage extends Stage {
 		super();
 		this.model = model;
 		final MainStage current = this;
+		/* where to refactor this into? */
 		model.getCurrentSkinColorProperty().addListener(new ChangeListener<SkinColor>() {
 			@Override
 			public void changed(ObservableValue<? extends SkinColor> property,
@@ -48,6 +49,7 @@ public class MainStage extends Stage {
 				current.changeSkin(newColor);
 			}
 		});
+		
 		this.setTitle(Main.DEFAULT_TITLE);
 		main = appLauncher;
 		GridPane grid = new GridPane();

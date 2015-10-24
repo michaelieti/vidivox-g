@@ -11,8 +11,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import overlay.control.OverlayController;
 import player.Main;
 
 /**
@@ -55,9 +53,6 @@ public class MainView extends Stage {
 			getClass().getResource("/skins/BlueSkin.css").toExternalForm()
 		);
 		
-		//set on close/on open
-		setOnCloseRequest(new TempCleanHandler());
-		iconifiedProperty().addListener(new IconifiedListener());		
 		//finally - set the scene
 		setScene(scene);
 		
@@ -74,40 +69,6 @@ public class MainView extends Stage {
 	public ControlPanel getCtrlPanel() {
 		return ctrlPanel;
 	}
-	
-	
-	/**
-	 * Cleans up the temporary folder for the next launch.
-	 */
-	private class TempCleanHandler implements EventHandler<WindowEvent> {
-		@Override
-		public void handle(WindowEvent event) {		
-			File p = new File(System.getProperty("user.dir") + "/.temp/");
-			if (p.exists() && p.isDirectory()) {
-				for (File f : p.listFiles()) {
-					f.delete();
-				}
-			}
-			p.delete();
-			Platform.exit();
-		}
-	}
-	
-	private class IconifiedListener implements ChangeListener<Boolean> {
-		@Override
-		public void changed(ObservableValue<? extends Boolean> ov,
-				Boolean oldValue, Boolean newValue) {
-			if (!newValue) {
-				EditorController.getController().iconify(false);
-				OverlayController.getController().iconify(false);
-				MainController.getController.iconify(false);
-			} else {
-				EditorController.getController().iconify(true);
-				OverlayController.getController().iconify(true);
-				
-			}
-		}
-	});
 
 	
 }

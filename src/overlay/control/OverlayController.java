@@ -27,7 +27,7 @@ public class OverlayController implements OverlayControllable {
 	/* constructors */
 	
 	public OverlayController(){
-		super();
+		super(); 
 		singletonObject = this;
 	}
 	
@@ -103,6 +103,18 @@ public class OverlayController implements OverlayControllable {
 		// TODO: creates a new video, overlaid with the commentary.
 
 	}
+	
+	public boolean isShowing(){
+		return view.isShowing();
+	}
+	
+	public void setVisible(boolean b){
+		if (b){
+			view.show();
+		} else{
+			view.hide();
+		}
+	}
 
 
 	@Override
@@ -142,7 +154,7 @@ public class OverlayController implements OverlayControllable {
 	}
 
 	@Override
-	public void iconify(boolean b) {
+	public void setIconified(boolean b) {
 		view.setIconified(b);
 	}
 	

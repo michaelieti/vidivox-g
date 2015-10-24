@@ -18,5 +18,5 @@ public interface OverlayControllable {
 	
 	public void commitOverlay();
 	
-	public void iconify(boolean b);
+	public void setIconified(boolean b);
 }
