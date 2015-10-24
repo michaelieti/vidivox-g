@@ -1,4 +1,4 @@
-package utility;
+package utility.media;
 
 /**
  * Two types of media source. Video or Audio. The Invalid type, represents an

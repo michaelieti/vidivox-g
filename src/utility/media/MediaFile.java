@@ -1,23 +1,26 @@
-package utility;
+package utility.media;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import editor.MediaConverter;
+
 /**
- * An UnknownMedia object represents a media source located on disk. Through
- * file type checking, a valid media object can be formed.
+ * A MediaFile object represents a media source located on disk. Through file
+ * type checking, a valid media object can be formed.
  * 
  * @author adav194
  * 
  */
-public class UnknownMedia {
+public class MediaFile {
 
 	private File path;
 	private MediaFormat format = MediaFormat.Unknown;
+	private Double length = 0.0;
 
-	public UnknownMedia(File location) {
+	public MediaFile(File location) {
 		path = location;
 		if (!location.exists() || !location.isFile()) {
 			return;
@@ -28,16 +31,32 @@ public class UnknownMedia {
 	}
 
 	/**
-	 * @see utility.MediaFormat MediaFormat
+	 * @see utility.media.MediaFormat MediaFormat
 	 * @return The type of the Media source.
 	 */
 	public MediaFormat getType() {
 		return format;
 	}
 
+	public File getPath() {
+		return path;
+	}
+
+	public Double getLength() {
+		return length;
+	}
+
+	/**
+	 * Deletes the Media source which the MediaFile is pointing to.
+	 */
+	public void delete() {
+		path.delete();
+		format = MediaFormat.Unknown;
+	}
+
 	/**
 	 * This function can be used to create an empty media container of a
-	 * selected type (See {@link utility.MediaFormat}).
+	 * selected type (See {@link utility.media.MediaFormat}).
 	 * 
 	 * @param desiredFormat
 	 *            The desired format of the media container.
@@ -46,7 +65,7 @@ public class UnknownMedia {
 	 * @return An UnknownMedia object with attached container (if successfully
 	 *         created).
 	 */
-	public static UnknownMedia createMediaContainer(MediaFormat desiredFormat,
+	public static MediaFile createMediaContainer(MediaFormat desiredFormat,
 			File desiredLocation) {
 		File correctLocation = addExtension(desiredLocation, desiredFormat);
 		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" "
@@ -61,7 +80,7 @@ public class UnknownMedia {
 			e.printStackTrace();
 		}
 
-		return new UnknownMedia(correctLocation);
+		return new MediaFile(correctLocation);
 	}
 
 	/*
@@ -79,7 +98,20 @@ public class UnknownMedia {
 					new InputStreamReader(p.getInputStream()));
 			String currentLineOfOutput;
 			String[] splitOfCurrentLine;
-			while ((currentLineOfOutput = processOutput.readLine()) != null) {
+			while ((currentLineOfOutput = processOutput.readLine().trim()) != null) {
+
+				if (currentLineOfOutput.startsWith("Duration:")) {
+					// Example changes are as shown.
+					// Duration: 00:00:01.01, bitrate: 256 kb/s
+					splitOfCurrentLine = currentLineOfOutput.split(",");
+					// [Duration: 00:00:01.01] [bitrate: 256 kb/s]
+
+					splitOfCurrentLine = splitOfCurrentLine[0].split(" ");
+					// [Duration:] [00:00:01.01]
+					length = MediaConverter
+							.timeToSeconds(splitOfCurrentLine[1]);
+
+				}
 				if (currentLineOfOutput.startsWith("Input #0,")) {
 					splitOfCurrentLine = currentLineOfOutput.split(",");
 					if (splitOfCurrentLine.length >= 2) {

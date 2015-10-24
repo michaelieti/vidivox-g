@@ -1,4 +1,4 @@
-package utility;
+package utility.media;
 
 /**
  * A list of supported media formats and their types.
@@ -22,8 +22,8 @@ package utility;
 public enum MediaFormat {
 
 	MP3(MediaType.Audio), WAV(MediaType.Audio), MP4(MediaType.Video), FLV(
-			MediaType.Video), Corrupt(MediaType.Invalid, false), Unknown(
-			MediaType.Invalid, false), Unsupported(MediaType.Invalid, false);
+			MediaType.Video), Unknown(MediaType.Invalid, false), Unsupported(
+			MediaType.Invalid, false), Corrupt(MediaType.Invalid, false);
 
 	private MediaType type;
 	private boolean valid = true;
