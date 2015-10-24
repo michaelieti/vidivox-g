@@ -1,5 +1,7 @@
 package overlay.control;
 
+import editor.EditPanel;
+import editor.SpeechTab;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -82,12 +84,12 @@ public class OverlayController {
 	public void editSelectedCommentary() {
 		SelectionModel<Commentary> selectionModel = view.getSelection();
 		Commentary commentToEdit = selectionModel.getSelectedItem();
-		//TODO: passes it to the editor controller class.
+		SpeechTab.getSpeechTab().editCommentary(commentToEdit);
 	}
 
 	
 	public void editCommentary(Commentary commentary) {
-		//TODO: pass the commentary to the editor controller class
+		SpeechTab.getSpeechTab().editCommentary(commentary);
 	}
 	
 	public void deleteSelectedCommentary() {
@@ -123,6 +125,10 @@ public class OverlayController {
 	}
 
 	/* private initializer methods */
+	
+	public void reloadTable(){
+		view.reloadTable();
+	}
 	
 	private void bindTableModel(){
 		ObservableList<Commentary> list = model.getOverlayList();

@@ -39,26 +39,26 @@ public class SpeechTab extends BindableTab {
 
 	final private static int btnSpacing = 20;
 
+	/* GUI elements */
 	private Text msg;
 	private TextArea userField;
 	private Button speechBtn, saveBtn, overlayBtn, cancelOverlayBtn;
 	private FileChooser f;
-	private Stage stage;
 	private ProgressBar progBar = new ProgressBar();
+	
+	/* festival fields*/
 	private int pid = -1;
+	
+	/* commentary editing fields*/
 	private SimpleBooleanProperty editFlag = new SimpleBooleanProperty(false);
 	private Commentary commentUnderEdit = null;
-	private static SpeechTab speechTab;
-	
-	public static SpeechTab getSpeechTab(){
-		return speechTab;
-	}
-	
 
+	private static SpeechTab singletonObject;
+	
 	public SpeechTab(final MediaView mv, String title, String message) {
 		super(mv, title);
 		
-		speechTab = this;
+		singletonObject = this;
 		
 		msg = new Text(message);
 		msg.setFill(Color.LIGHTGRAY);
@@ -67,35 +67,17 @@ public class SpeechTab extends BindableTab {
 		// Making the userField not editable when there is no video attached to
 		// the media player
 		userField.editableProperty().bind(mv.mediaPlayerProperty().isNotNull());
- 
-		f = new FileChooser();
-		f.setTitle("Save");
-		// Initializing Button Event handlers
+
+		/* button initialization and event handler setting */
 		saveBtn = new Button("Save Speech");
 		saveBtn.setTooltip(new Tooltip("Save the text to a wav file"));
-		saveBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				FileChooser f = new FileChooser();
-				f.setTitle("Save");
-				File file = new FileChooser().showSaveDialog(null);
-				if (file != null) {
-					textToSpeech(userField.getText(), file.getAbsolutePath());
-				}
-			}
-
-		});
+		saveBtn.setOnAction(new SaveHandler());
 		saveBtn.disableProperty().bind(userField.lengthProperty().isEqualTo(0));
 
-		/*
-		 * Initializes the Speech button, which toggles between Preview and
-		 * Cancel.
-		 */
+		/* Speech button initialization, and setting up toggling action */
 		speechBtn = new Button();
 		setSpeechState(false);
 		speechBtn.setOnAction(new EventHandler<ActionEvent>() {
-
 			public void handle(ActionEvent arg0) {
 				if (pid == -1) {
 					playSpeech();
@@ -103,11 +85,20 @@ public class SpeechTab extends BindableTab {
 					cancelSpeech();
 				}
 			}
-
 		});
 		speechBtn.disableProperty().bind(
 				userField.lengthProperty().isEqualTo(0));
 		
+		overlayBtn = new Button("Add to overlay");
+		overlayBtn.setTooltip(new Tooltip(
+						"Add this commentary with the current time to the overlays."));
+		overlayBtn.setOnAction(new AddToOverlayHandler());
+		//disables when no video or no text in field
+		overlayBtn.disableProperty().bind(
+			Bindings.or(userField.lengthProperty().isEqualTo(0), mv
+				.mediaPlayerProperty().isNull()));
+		
+
 		cancelOverlayBtn = new Button("Cancel editing");
 		cancelOverlayBtn.setTooltip(new Tooltip("Cancel the editing of this tooltip, and go back to inserting new commentary."));
 		cancelOverlayBtn.setVisible(false);
@@ -119,69 +110,8 @@ public class SpeechTab extends BindableTab {
 			}
 		});
 		
-		overlayBtn = new Button("Add to overlay");
-		overlayBtn.setTooltip(new Tooltip(
-						"Add this commentary with the current time to the overlays."));
-
-		// Disables the overlay button when either there is no input text, or
-		// there is no attached video.
-		overlayBtn.disableProperty().bind(
-				Bindings.or(userField.lengthProperty().isEqualTo(0), mv
-						.mediaPlayerProperty().isNull()));
-		overlayBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-			/**
-			 * Create a new commentary and add it to the overlay list.
-			 * The table is updated automatically.
-			 */
-			@Override
-			public void handle(ActionEvent arg) {
-				
-				if (editFlag.get()){	//if currently under editing, just edit the text, leave the time
-					commentUnderEdit.setText(userField.getText());
-					//TODO: do i need to reload the table here?
-					setEditFlag(false);
-				} else {
-					// not currently under editing: create new commentary, use the current time, and use new text
-					String text = userField.getText();
-					Duration time = VidivoxPlayer.getVPlayer().getMediaPlayer().getCurrentTime();
-					Commentary comment = new Commentary(time, text, OverlayType.TTS);
-					OverlayController.getController().addCommentary(comment);
-				}
-				/*
-				 * THE OLD IMPLEMENTATION OF SPEECH TAB ADDS IN A COMMENTARY AT
-				 * THE START OF THE VIDEO. THIS IS BEING REPLACED
-				 * 
-				 * try { String msg = userField.getText(); StagedAudio stgAudio
-				 * = MediaConverter.textToSpeech(msg); Media video =
-				 * mv.getMediaPlayer().getMedia();
-				 * MediaConverter.mergeVideoAndAudio(video, stgAudio, progBar);
-				 * } catch (Exception e) { e.printStackTrace();
-				 * System.out.println("gg u screwed"); }
-				 */
-
-			}
-
-		});
-		// disables the button when no text in field
-
-		editFlag.addListener(new ChangeListener<Boolean>(){
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if (newValue){
-					cancelOverlayBtn.setVisible(true);
-					overlayBtn.setText("Finish editing commentary");
-					overlayBtn.setTooltip(new Tooltip("Save this edit"));
-				}
-				else{
-					cancelOverlayBtn.setVisible(false);
-					overlayBtn.setText("Add to overlay list");
-					overlayBtn.setTooltip(new Tooltip("Add this commentary at the current time to the list of commentary to be overlaid"));
-				}
-				
-			}
-			
-		});
+		/* ensures that the cancel overlay button only appears when editflag = true*/
+		editFlag.addListener(new CancelOverlayButtonListener());
 		
 		/* placement starts here */
 		GridPane speechPane = new GridPane();
@@ -202,33 +132,41 @@ public class SpeechTab extends BindableTab {
 		this.setContent(speechPane);
 
 	}
+	
+	public static SpeechTab getSpeechTab(){
+		return singletonObject;
+	}
+
 
 	public void editCommentary(Commentary commentary){
-		commentUnderEdit = commentary;
-		userField.setText(commentary.getText());
-		setEditFlag(true);
+		setEditFlag(true);	//sets edit flag
+		setUserField(commentary.getText());		//sets text field
+		setCommentUnderEdit(commentary);		//sets comment under edit
+	}
+	
+	public void setUserField(String text){
+		userField.setText(text);
 	}
 	
 	private void setEditFlag(boolean x){
 		editFlag.set(x);
 	}
 	
+	private void setCommentUnderEdit(Commentary comment){
+		commentUnderEdit = comment;
+	}
 	
+	@Override
 	public void setBind(Stage toBindTo) {
-		/*
-		 * This creates a custom string property. The property will say
-		 * "Please open..." if there is no video. Otherwise it will display the
-		 * user defined message.
+		/**Defines the binding for the main stage message.
 		 */
 		StringBinding changeMsg;
-		changeMsg = new When(VidivoxPlayer.getVPlayer().getMediaView().mediaPlayerProperty().isNull()).then(
-				"Please open a video file to proceed.")
+		changeMsg = new 
+				When(VidivoxPlayer.getVPlayer().getMediaView().mediaPlayerProperty().isNull()).
+				then("Please open a video file to proceed.")
 				.otherwise(msg.getText());
 		msg.textProperty().bind(changeMsg);
-
 		msg.wrappingWidthProperty().bind(toBindTo.widthProperty().subtract(20));
-
-		return;
 	}
 
 	@Override
@@ -361,5 +299,68 @@ public class SpeechTab extends BindableTab {
 		sb.append("/temp/wav");
 		return sb.toString();
 	}
+	
+	
+	/* EVENT HANDLERS, FILTERS, TASKS */
+	
+	/**
+	 * To be called when the save button is pressed.
+	 * @author michael
+	 *
+	 */
+	public class SaveHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent arg0) {
+			FileChooser f = new FileChooser();
+			f.setTitle("Save");
+			File file = new FileChooser().showSaveDialog(null);
+			if (file != null) {
+				textToSpeech(userField.getText(), file.getAbsolutePath());
+			}
+		}
+
+	}
+
+	/**
+	 * Create a new commentary and add it to the overlay list.
+	 * The table is updated automatically.
+	 */
+	public class AddToOverlayHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent arg) {
+			
+			if (editFlag.get()){	//if currently under editing, just edit the text, leave the time
+				commentUnderEdit.setText(userField.getText());
+				OverlayController.getController().reloadTable();
+				setEditFlag(false);
+			} else {
+				// not currently under editing: create new commentary, use the current time, and use new text
+				String text = userField.getText();
+				Duration time = VidivoxPlayer.getVPlayer().getMediaPlayer().getCurrentTime();
+				Commentary comment = new Commentary(time, text, OverlayType.TTS);
+				OverlayController.getController().addCommentary(comment);
+			}
+		}
+	}
+	
+	public class CancelOverlayButtonListener implements ChangeListener<Boolean> {
+		@Override
+		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+			if (newValue){
+				cancelOverlayBtn.setVisible(true);
+				overlayBtn.setText("Finish editing commentary");
+				overlayBtn.setTooltip(new Tooltip("Save this edit"));
+			}
+			else{
+				cancelOverlayBtn.setVisible(false);
+				overlayBtn.setText("Add to overlay list");
+				overlayBtn.setTooltip(new Tooltip("Add this commentary at the current time to the list of commentary to be overlaid"));
+			}
+		}
+	}
+	
+
 
 }
