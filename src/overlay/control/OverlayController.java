@@ -15,10 +15,10 @@ import overlay.model.OverlayModellable;
 /**
  * Handles logical type operations for the overlay functionality.
  * Does not attempt to affect the view of the overlay panel.
- * @author michael
+ * author michael
  *
  */
-public class OverlayController implements OverlayControllable {
+public class OverlayController {
 
 	private OverlayModellable model;
 	private OverlayView view;
@@ -67,29 +67,29 @@ public class OverlayController implements OverlayControllable {
 	
 	/* interface methods */
 	
-	@Override
+	
 	public void filterList(OverlayType olType) {
 		//TODO: sets filter off or onto a selected overlay type
 	}
 
-	@Override
+	
 	public void addCommentary(Commentary comment){
 		model.getOverlayList().add(comment);
 		view.reloadTable();
 	}
 	
-	@Override
+	
 	public void editSelectedCommentary() {
 		SelectionModel<Commentary> selectionModel = view.getSelection();
 		Commentary commentToEdit = selectionModel.getSelectedItem();
 		//TODO: passes it to the editor controller class.
 	}
 
-	@Override
+	
 	public void editCommentary(Commentary commentary) {
 		//TODO: pass the commentary to the editor controller class
 	}
-	@Override
+	
 	public void deleteSelectedCommentary() {
 		SelectionModel<Commentary> selModel = view.getSelection();
 		//delete the comment from the list
@@ -98,7 +98,7 @@ public class OverlayController implements OverlayControllable {
 		}
 	}
 
-	@Override
+	
 	public void commitOverlay() {
 		// TODO: creates a new video, overlaid with the commentary.
 
@@ -117,7 +117,7 @@ public class OverlayController implements OverlayControllable {
 	}
 
 
-	@Override
+	
 	public void deleteCommentary(Commentary commentary) {
 		model.getOverlayList().remove(commentary);
 	}
@@ -137,7 +137,7 @@ public class OverlayController implements OverlayControllable {
 	
 	private void setEditButton(Button btn){
 		btn.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
+			
 			public void handle(ActionEvent event) {
 				editSelectedCommentary();
 			}
@@ -146,14 +146,14 @@ public class OverlayController implements OverlayControllable {
 	
 	private void setDeleteButton(Button btn){
 		btn.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
+			
 			public void handle(ActionEvent event) {
 				deleteSelectedCommentary();
 			}
 		});
 	}
 
-	@Override
+	
 	public void setIconified(boolean b) {
 		view.setIconified(b);
 	}
