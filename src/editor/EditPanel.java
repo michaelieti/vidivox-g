@@ -21,9 +21,10 @@ public class EditPanel extends Stage {
 
 	final private static String DEFAULT_TITLE = "Editing Window";
 	private static EditPanel singletonObject;
+	private TabPane pane;
 	
 	/* Currently included Features */
-	BindableTab speech, subtitle, mp3;
+	BindableTab speechTab, subtitleTab, mp3;
 
 	/* singleton getter */
 	public static EditPanel getEditPanel(){
@@ -56,21 +57,16 @@ public class EditPanel extends Stage {
 	public EditPanel(MediaView mv, String title) {
 		super();
 		this.setTitle(title);
-		TabPane pane = new TabPane();
+		pane = new TabPane();
 		
-		speech = new SpeechTab(mv, "Speech",
+		speechTab = new SpeechTab(mv, "Speech",
 				"Enter text to be spoken over the video. Hover over controls for more details");
-		subtitle = new SubtitleTab(mv, "Subtitles", "Enter text to be subtitled (coming soon...)");
+		subtitleTab = new SubtitleTab(mv, "Subtitles", "Enter text to be subtitled (coming soon...)");
 		mp3 = new Mp3Tab(mv, "Mp3", "Overlay an mp3 or wav file on the current video.");
-		speech.setBind(this);
-		subtitle.setBind(this);
+		speechTab.setBind(this);
+		subtitleTab.setBind(this);
 		mp3.setBind(this);
-		pane.getTabs().addAll(speech, subtitle, mp3);
-		/*
-		 * //[PREVIEW PANEL] Uncomment 2 of 2 for Preview Panel // ALSO: change
-		 * Scene(pane) to Scene(root) previewPanel.getChildren().addAll(sp,
-		 * previewControls); root.getChildren().addAll(pane, previewPanel);
-		 */
+		pane.getTabs().addAll(speechTab, subtitleTab, mp3);
 		Scene scene = new Scene(pane);
 		scene.getStylesheets().add(getClass().getResource("/skins/BlueSkin.css").toExternalForm());
 		this.setScene(scene);
@@ -86,13 +82,6 @@ public class EditPanel extends Stage {
 			}
 		});
 		
-	}
-	
-	public void editCommentary(Commentary commentary){
-		//switch to speech tab
-		//output comment to text field
-		//set the CommentUnderEdit field
-		//set the currentlyEditing flag in speechTab
 	}
 	
 	public void editMp3(){
