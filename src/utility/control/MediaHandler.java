@@ -22,7 +22,7 @@ import utility.media.MediaType;
 public class MediaHandler extends Application {
 
 	private DoubleProperty progress;
-	private MediaFile destination;
+	private MediaFile mediaFile;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -66,7 +66,7 @@ public class MediaHandler extends Application {
 					"Cannot instantiate a MediaHandler on an invalid MediaFile");
 		}
 		this.progress = progress;
-		this.destination = destination;
+		this.mediaFile = destination;
 	}
 
 	/**
@@ -82,8 +82,8 @@ public class MediaHandler extends Application {
 	 * @return The assigned destination file for this handler. Most Media
 	 *         Handler events will store their output into the destination file.
 	 */
-	public MediaFile getDestination() {
-		return destination;
+	public MediaFile getMediaFile() {
+		return mediaFile;
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class MediaHandler extends Application {
 	public void convert(MediaFile source) {
 
 		String expansion = "ffmpeg -y -i " + source.getAbsolutePath()
-				+ " " + destination.getAbsolutePath();
+				+ " " + mediaFile.getAbsolutePath();
 		FFMPEG cmd = new FFMPEG(progress, expansion, source.getDuration());
 		cmd.start();
 	}
@@ -115,9 +115,9 @@ public class MediaHandler extends Application {
 	 */
 	public void mergeAudio(MediaFile... files) throws Exception {
 		Double longestDuration = 0.0;
-		if (!destination.getType().equals(MediaType.Audio)) {
+		if (!mediaFile.getType().equals(MediaType.Audio)) {
 			throw new Exception("destination format '"
-					+ destination.getFormat().toString()
+					+ mediaFile.getFormat().toString()
 					+ "' is not a valid Audio source");
 		}
 		String ffmpegCommand = "ffmpeg -y ";
@@ -132,7 +132,7 @@ public class MediaHandler extends Application {
 		}
 		ffmpegCommand = ffmpegCommand.concat("-filter_complex \"amix=inputs="
 				+ files.length + "\" -ac 2 "
-				+ destination.getAbsolutePath());
+				+ mediaFile.getAbsolutePath());
 		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, longestDuration);
 		cmd.start();
 	}
@@ -145,14 +145,14 @@ public class MediaHandler extends Application {
 	 * @throws Exception
 	 */
 	public void stripAudio(MediaFile source) throws Exception {
-		if (!destination.getType().equals(MediaType.Video)) {
+		if (!mediaFile.getType().equals(MediaType.Video)) {
 			throw new Exception("destination format '"
-					+ destination.getFormat().toString()
+					+ mediaFile.getFormat().toString()
 					+ "' is not a valid Video source");
 		}
 		String ffmpegCommand = "ffmpeg -y -i "
 				+ source.getAbsolutePath() + " -an "
-				+ destination.getAbsolutePath();
+				+ mediaFile.getAbsolutePath();
 		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, source.getDuration());
 		cmd.start();
 
@@ -171,24 +171,24 @@ public class MediaHandler extends Application {
 	 */
 	public void mergeAudioAndVideo(MediaFile video, MediaFile audio)
 			throws Exception {
-		if (!destination.getType().equals(MediaType.Video)) {
+		if (!mediaFile.getType().equals(MediaType.Video)) {
 			throw new Exception("destination format '"
-					+ destination.getFormat().toString()
+					+ mediaFile.getFormat().toString()
 					+ "' is not a valid Video source");
 		} else if (!video.getType().equals(MediaType.Video)) {
 			throw new Exception("input video format '"
-					+ destination.getFormat().toString()
+					+ mediaFile.getFormat().toString()
 					+ "' is not a valid Video source");
 		} else if (!audio.getType().equals(MediaType.Audio)) {
 			throw new Exception("input audio format '"
-					+ destination.getFormat().toString()
+					+ mediaFile.getFormat().toString()
 					+ "' is not a valid Audio source");
 		}
 		String ffmpegCommand = "ffmpeg -y -i "
 				+ video.getAbsolutePath() + " -i "
 				+ audio.getAbsolutePath()
 				+ " -filter_complex amix=inputs=2 -shortest "
-				+ destination.getAbsolutePath();
+				+ mediaFile.getAbsolutePath();
 
 		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, video.getDuration());
 		cmd.start();
@@ -203,14 +203,14 @@ public class MediaHandler extends Application {
 	public void makeBlankAudio(MediaFile audio, Duration duration) throws Exception{
 		if (!audio.getType().equals(MediaType.Audio)) {
 			throw new Exception("input audio format '"
-					+ destination.getFormat().toString()
+					+ mediaFile.getFormat().toString()
 					+ "' is not a valid Audio source");
 		}
 		
 		StringBuilder sb = new StringBuilder("ffmpeg -y -f lavfi -i aevalsrc=0:0:0:0:0:0::duration=");
 		sb.append(duration.toSeconds());
 		sb.append(" ");
-		sb.append(destination.getPath().getAbsolutePath());
+		sb.append(mediaFile.getPath().getAbsolutePath());
 		
 		FFMPEG cmd = new FFMPEG(progress, sb.toString(), duration.toSeconds());
 		cmd.start();
@@ -226,7 +226,7 @@ public class MediaHandler extends Application {
 		if (!audio1.getType().equals(MediaType.Audio) || 
 				!audio2.getType().equals(MediaType.Audio)) {
 			throw new Exception("input audio format '"
-					+ destination.getFormat().toString()
+					+ mediaFile.getFormat().toString()
 					+ "' is not a valid Audio source");
 		}
 		
@@ -234,7 +234,7 @@ public class MediaHandler extends Application {
 		sb.append(audio1.getPath().getAbsolutePath())
 		.append(" -i " + audio2.getPath().getAbsolutePath())
 		.append(" -filter_complex '[0:0] [1:0] concat =n=2:v=0:a=1' ")
-		.append(destination.getPath().getAbsolutePath());
+		.append(mediaFile.getPath().getAbsolutePath());
 		
 		Double totalDuration = audio1.getDuration() + audio2.getDuration();
 		
@@ -246,7 +246,7 @@ public class MediaHandler extends Application {
 
 	public void textToSpeech(String text, SchemeFile festival) {
 		String ffmpegCommand = "`echo \"" + text + "\" | text2wave -o "
-				+ destination.getAbsolutePath() + " -eval " + festival.getAbsolutePath() + "`";
+				+ mediaFile.getAbsolutePath() + " -eval " + festival.getAbsolutePath() + "`";
 		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, 1.0);
 		cmd.start();
 	}
