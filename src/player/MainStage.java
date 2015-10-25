@@ -57,6 +57,11 @@ public class MainStage extends Stage {
 		vidiVidCtrl = new VidivoxVideoControls(vidiMedia.getMediaView());
 		borderPane.setBottom(vidiVidCtrl);
 
+		//sets up the VidivoxPlayer class to start taking inputs
+		VidivoxPlayer.getVPlayer().setControlPanel(vidiVidCtrl).
+			setFilePanel(vidiFileCtrl).
+			setMediaPanel(vidiMedia);
+		
 		Scene s = new Scene(borderPane);
 
 		// grid complete, set scene

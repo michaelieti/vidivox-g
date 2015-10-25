@@ -51,16 +51,19 @@ public class VidivoxPlayer {
 
 	/* PANEL INTERACTORS */
 	/* MUST BE CALLED DURING STAGE CONSTRUCTION */
-	public void setMediaPanel(MediaPanel mediaPanel) {
+	public VidivoxPlayer setMediaPanel(MediaPanel mediaPanel) {
 		this.mediaPanel = mediaPanel;
+		return this;
 	}
 
-	public void setControlPanel(VidivoxVideoControls controlPanel) {
+	public VidivoxPlayer setControlPanel(VidivoxVideoControls controlPanel) {
 		this.controlPanel = controlPanel;
+		return this;
 	}
 
-	public void setFilePanel(VidivoxFileControls filePanel) {
+	public VidivoxPlayer setFilePanel(VidivoxFileControls filePanel) {
 		this.filePanel = filePanel;
+		return this;
 	}
 
 	/* MEDIAVIEW/MEDIAPLAYER GETTER/SETTER */
