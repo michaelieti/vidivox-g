@@ -32,16 +32,19 @@ public class MediaFile {
 		}
 	}
 
+	public MediaFile(Media media) {
+		this(new File(media.getSource()));
+	}
 	/*
 	 * Convenience constructor used to create a MediaFile at a temporary
 	 * location.
 	 */
 	private MediaFile(MediaFormat desiredFormat) {
-		File file = new File(System.getProperty("user.dir") + "/.temp/"
-				+ +this.hashCode() + "." + desiredFormat.getExtension());
-		while (file.exists()) {
-			file = new File(System.getProperty("user.dir") + "/.temp/"
-					+ file.hashCode() + "." + desiredFormat.getExtension());
+		path = new File(System.getProperty("user.dir") + "/.temp/"
+				+ Math.abs(this.hashCode()) + "." + desiredFormat.getExtension());
+		while (path.exists()) {
+			path = new File(System.getProperty("user.dir") + "/.temp/"
+					+ Math.abs(path.hashCode()) + "." + desiredFormat.getExtension());
 		}
 	}
 
@@ -75,6 +78,10 @@ public class MediaFile {
 	public File getPath() {
 		return path;
 	}
+	
+	public String getAbsolutePath() {
+		return "\"" + path.getAbsolutePath() + "\"";
+	}
 
 	/**
 	 * @return The duration of the Media source.
@@ -97,6 +104,52 @@ public class MediaFile {
 		path.delete();
 		format = MediaFormat.Unknown;
 	}
+	
+	/*
+	 * A helper function which probes an UnknownMedia for its true file type.
+	 */
+	private String probeForType() {
+		String output = null;
+		String expansion = "ffprobe \"" + path.getAbsolutePath() + "\"";
+		String[] cmd = { "bash", "-c", expansion };
+		ProcessBuilder build = new ProcessBuilder(cmd);
+		build.redirectErrorStream(true);
+		Process p;
+		try {
+			p = build.start();
+			BufferedReader processOutput = new BufferedReader(
+					new InputStreamReader(p.getInputStream()));
+			String currentLineOfOutput;
+			String[] splitOfCurrentLine;
+			while ((currentLineOfOutput = processOutput.readLine()) != null) {
+				currentLineOfOutput = currentLineOfOutput.trim();
+				if (currentLineOfOutput.startsWith("Duration:")) {
+					// Example changes are as shown.
+					// Duration: 00:00:01.01, bitrate: 256 kb/s
+					splitOfCurrentLine = currentLineOfOutput.split(",");
+					// [Duration: 00:00:01.01] [bitrate: 256 kb/s]
+
+					splitOfCurrentLine = splitOfCurrentLine[0].split(" ");
+					// [Duration:] [00:00:01.01]
+					duration = MediaConverter
+							.timeToSeconds(splitOfCurrentLine[1]);
+
+				}
+				if (currentLineOfOutput.startsWith("Input #0,") && output == null) {
+					splitOfCurrentLine = currentLineOfOutput.split(",");
+					if (splitOfCurrentLine.length >= 2) {
+						output = splitOfCurrentLine[1].trim().toUpperCase();
+					} else {
+						output = "";
+					}
+				}
+			}
+			p.waitFor();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
 
 	/**
 	 * This function can be used to create an empty media container of a
@@ -113,8 +166,8 @@ public class MediaFile {
 	public static MediaFile createMediaContainer(MediaFormat desiredFormat,
 			File desiredLocation) {
 		File correctLocation = addExtension(desiredLocation, desiredFormat);
-		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" "
-				+ correctLocation.getAbsolutePath();
+		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" \""
+				+ correctLocation.getAbsolutePath() + "\"";
 		String[] cmd = { "bash", "-c", expansion };
 		ProcessBuilder build = new ProcessBuilder(cmd);
 		Process p;
@@ -140,8 +193,8 @@ public class MediaFile {
 	public static MediaFile createMediaContainer(MediaFormat desiredFormat) {
 		MediaFile output = new MediaFile(desiredFormat);
 		output.path = addExtension(output.path, desiredFormat);
-		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" "
-				+ output.path.getAbsolutePath();
+		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" \""
+				+ output.path.getAbsolutePath() + "\"";
 		String[] cmd = { "bash", "-c", expansion };
 		ProcessBuilder build = new ProcessBuilder(cmd);
 		Process p;
@@ -152,52 +205,10 @@ public class MediaFile {
 			e.printStackTrace();
 		}
 
-		return output;
+		return new MediaFile(output.getPath());
 	}
 
-	/*
-	 * A helper function which probes an UnknownMedia for its true file type.
-	 */
-	private String probeForType() {
-		String expansion = "ffprobe " + path.getAbsolutePath();
-		String[] cmd = { "bash", "-c", expansion };
-		ProcessBuilder build = new ProcessBuilder(cmd);
-		build.redirectErrorStream(true);
-		Process p;
-		try {
-			p = build.start();
-			BufferedReader processOutput = new BufferedReader(
-					new InputStreamReader(p.getInputStream()));
-			String currentLineOfOutput;
-			String[] splitOfCurrentLine;
-			while ((currentLineOfOutput = processOutput.readLine().trim()) != null) {
-
-				if (currentLineOfOutput.startsWith("Duration:")) {
-					// Example changes are as shown.
-					// Duration: 00:00:01.01, bitrate: 256 kb/s
-					splitOfCurrentLine = currentLineOfOutput.split(",");
-					// [Duration: 00:00:01.01] [bitrate: 256 kb/s]
-
-					splitOfCurrentLine = splitOfCurrentLine[0].split(" ");
-					// [Duration:] [00:00:01.01]
-					duration = MediaConverter
-							.timeToSeconds(splitOfCurrentLine[1]);
-
-				}
-				if (currentLineOfOutput.startsWith("Input #0,")) {
-					splitOfCurrentLine = currentLineOfOutput.split(",");
-					if (splitOfCurrentLine.length >= 2) {
-						return splitOfCurrentLine[1].trim().toUpperCase();
-					}
-					return "";
-				}
-			}
-			p.waitFor();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
-		return "";
-	}
+	
 
 	/*
 	 * A helper function which takes a file path and a media format, and
