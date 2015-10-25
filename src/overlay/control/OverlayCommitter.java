@@ -27,14 +27,14 @@ public class OverlayCommitter {
 		return this;
 	}
 	
-	public void beginCommit(){
+	public MediaFile beginCommit(){
 		if (originalVideo == null){
 			System.out.println("Media supplied was null!");
-			return;
+			return null;
 		}
 		if (commentaryList == null || commentaryList.size() == 0){
 			System.out.println("List size is zero");
-			if (commentaryList.size() == 0) { return; }
+			if (commentaryList.size() == 0) { return null; }
 			//check all other fields in the future and set flags as appropriate
 		}
 
@@ -46,15 +46,64 @@ public class OverlayCommitter {
 		//						`-------> extract to new MediaFile
 
 		
-		//first comment - get duration, make blank wav, make text2wav, concat both.
-		//store this somewhere.
+		//define the comment list iterator
 		Iterator<Commentary> cliterator = commentaryList.iterator();
 		Commentary comment1 = cliterator.next();
-		SchemeFile scmFile = new SchemeFile();
+		MediaFile prevMedia = null;
+		
 		try{	
-		scmFile.writeToDisk();
-				// 1 - make the blank audio
-		Duration blankTime = comment1.getTime();
+					// 1 - make the blank audio
+			Duration blankTime = comment1.getTime();
+			MediaFile blankFile = makeBlank(blankTime);
+			
+					// 2 - make the text to speech
+			MediaFile speechFile = simpleMakeSpeech(comment1.getText());
+			
+					// 3 - concatenate the blank file and the speech file
+			MediaFile firstComment = concat(blankFile, speechFile);
+			
+			//now we have the first comment with the audio offset.
+			
+					// 4 - iterate through rest of list and append onto this first comment.
+			prevMedia = firstComment;
+			while (cliterator.hasNext()){
+				Commentary currentCommentary = cliterator.next();
+				//get previous media duration
+				double prevDuration = prevMedia.getDuration();
+				//get current commentary start time
+				Duration timeOffset = currentCommentary.getTime();
+				// use these two to get the amount of blank media in between
+				Duration fillerDuration = Duration.seconds(timeOffset.toSeconds() - prevDuration);
+				// make the blank media
+				MediaFile fillerMediaFile = makeBlank(fillerDuration);
+				// make the speech file
+				MediaFile currentSpeechFile = simpleMakeSpeech(currentCommentary.getText());
+				// concatenate blank media and speech file
+				MediaFile fillerSpeechConcatenated = concat(fillerMediaFile, currentSpeechFile);
+				// concatenate previous file and current file
+				MediaFile prevAndCurrentConcat = concat(prevMedia, fillerSpeechConcatenated);
+				// store as new previous file
+				prevMedia = prevAndCurrentConcat;
+			}
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		
+		return prevMedia;
+		
+	}
+	
+	private MediaFile concat(MediaFile first, MediaFile second) throws Exception{
+		MediaFile concatenatedFile = MediaFile.createMediaContainer(MediaFormat.WAV);
+		MediaHandler concatenatedHandler = new MediaHandler(concatenatedFile);
+		concatenatedHandler.concatAudio(first, second);
+		//do we need to wait for concatenation? yes, probably ;_;
+		
+		return concatenatedHandler.getMediaFile();
+	}
+	
+	private MediaFile makeBlank(Duration blankTime) throws Exception{
 		MediaHandler blankMediaHandler;
 		MediaFile blankFile = MediaFile.createMediaContainer(MediaFormat.WAV);
 		blankMediaHandler = new MediaHandler(blankFile);
@@ -62,32 +111,21 @@ public class OverlayCommitter {
 		//do we need to wait for it to make the audio?
 		blankFile = blankMediaHandler.getMediaFile();
 		//blankFile now holds a blank file
+		return blankFile;	
+	}
+	
+	private MediaFile simpleMakeSpeech(String text) throws Exception{
+
+		SchemeFile scmFile = new SchemeFile();
+		scmFile.writeToDisk();
 		
-				// 2 - make the text to speech
 		MediaFile textMediaFile = MediaFile.createMediaContainer(MediaFormat.WAV);
 		MediaHandler textMediaHandler = new MediaHandler(textMediaFile);
-		textMediaHandler.textToSpeech(comment1.getText(), scmFile);
+		textMediaHandler.textToSpeech(text, scmFile);
 		//do we need to wait for this?
 		textMediaFile = textMediaHandler.getMediaFile();
 		//textMediaFile now holds the speech wav
-		
-				// 3 - concatenate the blank file and the speech file
-		MediaFile concatenatedFile = MediaFile.createMediaContainer(MediaFormat.WAV);
-		MediaHandler concatenatedHandler = new MediaHandler(concatenatedFile);
-		concatenatedHandler.concatAudio(blankFile, textMediaFile);
-		//do we need to wait for concatenation? yes probably
-		
-		MediaFile firstComment = concatenatedHandler.getMediaFile();
-		
-		//now we have the first comment with the audio offset.
-		
-		//iterate through rest of list and append onto this first comment.
-		
-		
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
+		return textMediaFile;
 	}
 
 }
