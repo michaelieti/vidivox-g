@@ -93,12 +93,15 @@ public class OverlayCommitter extends Application {
 					// 1 - make the blank audio
 			Duration blankTime = comment1.getTime();
 			MediaFile blankFile = makeBlank(blankTime);
+			System.out.println("######################Blank File for " + blankTime + " > " + blankFile.getQuoteOfAbsolutePath());
 			
 					// 2 - make the text to speech
 			MediaFile speechFile = simpleMakeSpeech(comment1.getText());
+			System.out.println("######################Speech File > " + speechFile.getQuoteOfAbsolutePath());
 			
 					// 3 - concatenate the blank file and the speech file
 			MediaFile firstComment = concat(blankFile, speechFile);
+			System.out.println("######################Comment File > " + firstComment.getQuoteOfAbsolutePath());
 			
 			//now we have the first comment with the audio offset.
 			
@@ -122,7 +125,7 @@ public class OverlayCommitter extends Application {
 				MediaFile prevAndCurrentConcat = concat(prevMedia, fillerSpeechConcatenated);
 				// store as new previous file
 				prevMedia = prevAndCurrentConcat;
-				System.out.println(prevMedia.getAbsolutePath());
+				System.out.println(prevMedia.getQuoteOfAbsolutePath());
 			}
 		}
 		catch (Exception e){

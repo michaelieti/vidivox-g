@@ -79,7 +79,7 @@ public class MediaFile {
 		return path;
 	}
 	
-	public String getAbsolutePath() {
+	public String getQuoteOfAbsolutePath() {
 		return "\"" + path.getAbsolutePath() + "\"";
 	}
 

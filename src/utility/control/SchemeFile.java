@@ -39,10 +39,10 @@ public class SchemeFile {
 
 	public SchemeFile() {
 		scmPath = new File(System.getProperty("user.dir") + "/.temp/"
-				+ this.hashCode() + ".scm");
+				+ Math.abs(this.hashCode()) + ".scm");
 		while (scmPath.exists()) {
 			scmPath = new File(System.getProperty("user.dir") + "/.temp/"
-					+ scmPath.hashCode() + ".scm");
+					+ Math.abs(scmPath.hashCode()) + ".scm");
 		}
 	}
 
