@@ -103,7 +103,7 @@ public class SchemeFile {
 		FileWriter scmFile = new FileWriter(scmPath);
 		scmFile.write(inputBuilder.toString());
 		scmFile.close();
-		System.out.println(inputBuilder.toString());
+//		System.out.println(inputBuilder.toString());
 	}
 
 }
