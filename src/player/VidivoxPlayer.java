@@ -2,6 +2,8 @@ package player;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -51,16 +53,20 @@ public class VidivoxPlayer {
 
 	/* PANEL INTERACTORS */
 	/* MUST BE CALLED DURING STAGE CONSTRUCTION */
-	public void setMediaPanel(MediaPanel mediaPanel) {
+	public VidivoxPlayer setMediaPanel(MediaPanel mediaPanel) {
 		this.mediaPanel = mediaPanel;
+		
+		return this;
 	}
 
-	public void setControlPanel(VidivoxVideoControls controlPanel) {
+	public VidivoxPlayer setControlPanel(VidivoxVideoControls controlPanel) {
 		this.controlPanel = controlPanel;
+		return this;
 	}
 
-	public void setFilePanel(VidivoxFileControls filePanel) {
+	public VidivoxPlayer setFilePanel(VidivoxFileControls filePanel) {
 		this.filePanel = filePanel;
+		return this;
 	}
 
 	/* MEDIAVIEW/MEDIAPLAYER GETTER/SETTER */

@@ -3,16 +3,12 @@ package player;
 import java.io.File;
 
 import javafx.application.Platform;
-import javafx.beans.binding.StringBinding;
-import javafx.beans.binding.When;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -44,28 +40,47 @@ public class MainStage extends Stage {
 		super();
 		this.setTitle(Main.DEFAULT_TITLE);
 		main = appLauncher;
-		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.CENTER);
-		grid.setVgap(10);
-		grid.setHgap(10);
-		grid.setPadding(new Insets(0, 0, 15, 0));
-		grid.setGridLinesVisible(Main.GRID_IS_VISIBLE);
+		BorderPane borderPane = new BorderPane();
+		borderPane.setPadding(new Insets(0, 0, 15, 0));
 
 		vidiMedia = new MediaPanel();
 		
 
 		// FILE CONTROL BAR: ADDED TO TOP
 		vidiFileCtrl = new VidivoxFileControls(this, vidiMedia);
-		grid.add(vidiFileCtrl, 0, 0);
+		borderPane.setTop(vidiFileCtrl);
 
 		// MEDIA VIEW NODE ADDED: CENTER
-		grid.add(vidiMedia, 0, 1);
+		borderPane.setCenter(vidiMedia);
 
 		// CONTROL PANEL ADDED: BOTTOM
 		vidiVidCtrl = new VidivoxVideoControls(vidiMedia.getMediaView());
-		grid.add(vidiVidCtrl, 0, 2);
+		borderPane.setBottom(vidiVidCtrl);
 
-		Scene s = new Scene(grid);
+		//sets up the VidivoxPlayer class to start taking inputs
+		VidivoxPlayer.getVPlayer().
+			setControlPanel(vidiVidCtrl).
+			setFilePanel(vidiFileCtrl).
+			setMediaPanel(vidiMedia);
+		
+		heightProperty().addListener(new ChangeListener<Number>(){
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				VidivoxPlayer.getVPlayer().getMediaView()
+				.setFitHeight(newValue.doubleValue() - 180);
+				System.out.println("new height = " + newValue );
+			}
+		});
+		widthProperty().addListener(new ChangeListener<Number>(){
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				VidivoxPlayer.getVPlayer().getMediaView().
+				setFitWidth(newValue.doubleValue());
+				System.out.println("new width = " + newValue );
+			}
+		});
+		
+		Scene s = new Scene(borderPane);
 
 		// grid complete, set scene
 		// MainStage contains the styling information for all the components of
