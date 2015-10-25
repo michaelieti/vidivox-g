@@ -153,4 +153,40 @@ public class MediaHandler extends Application {
 
 	}
 
+	/**
+	 * Overlays an audio file onto a video.
+	 * 
+	 * @param video
+	 *            A valid video source.
+	 * @param audio
+	 *            A valid audio source.
+	 * @throws Exception
+	 *             An Exception is thrown if any of the input Media
+	 *             containers are of unexpected format.
+	 */
+	public void mergeAudioAndVideo(MediaFile video, MediaFile audio)
+			throws Exception {
+		if (!destination.getType().equals(MediaType.Video)) {
+			throw new Exception("destination format '"
+					+ destination.getFormat().toString()
+					+ "' is not a valid Video source");
+		} else if (!video.getType().equals(MediaType.Video)) {
+			throw new Exception("input video format '"
+					+ destination.getFormat().toString()
+					+ "' is not a valid Video source");
+		} else if (!audio.getType().equals(MediaType.Audio)) {
+			throw new Exception("input audio format '"
+					+ destination.getFormat().toString()
+					+ "' is not a valid Audio source");
+		}
+		String ffmpegCommand = "ffmpeg -y -i "
+				+ video.getPath().getAbsolutePath() + " -i "
+				+ audio.getPath().getAbsolutePath()
+				+ " -filter_complex amix=inputs=2 -shortest "
+				+ destination.getPath().getAbsolutePath();
+
+		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, video.getDuration());
+		cmd.start();
+	}
+
 }
