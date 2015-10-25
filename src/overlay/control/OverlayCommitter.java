@@ -1,9 +1,13 @@
 package overlay.control;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.application.Application;
 import javafx.scene.media.Media;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import overlay.Commentary;
 import utility.control.MediaHandler;
@@ -11,11 +15,43 @@ import utility.control.SchemeFile;
 import utility.media.MediaFile;
 import utility.media.MediaFormat;
 
-public class OverlayCommitter {
+public class OverlayCommitter extends Application {
 	
 	Media originalVideo;
 	List<Commentary> commentaryList;
 	
+	/* for testing purposes! */
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		System.out.println("Hello! Now begins the test....");
+		//make a new overlay committer
+		
+		OverlayCommitter oc = new OverlayCommitter();
+		
+		String uriString = "";
+		
+		//make new commentary list
+		//provide a new video
+		List<Commentary> list = new ArrayList<Commentary>();
+			list.add(new Commentary (Duration.valueOf("5s"), "Hello", OverlayType.TTS));
+			list.add(new Commentary (Duration.valueOf("10s"), "How's it going?", OverlayType.TTS));
+			list.add(new Commentary (Duration.valueOf("15s"), "Test commentary", OverlayType.TTS));
+		Media video = new Media(uriString);
+		
+		
+		oc.addCommentaryList(list);
+		oc.addVideo(video);
+		
+		oc.beginCommit();
+		//begin the commit
+		
+		
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+	/* end testing purposes ;_; */
 	
 	public OverlayCommitter addVideo(Media originalVideo){
 		this.originalVideo = originalVideo;
