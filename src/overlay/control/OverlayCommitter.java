@@ -122,6 +122,7 @@ public class OverlayCommitter extends Application {
 				MediaFile prevAndCurrentConcat = concat(prevMedia, fillerSpeechConcatenated);
 				// store as new previous file
 				prevMedia = prevAndCurrentConcat;
+				System.out.println(prevMedia.getAbsolutePath());
 			}
 		}
 		catch (Exception e){
