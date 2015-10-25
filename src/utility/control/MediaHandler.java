@@ -194,6 +194,12 @@ public class MediaHandler extends Application {
 		cmd.start();
 	}
 	
+	/**
+	 * Creates a blank audio file of the given duration.
+	 * @param audio
+	 * @param duration
+	 * @throws Exception
+	 */
 	public void makeBlankAudio(MediaFile audio, Duration duration) throws Exception{
 		if (!audio.getType().equals(MediaType.Audio)) {
 			throw new Exception("input audio format '"
@@ -210,6 +216,12 @@ public class MediaHandler extends Application {
 		cmd.start();
 	}
 	
+	/**
+	 * Concatenates two audio files, audio 1 comes before audio 2.
+	 * @param audio1
+	 * @param audio2
+	 * @throws Exception
+	 */
 	public void concatAudio(MediaFile audio1, MediaFile audio2) throws Exception{
 		if (!audio1.getType().equals(MediaType.Audio) || 
 				!audio2.getType().equals(MediaType.Audio)) {
