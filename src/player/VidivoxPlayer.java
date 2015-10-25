@@ -55,18 +55,7 @@ public class VidivoxPlayer {
 	/* MUST BE CALLED DURING STAGE CONSTRUCTION */
 	public VidivoxPlayer setMediaPanel(MediaPanel mediaPanel) {
 		this.mediaPanel = mediaPanel;
-		mediaPanel.heightProperty().addListener(new ChangeListener<Number>(){
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				mv.setFitHeight(newValue.doubleValue());
-			}
-		});
-		mediaPanel.widthProperty().addListener(new ChangeListener<Number>(){
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				mv.setFitWidth(newValue.doubleValue());
-			}
-		});
+		
 		return this;
 	}
 

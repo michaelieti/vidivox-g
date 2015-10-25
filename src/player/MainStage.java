@@ -63,6 +63,23 @@ public class MainStage extends Stage {
 			setFilePanel(vidiFileCtrl).
 			setMediaPanel(vidiMedia);
 		
+		heightProperty().addListener(new ChangeListener<Number>(){
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				VidivoxPlayer.getVPlayer().getMediaView()
+				.setFitHeight(newValue.doubleValue() - 180);
+				System.out.println("new height = " + newValue );
+			}
+		});
+		widthProperty().addListener(new ChangeListener<Number>(){
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				VidivoxPlayer.getVPlayer().getMediaView().
+				setFitWidth(newValue.doubleValue());
+				System.out.println("new width = " + newValue );
+			}
+		});
+		
 		Scene s = new Scene(borderPane);
 
 		// grid complete, set scene
