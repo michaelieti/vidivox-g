@@ -25,13 +25,7 @@ public class MediaHandler extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		MediaFile outputFinal = MediaFile.createMediaContainer(MediaFormat.WAV,
-				new File(System.getProperty("user.home")
-						+ "/SoftEng206/ffmpeg/FinalDest.wav"));
-		MediaHandler mh = new MediaHandler(outputFinal);
-		SchemeFile scmFile = new SchemeFile();
-		scmFile.output();
-		mh.textToSpeech("Hello Test", scmFile);
+		
 		/*
 		MediaFile out1 = new MediaFile(new File(System.getProperty("user.home")
 				+ "/SoftEng206/ffmpeg/out1.mp3"));
