@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -19,6 +20,7 @@ public class OverlayCommitter extends Application {
 	
 	Media originalVideo;
 	List<Commentary> commentaryList;
+	DoubleProperty progressProperty;
 	
 	/* for testing purposes! */
 	@Override
@@ -31,21 +33,18 @@ public class OverlayCommitter extends Application {
 		String uriString = System.getProperty("user.home") + "/workspace/vidivox/vidivox/vid.mp4";
 		System.out.println(uriString);
 		File file = new File(uriString);
+		
 		//make new commentary list
 		//provide a new video
 		List<Commentary> list = new ArrayList<Commentary>();
 			list.add(new Commentary (Duration.valueOf("5s"), "Hello", OverlayType.TTS));
 			list.add(new Commentary (Duration.valueOf("10s"), "How's it going?", OverlayType.TTS));
 			list.add(new Commentary (Duration.valueOf("15s"), "Test commentary", OverlayType.TTS));
+			
 		Media video = new Media(file.toURI().toString());
-		
-		
 		oc.addCommentaryList(list);
 		oc.addVideo(video);
-		
 		oc.beginCommit();
-		//begin the commit
-		
 		
 	}
 
@@ -61,6 +60,11 @@ public class OverlayCommitter extends Application {
 	
 	public OverlayCommitter addCommentaryList(List<Commentary> commentaryList){
 		this.commentaryList = commentaryList;
+		return this;
+	}
+	
+	public OverlayCommitter addProgressProperty(DoubleProperty doubleprop){
+		this.progressProperty = doubleprop;
 		return this;
 	}
 	
@@ -86,7 +90,8 @@ public class OverlayCommitter extends Application {
 		//define the comment list iterator
 		Iterator<Commentary> cliterator = commentaryList.iterator();
 		Commentary comment1 = cliterator.next();
-		MediaFile prevMedia = null;
+		MediaFile allComments = null;
+		MediaFile mergedVideo = null;
 		
 		try{	
 					// 1 - make the blank audio
@@ -102,11 +107,11 @@ public class OverlayCommitter extends Application {
 			//now we have the first comment with the audio offset.
 			
 					// 4 - iterate through rest of list and append onto this first comment.
-			prevMedia = firstComment;
+			allComments = firstComment;
 			while (cliterator.hasNext()){
 				Commentary currentCommentary = cliterator.next();
 				//get previous media duration
-				double prevDuration = prevMedia.getDuration();
+				double prevDuration = allComments.getDuration();
 				//get current commentary start time
 				Duration timeOffset = currentCommentary.getTime();
 				// use these two to get the amount of blank media in between
@@ -118,16 +123,31 @@ public class OverlayCommitter extends Application {
 				// concatenate blank media and speech file
 				MediaFile fillerSpeechConcatenated = concat(fillerMediaFile, currentSpeechFile);
 				// concatenate previous file and current file
-				MediaFile prevAndCurrentConcat = concat(prevMedia, fillerSpeechConcatenated);
+				MediaFile prevAndCurrentConcat = concat(allComments, fillerSpeechConcatenated);
 				// store as new previous file
-				prevMedia = prevAndCurrentConcat;
-			}
+				allComments = prevAndCurrentConcat;
+			}	//end while
+			
+			//the MediaFile object 'allComments' now holds the audio for all comments spaced out
+			// by appropriately lengthed intervals.
+			
+			mergedVideo = new MediaFile(originalVideo);
+					// 5 - merge video (from originalVideo, a Media object)
+					// and audio (from all 
+			//get allComments MediaFile
+			//get the media file from originalVideo
+				//turn that into a MediaFile object
+			//merge the two using a new media file
+			//return the media file
+			
+			//assume that the MediaFile object mergedVideo holds the video overlaid with audio
+			
 		}
 		catch (Exception e){
 			e.printStackTrace();
 		}
 		
-		return prevMedia;
+		return mergedVideo;
 		
 	}
 	

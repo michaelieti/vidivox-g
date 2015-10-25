@@ -9,9 +9,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
+import javafx.stage.PopupWindow;
 import javafx.util.Callback;
 import overlay.Commentary;
 import overlay.model.OverlayModellable;
@@ -113,7 +117,12 @@ public class OverlayController {
 		OverlayCommitter committer = new OverlayCommitter();
 		committer.addVideo(VidivoxPlayer.getVPlayer().getMedia());
 		committer.addCommentaryList(model.getOverlayList());
-		committer.beginCommit();
+		
+		PopupWindow popup = new OverlayCommitterProgressPopup(committer);
+		popup.show(this.view);
+		
+		MediaFile overlaidVideo = committer.beginCommit();
+		
 	}
 	
 	
@@ -183,5 +192,21 @@ public class OverlayController {
 		view.setIconified(b);
 	}
 	
+	
+	public class OverlayCommitterProgressPopup extends PopupWindow {
+		ProgressBar bar;
+		OverlayCommitter oc;
+		
+		public OverlayCommitterProgressPopup(OverlayCommitter oc){
+			bar = new ProgressBar();
+			this.oc = oc;
+			
+			StackPane pane = new StackPane();
+			pane.getChildren().add(bar);
+			
+			oc.addProgressProperty(bar.progressProperty());
+			setScene(new Scene(pane, 300,200));
+		}
+	}
 	
 }
