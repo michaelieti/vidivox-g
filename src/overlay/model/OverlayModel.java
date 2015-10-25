@@ -20,7 +20,7 @@ public class OverlayModel implements OverlayModellable {
 	
 	public OverlayModel(){
 		super();
-		commentaryList.add(new Commentary(Duration.seconds(10.0), "Test string", OverlayType.TTS));
+//		commentaryList.add(new Commentary(Duration.seconds(10.0), "Test string", OverlayType.TTS));
 	}
 	
 	@Override

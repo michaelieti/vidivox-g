@@ -111,7 +111,9 @@ public class Commentary implements Comparable<Commentary> {
 	public boolean equals(Object o){
 		Commentary obj = (Commentary)o;
 		/*TODO: occasional crash on below comparator. how to reproduce?*/
-		if (timeProperty.get().compareTo(obj.timeProperty.get()) == 0 
+		if (timeProperty.get().
+				compareTo(
+						obj.timeProperty.get()) == 0 
 				&& this.textProperty.equals(obj.textProperty))
 		{
 			return true;
