@@ -1,5 +1,6 @@
 package player;
 
+import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaView;
 
@@ -15,6 +16,7 @@ public class MediaPanel extends VBox {
 		super();
 		vp.setMediaPanel(this);
 		MediaView mv = vp.getMediaView();
+		setAlignment(Pos.CENTER);
 		mv.setFitHeight(500);
 		mv.setFitWidth(800);
 		this.getChildren().add(mv);
