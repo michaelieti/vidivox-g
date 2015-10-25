@@ -156,7 +156,7 @@ public class OverlayCommitter extends Application {
 	
 	private MediaFile concat(MediaFile first, MediaFile second) throws Exception{
 		MediaFile concatenatedFile = MediaFile.createMediaContainer(MediaFormat.WAV);
-		MediaHandler concatenatedHandler = new MediaHandler(concatenatedFile);
+		MediaHandler concatenatedHandler = new MediaHandler(progressProperty, concatenatedFile);
 		concatenatedHandler.concatAudio(first, second);
 		//do we need to wait for concatenation? yes, probably ;_;
 		
@@ -166,7 +166,7 @@ public class OverlayCommitter extends Application {
 	private MediaFile makeBlank(Duration blankTime) throws Exception{
 		MediaHandler blankMediaHandler;
 		MediaFile blankFile = MediaFile.createMediaContainer(MediaFormat.WAV);
-		blankMediaHandler = new MediaHandler(blankFile);
+		blankMediaHandler = new MediaHandler(progressProperty, blankFile);
 		blankMediaHandler.makeBlankAudio(blankTime);
 		//do we need to wait for it to make the audio?
 		blankFile = blankMediaHandler.getMediaFile();
@@ -180,7 +180,7 @@ public class OverlayCommitter extends Application {
 		scmFile.writeToDisk();
 		
 		MediaFile textMediaFile = MediaFile.createMediaContainer(MediaFormat.WAV);
-		MediaHandler textMediaHandler = new MediaHandler(textMediaFile);
+		MediaHandler textMediaHandler = new MediaHandler(progressProperty, textMediaFile);
 		textMediaHandler.textToSpeech(text, scmFile);
 		//do we need to wait for this?
 		textMediaFile = textMediaHandler.getMediaFile();
