@@ -155,12 +155,13 @@ public class MediaConverter {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static void currentlyProcessed(InputStream in, Task task) {
+	public static void currentlyProcessed(InputStream in) {
 		BufferedReader bin = new BufferedReader(new InputStreamReader(in));
 		String line;
 		Boolean processingStarted = false;
 		try {
 			while ((line = bin.readLine()) != null) {
+				System.out.println(">> " + line);
 				if (line.equals("Press [q] to stop, [?] for help")) {
 					processingStarted = true;
 				} else if (processingStarted & (line.indexOf("time=") != -1)) {

@@ -3,8 +3,11 @@ package utility.control;
 import java.io.File;
 import java.io.IOException;
 
+import editor.MediaConverter;
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.concurrent.Task;
 
 import utility.media.FFMPEG;
 import utility.media.MediaFile;
@@ -27,7 +30,6 @@ public class MediaHandler {
 		MediaFile out3 = new MediaFile(new File(System.getProperty("user.home") + "/SoftEng206/ffmpeg/out3.mp3"));
 		MediaFile outputFinal = MediaFile.createMediaContainer(MediaFormat.MP3, new File(System.getProperty("user.home") + "/SoftEng206/ffmpeg/FinalDest.mp3"));
 		mh.mergeAudio(outputFinal, out1, out2, out3);
-		
 	}
 
 	public MediaHandler() {
@@ -79,6 +81,9 @@ public class MediaHandler {
 		System.out.println(ffmpegCommand);
 		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, longestDuration);
 		cmd.start(); 
+
+		System.out.println("done");
+		
 	}
 
 }

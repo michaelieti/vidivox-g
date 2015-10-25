@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 import overlay.control.OverlayController;
 import overlay.control.OverlayView;
 import overlay.model.OverlayModel;
+import utility.control.MediaHandler;
+import utility.media.MediaFile;
+import utility.media.MediaFormat;
 
 /**
  * This class will act as the controller class for the application
@@ -72,6 +75,13 @@ public class Main extends Application {
 		primaryStage.show();
 		editorPanel.show();
 		olView.show();
+		
+		MediaHandler mh = new MediaHandler();
+		MediaFile out1 = new MediaFile(new File(System.getProperty("user.home") + "/SoftEng206/ffmpeg/out1.mp3"));
+		MediaFile out2 = new MediaFile(new File(System.getProperty("user.home") + "/SoftEng206/ffmpeg/out2.mp3"));
+		MediaFile out3 = new MediaFile(new File(System.getProperty("user.home") + "/SoftEng206/ffmpeg/out3.mp3"));
+		MediaFile outputFinal = MediaFile.createMediaContainer(MediaFormat.MP3, new File(System.getProperty("user.home") + "/SoftEng206/ffmpeg/FinalDest.mp3"));
+		mh.mergeAudio(outputFinal, out1, out2, out3);
 	}
 
 	public EditPanel getEditor() {
