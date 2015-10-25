@@ -28,15 +28,16 @@ public class OverlayCommitter extends Application {
 		
 		OverlayCommitter oc = new OverlayCommitter();
 		
-		String uriString = "";
-		
+		String uriString = System.getProperty("user.home") + "/workspace/vidivox/vidivox/vid.mp4";
+		System.out.println(uriString);
+		File file = new File(uriString);
 		//make new commentary list
 		//provide a new video
 		List<Commentary> list = new ArrayList<Commentary>();
 			list.add(new Commentary (Duration.valueOf("5s"), "Hello", OverlayType.TTS));
 			list.add(new Commentary (Duration.valueOf("10s"), "How's it going?", OverlayType.TTS));
 			list.add(new Commentary (Duration.valueOf("15s"), "Test commentary", OverlayType.TTS));
-		Media video = new Media(uriString);
+		Media video = new Media(file.toURI().toString());
 		
 		
 		oc.addCommentaryList(list);
