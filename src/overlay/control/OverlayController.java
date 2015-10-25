@@ -1,5 +1,7 @@
 package overlay.control;
 
+import java.io.IOException;
+
 import editor.EditPanel;
 import editor.SpeechTab;
 import javafx.beans.property.SimpleStringProperty;
@@ -64,7 +66,7 @@ public class OverlayController {
 		bindTableModel();		//binding: tableview and commentary list
 		setEditButton(view.editButton);		//eventhandler: edit button
 		setDeleteButton(view.deleteButton);	//eventhandler:for delete button
-		//TODO: register eventhandler for overlay button
+		setOverlayButton(view.commitButton);
 	}
 	
 	/* interface methods */
@@ -103,8 +105,14 @@ public class OverlayController {
 	
 	public void commitOverlay() {
 		// TODO: creates a new video, overlaid with the commentary.
-
+		// iterate through list
+		// first commentary object in list: text2wav into mediaFile_text
+		// get time property, use MediaFile -> MediaHandler.blankAudio -> extract to mediaFile_blankOffset
+		// new MediaFile -> MediaHandler.concatAudio(mediaFile_blankOffset, mediaFile_text )
+		//						`-------> extract to new MediaFile
+		
 	}
+	
 	
 	public boolean isShowing(){
 		return view.isShowing();
@@ -157,6 +165,14 @@ public class OverlayController {
 				deleteSelectedCommentary();
 			}
 		});
+	}
+	
+	private void setOverlayButton(Button btn){
+		 btn.setOnAction(new EventHandler<ActionEvent>(){
+			 public void handle(ActionEvent event){
+				 commitOverlay();
+			 }
+		 });
 	}
 
 	

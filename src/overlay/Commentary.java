@@ -1,5 +1,7 @@
 package overlay;
 
+import java.io.IOException;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -106,6 +108,7 @@ public class Commentary implements Comparable<Commentary> {
 		double otherDuration = o.timeProperty.get().toMillis();
 		return (int)(otherDuration - thisDuration);
 	}
+
 	
 /*	@Override
 	public boolean equals(Object o){
@@ -157,5 +160,7 @@ public class Commentary implements Comparable<Commentary> {
 		}
 		
 	}
+	
+	
 
 }

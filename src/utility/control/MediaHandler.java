@@ -1,11 +1,13 @@
 package utility.control;
 
 import java.io.File;
+import java.io.IOException;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import overlay.Commentary;
 import javafx.application.Application;
 import utility.media.MediaFile;
 import utility.media.MediaFormat;
@@ -242,7 +244,7 @@ public class MediaHandler extends Application {
 		cmd.start();
 		
 	}
-
+	
 	public void textToSpeech(FestivalFile festival) {
 
 	}
