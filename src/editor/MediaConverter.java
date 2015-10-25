@@ -161,7 +161,6 @@ public class MediaConverter {
 		Boolean processingStarted = false;
 		try {
 			while ((line = bin.readLine()) != null) {
-				System.out.println(">> " + line);
 				if (line.equals("Press [q] to stop, [?] for help")) {
 					processingStarted = true;
 				} else if (processingStarted & (line.indexOf("time=") != -1)) {

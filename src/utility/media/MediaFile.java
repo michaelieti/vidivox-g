@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javafx.scene.media.Media;
+
 import editor.MediaConverter;
 
 /**
@@ -18,7 +20,7 @@ public class MediaFile {
 
 	private File path;
 	private MediaFormat format = MediaFormat.Unknown;
-	private Double length = 0.0;
+	private Double duration = 0.0;
 
 	public MediaFile(File location) {
 		path = location;
@@ -30,22 +32,64 @@ public class MediaFile {
 		}
 	}
 
+	/*
+	 * Convenience constructor used to create a MediaFile at a temporary
+	 * location.
+	 */
+	private MediaFile(MediaFormat desiredFormat) {
+		File file = new File(System.getProperty("user.dir") + "/.temp/"
+				+ +this.hashCode() + "." + desiredFormat.getExtension());
+		while (file.exists()) {
+			file = new File(System.getProperty("user.dir") + "/.temp/"
+					+ file.hashCode() + "." + desiredFormat.getExtension());
+		}
+	}
+
 	/**
-	 * @see utility.media.MediaFormat MediaFormat
+	 * @see javafx.scene.media.MediaPlayer MediaPlayer
+	 * @return A MediaPlayer compatible Media object.
+	 */
+	public Media getMedia() {
+		return new Media(path.toURI().toString());
+	}
+
+	/**
+	 * @see utility.media.MediaType MediaType
 	 * @return The type of the Media source.
 	 */
-	public MediaFormat getType() {
+	public MediaType getType() {
+		return format.getType();
+	}
+
+	/**
+	 * @see utility.media.MediaFormat MediaFormat
+	 * @return The format of the Media source.
+	 */
+	public MediaFormat getFormat() {
 		return format;
 	}
 
+	/**
+	 * @return The physical location of the Media source on disk.
+	 */
 	public File getPath() {
 		return path;
 	}
 
-	public Double getLength() {
-		return length;
+	/**
+	 * @return The duration of the Media source.
+	 */
+	public Double getDuration() {
+		return duration;
 	}
 
+	/**
+	 * @return True if the MediaFile is a valid Media Container.
+	 * @see utility.control.MediaFormat#isValid() isValid()
+	 */
+	public boolean isValid() {
+		return format.isValid();
+	}
 	/**
 	 * Deletes the Media source which the MediaFile is pointing to.
 	 */
@@ -56,12 +100,13 @@ public class MediaFile {
 
 	/**
 	 * This function can be used to create an empty media container of a
-	 * selected type (See {@link utility.media.MediaFormat}).
+	 * selected type.
 	 * 
 	 * @param desiredFormat
 	 *            The desired format of the media container.
 	 * @param desiredLocation
 	 *            The desired location of the media container.
+	 * @see utility.media.MediaFormat MediaFormat
 	 * @return An UnknownMedia object with attached container (if successfully
 	 *         created).
 	 */
@@ -81,6 +126,33 @@ public class MediaFile {
 		}
 
 		return new MediaFile(correctLocation);
+	}
+
+	/**
+	 * This is a convenience method for creating a temporary MediaFile on disk.
+	 * 
+	 * @param desiredFormat
+	 *            The desired format of the media container.
+	 * @see utility.media.MediaFormat MediaFormat
+	 * @return An UnknownMedia object with attached container (if successfully
+	 *         created).
+	 */
+	public static MediaFile createMediaContainer(MediaFormat desiredFormat) {
+		MediaFile output = new MediaFile(desiredFormat);
+		output.path = addExtension(output.path, desiredFormat);
+		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" "
+				+ output.path.getAbsolutePath();
+		String[] cmd = { "bash", "-c", expansion };
+		ProcessBuilder build = new ProcessBuilder(cmd);
+		Process p;
+		try {
+			p = build.start();
+			p.waitFor();
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		return output;
 	}
 
 	/*
@@ -108,7 +180,7 @@ public class MediaFile {
 
 					splitOfCurrentLine = splitOfCurrentLine[0].split(" ");
 					// [Duration:] [00:00:01.01]
-					length = MediaConverter
+					duration = MediaConverter
 							.timeToSeconds(splitOfCurrentLine[1]);
 
 				}

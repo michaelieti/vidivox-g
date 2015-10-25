@@ -15,8 +15,8 @@ public class Commentary implements Comparable<Commentary> {
 	private SimpleStringProperty timeStringProperty;
 	//can put in pitch/voice/stretch later
 	
-	public Commentary(){
-		this(Duration.ZERO, "<no text>", OverlayType.NO_TYPE);
+	public Commentary() {
+		this(Duration.ZERO, "<no text>", OverlayType.NO_TYPE); 
 	}
 	
 	/**
