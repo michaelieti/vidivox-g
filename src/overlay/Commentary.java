@@ -27,7 +27,7 @@ public class Commentary implements Comparable<Commentary> {
 	 * @param text - String of what is to be said.
 	 */
 	public Commentary(Duration time, String text, OverlayType type){
-		this.timeProperty = new SimpleObjectProperty<Duration>(time);
+		this.timeProperty = new SimpleObjectProperty<>(time);
 		this.textProperty = new SimpleStringProperty(text);
 		this.timeStringProperty = new SimpleStringProperty(TimeUtility.formatTime(time));
 		this.typeProperty = new SimpleObjectProperty<>(type);
@@ -130,6 +130,7 @@ public class Commentary implements Comparable<Commentary> {
 	}
 */
 	
+
 	/**
 	 * A class required for the use of bi-directional bindings.
 	 * Converts formatted strings to durations and vice versa.

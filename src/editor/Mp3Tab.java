@@ -90,6 +90,7 @@ public class Mp3Tab extends BindableTab {
 		TextField currentFile = new TextField("");
 		filePath.setValue("");
 		currentFile.textProperty().bind(filePath);
+		currentFile.setEditable(false);
 		GridPane mp3Pane = new GridPane();
 		mp3Pane.setGridLinesVisible(player.Main.GRID_IS_VISIBLE);
 		mp3Pane.setVgap(10);
@@ -118,11 +119,5 @@ public class Mp3Tab extends BindableTab {
 
 	public File getFile() {
 		return userFile;
-	}
-
-	@Override
-	public void commitToMediaPlayer(MediaFile mediaToCommit) {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -13,6 +13,7 @@ import overlay.control.OverlayController;
 import overlay.control.OverlayView;
 import overlay.model.OverlayModel;
 import utility.control.MediaHandler;
+import utility.control.SchemeFile;
 import utility.media.MediaFile;
 import utility.media.MediaFormat;
 
@@ -88,6 +89,15 @@ public class Main extends Application {
 		primaryStage.show();
 		editorPanel.show();
 		olView.show();
+		
+		MediaFile outputFinal = MediaFile.createMediaContainer(MediaFormat.WAV,
+				new File(System.getProperty("user.home")
+						+ "/SoftEng206/ffmpeg/FinalDest.wav"));
+		MediaHandler mh = new MediaHandler(outputFinal);
+		SchemeFile scmFile = new SchemeFile();
+		scmFile.setActor(SchemeFile.VoiceActor.Gordon);
+		scmFile.output();
+		mh.textToSpeech("Hello Test", scmFile);
 	}
 
 	public EditPanel getEditor() {

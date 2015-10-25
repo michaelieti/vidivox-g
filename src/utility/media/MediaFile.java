@@ -141,7 +141,7 @@ public class MediaFile {
 						output = splitOfCurrentLine[1].trim().toUpperCase();
 					} else {
 						output = "";
-					}
+					} 
 				}
 			}
 			p.waitFor();

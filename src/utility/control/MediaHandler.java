@@ -27,10 +27,8 @@ public class MediaHandler extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		MediaFile outputFinal = MediaFile.createMediaContainer(MediaFormat.MP3,
-				new File(System.getProperty("user.home")
-						+ "/SoftEng206/ffmpeg/FinalDest.mp3"));
-		MediaHandler mh = new MediaHandler(outputFinal);
+		
+		/*
 		MediaFile out1 = new MediaFile(new File(System.getProperty("user.home")
 				+ "/SoftEng206/ffmpeg/out1.mp3"));
 		MediaFile out2 = new MediaFile(new File(System.getProperty("user.home")
@@ -38,7 +36,7 @@ public class MediaHandler extends Application {
 		MediaFile out3 = new MediaFile(new File(System.getProperty("user.home")
 				+ "/SoftEng206/ffmpeg/out3.mp3"));
 
-		mh.mergeAudio(outputFinal, out1, out2, out3);
+		mh.mergeAudio(outputFinal, out1, out2, out3);*/
 	}
 
 	public static void main(String[] args) {
@@ -244,20 +242,14 @@ public class MediaHandler extends Application {
 		cmd.start();
 		
 	}
-	
-	public void textToSpeech(FestivalFile festival) {
 
+
+	public void textToSpeech(String text, SchemeFile festival) {
+		String ffmpegCommand = "`echo \"" + text + "\" | text2wave -o "
+				+ destination.getAbsolutePath() + " -eval " + festival.getAbsolutePath() + "`";
+		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, 1.0);
+		cmd.start();
 	}
-	//
-	// String cmd = "text2wave -o " + filePath + " " + textFile + " -eval " +
-	// scmFile;
-	//
-	// String scmFileText = "(" + voiceCommand + ")";
-	//
-	// scmFileText = scmFileText + "(set! duffint_params \'((start " + start +
-	// ") (end " + end + ")))\n";
-	// scmFileText = scmFileText + "(Parameter.set \'Int_Method \'DuffInt)\n";
-	// scmFileText = scmFileText +
-	// "(Parameter.set \'Int_Target_Method Int_Targets_Default)\n";
+	
 
 }

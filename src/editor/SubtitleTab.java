@@ -56,11 +56,4 @@ public class SubtitleTab extends BindableTab {
 		return;
 	}
 
-	@Override
-	public void commitToMediaPlayer(MediaFile mediaToCommit) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 }
