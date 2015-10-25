@@ -23,7 +23,7 @@ public class FFMPEG {
 	 * @param input
 	 *            The full FFMPEG bash command in string format.
 	 * @param finalDuration
-	 *            The duration of the desired output Media Source.
+	 *            The duration of the desired output Media Source in seconds.
 	 */
 	public FFMPEG(DoubleProperty progress, String input, Double finalDuration) {
 		this.progress = progress;

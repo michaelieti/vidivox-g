@@ -5,6 +5,7 @@ import java.io.File;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.application.Application;
 import utility.media.MediaFile;
 import utility.media.MediaFormat;
@@ -195,6 +196,55 @@ public class MediaHandler extends Application {
 
 		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, video.getDuration());
 		cmd.start();
+	}
+	
+	/**
+	 * Creates a blank audio file of the given duration.
+	 * @param audio
+	 * @param duration
+	 * @throws Exception
+	 */
+	public void makeBlankAudio(MediaFile audio, Duration duration) throws Exception{
+		if (!audio.getType().equals(MediaType.Audio)) {
+			throw new Exception("input audio format '"
+					+ destination.getFormat().toString()
+					+ "' is not a valid Audio source");
+		}
+		
+		StringBuilder sb = new StringBuilder("ffmpeg -y -f lavfi -i aevalsrc=0:0:0:0:0:0::duration=");
+		sb.append(duration.toSeconds());
+		sb.append(" ");
+		sb.append(destination.getPath().getAbsolutePath());
+		
+		FFMPEG cmd = new FFMPEG(progress, sb.toString(), duration.toSeconds());
+		cmd.start();
+	}
+	
+	/**
+	 * Concatenates two audio files, audio 1 comes before audio 2.
+	 * @param audio1
+	 * @param audio2
+	 * @throws Exception
+	 */
+	public void concatAudio(MediaFile audio1, MediaFile audio2) throws Exception{
+		if (!audio1.getType().equals(MediaType.Audio) || 
+				!audio2.getType().equals(MediaType.Audio)) {
+			throw new Exception("input audio format '"
+					+ destination.getFormat().toString()
+					+ "' is not a valid Audio source");
+		}
+		
+		StringBuilder sb = new StringBuilder("ffmpeg -i ");
+		sb.append(audio1.getPath().getAbsolutePath())
+		.append(" -i " + audio2.getPath().getAbsolutePath())
+		.append(" -filter_complex '[0:0] [1:0] concat =n=2:v=0:a=1' ")
+		.append(destination.getPath().getAbsolutePath());
+		
+		Double totalDuration = audio1.getDuration() + audio2.getDuration();
+		
+		FFMPEG cmd = new FFMPEG(progress, sb.toString(), totalDuration);
+		cmd.start();
+		
 	}
 
 	public void textToSpeech(String text, SchemeFile festival) {
