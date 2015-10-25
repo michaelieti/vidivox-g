@@ -90,14 +90,14 @@ public class Main extends Application {
 		editorPanel.show();
 		olView.show();
 		
-		MediaFile outputFinal = MediaFile.createMediaContainer(MediaFormat.WAV,
-				new File(System.getProperty("user.home")
-						+ "/SoftEng206/ffmpeg/FinalDest.wav"));
-		MediaHandler mh = new MediaHandler(outputFinal);
-		SchemeFile scmFile = new SchemeFile();
-		scmFile.setActor(SchemeFile.VoiceActor.Gordon);
-		scmFile.output();
-		mh.textToSpeech("Hello Test", scmFile);
+//		MediaFile outputFinal = MediaFile.createMediaContainer(MediaFormat.WAV,
+//				new File(System.getProperty("user.home")
+//						+ "/SoftEng206/ffmpeg/FinalDest.wav"));
+//		MediaHandler mh = new MediaHandler(outputFinal);
+//		SchemeFile scmFile = new SchemeFile();
+//		scmFile.setActor(SchemeFile.VoiceActor.Gordon);
+//		scmFile.writeToDisk();
+//		mh.textToSpeech("Hello Test", scmFile);
 	}
 
 	public EditPanel getEditor() {

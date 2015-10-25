@@ -34,7 +34,7 @@ public class SchemeFile {
 		SchemeFile ff = new SchemeFile(
 				new File(System.getProperty("user.home")
 						+ "/SoftEng206/ffmpeg/derp.scm"));
-		ff.output();
+		ff.writeToDisk();
 	}
 
 	public SchemeFile() {
@@ -90,7 +90,7 @@ public class SchemeFile {
 		this.rateOfSpeech = rateOfSpeech;
 	}
 
-	public void output() throws IOException {
+	public void writeToDisk() throws IOException {
 		Formatter appendWithFormat = new Formatter(inputBuilder);
 		inputBuilder
 				.append("(require '/netmount/usr/local/festival/initcustom)\n");
@@ -106,13 +106,4 @@ public class SchemeFile {
 		System.out.println(inputBuilder.toString());
 	}
 
-//	
-//			
-//			 String scmFileText = "(" + voiceCommand + ")";
-//			
-//			 scmFileText = scmFileText + "(set! duffint_params \'((start " + start +
-//			 ") (end " + end + ")))\n";
-//			 scmFileText = scmFileText + "(Parameter.set \'Int_Method \'DuffInt)\n";
-//			 scmFileText = scmFileText +
-//			 "(Parameter.set \'Int_Target_Method Int_Targets_Default)\n";
 }
