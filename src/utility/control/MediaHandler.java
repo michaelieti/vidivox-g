@@ -88,13 +88,17 @@ public class MediaHandler extends Application {
 	/**
 	 * Takes a source MediaFile and converts its contents to match the formating
 	 * of the destination MediaFile.
+	 * <P>
+	 * 
+	 * By setting the destination format to the same type as the source format,
+	 * this method can be used as a means of creating copies of media.
 	 * 
 	 * @param source
 	 */
 	public void convert(MediaFile source) {
 
-		String expansion = "ffmpeg -y -i " + source.getPath().getAbsolutePath()
-				+ " " + destination.getPath().getAbsolutePath();
+		String expansion = "ffmpeg -y -i " + source.getAbsolutePath()
+				+ " " + destination.getAbsolutePath();
 		FFMPEG cmd = new FFMPEG(progress, expansion, source.getDuration());
 		cmd.start();
 	}
@@ -119,7 +123,7 @@ public class MediaHandler extends Application {
 		for (MediaFile f : files) {
 			if (f.getType().equals(MediaType.Audio)) {
 				ffmpegCommand = ffmpegCommand.concat("-i "
-						+ f.getPath().getAbsolutePath() + " ");
+						+ f.getAbsolutePath() + " ");
 				if (longestDuration < f.getDuration()) {
 					longestDuration = f.getDuration();
 				}
@@ -127,7 +131,7 @@ public class MediaHandler extends Application {
 		}
 		ffmpegCommand = ffmpegCommand.concat("-filter_complex \"amix=inputs="
 				+ files.length + "\" -ac 2 "
-				+ destination.getPath().getAbsolutePath());
+				+ destination.getAbsolutePath());
 		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, longestDuration);
 		cmd.start();
 	}
@@ -146,8 +150,8 @@ public class MediaHandler extends Application {
 					+ "' is not a valid Video source");
 		}
 		String ffmpegCommand = "ffmpeg -y -i "
-				+ source.getPath().getAbsolutePath() + " -an "
-				+ destination.getPath().getAbsolutePath();
+				+ source.getAbsolutePath() + " -an "
+				+ destination.getAbsolutePath();
 		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, source.getDuration());
 		cmd.start();
 
@@ -161,8 +165,8 @@ public class MediaHandler extends Application {
 	 * @param audio
 	 *            A valid audio source.
 	 * @throws Exception
-	 *             An Exception is thrown if any of the input Media
-	 *             containers are of unexpected format.
+	 *             An Exception is thrown if any of the input Media containers
+	 *             are of unexpected format.
 	 */
 	public void mergeAudioAndVideo(MediaFile video, MediaFile audio)
 			throws Exception {
@@ -180,13 +184,28 @@ public class MediaHandler extends Application {
 					+ "' is not a valid Audio source");
 		}
 		String ffmpegCommand = "ffmpeg -y -i "
-				+ video.getPath().getAbsolutePath() + " -i "
-				+ audio.getPath().getAbsolutePath()
+				+ video.getAbsolutePath() + " -i "
+				+ audio.getAbsolutePath()
 				+ " -filter_complex amix=inputs=2 -shortest "
-				+ destination.getPath().getAbsolutePath();
+				+ destination.getAbsolutePath();
 
 		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, video.getDuration());
 		cmd.start();
 	}
+
+	public void textToSpeech(FestivalFile festival) {
+
+	}
+	//
+	// String cmd = "text2wave -o " + filePath + " " + textFile + " -eval " +
+	// scmFile;
+	//
+	// String scmFileText = "(" + voiceCommand + ")";
+	//
+	// scmFileText = scmFileText + "(set! duffint_params \'((start " + start +
+	// ") (end " + end + ")))\n";
+	// scmFileText = scmFileText + "(Parameter.set \'Int_Method \'DuffInt)\n";
+	// scmFileText = scmFileText +
+	// "(Parameter.set \'Int_Target_Method Int_Targets_Default)\n";
 
 }

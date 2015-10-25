@@ -35,6 +35,19 @@ public class Main extends Application {
 	public static void main(String[] args) throws Exception {
 		/*Checks whether the temporary already exists. Cleans the directory if it does, and creates a new one */
 		File p = new File(System.getProperty("user.dir") + "/.temp");
+		if (p.exists() && p.isDirectory()) {
+			File[] list = p.listFiles();
+			for (File f : list) {
+				f.delete();
+			}
+			p.delete();
+		} else if (p.exists()) {
+			p.delete();
+		}
+		if (!p.mkdirs()) {
+			throw new Exception("Unable to create temporary directory at '" + p.getCanonicalPath() + "'.");
+		}
+		/*
 		int i = 0;
 		while (p.exists()) {
 			System.out.println(p.getCanonicalPath() + " already exists.");
@@ -45,7 +58,7 @@ public class Main extends Application {
 		if (!p.mkdirs()) {
 			throw new Exception("Unable to create temporary directory at '" + p.getCanonicalPath() + "'.");
 		}
-		
+		*/
 		launch(args);
 		
 	}

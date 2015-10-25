@@ -4,6 +4,7 @@ import java.io.File;
 
 import utility.StagedAudio;
 import utility.StagedMedia;
+import utility.media.MediaFile;
 
 import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.When;
@@ -120,26 +121,8 @@ public class Mp3Tab extends BindableTab {
 	}
 
 	@Override
-	public MediaView getMediaView() {
+	public void commitToMediaPlayer(MediaFile mediaToCommit) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void stageMedia() {
-		// TODO Auto-generated method stub
-		return;
-	}
-
-	@Override
-	public void publishStage(StagedMedia media) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void initStagedMedia() {
-		// TODO Auto-generated method stub
-
+		
 	}
 }

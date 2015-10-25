@@ -6,6 +6,9 @@ import java.lang.reflect.Field;
 
 import utility.StagedAudio;
 import utility.StagedMedia;
+import utility.control.MediaHandler;
+import utility.media.MediaFile;
+import utility.media.MediaFormat;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.When;
@@ -49,6 +52,8 @@ public class SpeechTab extends BindableTab {
 	/* festival fields*/
 	private int pid = -1;
 	
+	private MediaHandler speechMedia;
+	
 	/* commentary editing fields*/
 	private SimpleBooleanProperty editFlag = new SimpleBooleanProperty(false);
 	private Commentary commentUnderEdit = null;
@@ -59,6 +64,13 @@ public class SpeechTab extends BindableTab {
 		super(mv, title);
 		
 		singletonObject = this;
+		
+		MediaFile mediaFile = MediaFile.createMediaContainer(MediaFormat.WAV);
+		try {
+			speechMedia = new MediaHandler(mediaFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		msg = new Text(message);
 		msg.setFill(Color.LIGHTGRAY);
@@ -131,6 +143,12 @@ public class SpeechTab extends BindableTab {
 		speechPane.getStyleClass().add("gridPane");
 		this.setContent(speechPane);
 
+	}	
+	
+	@Override
+	public void commitToMediaPlayer(MediaFile mediaToCommit) {
+		return;
+		
 	}
 	
 	public static SpeechTab getSpeechTab(){
@@ -258,11 +276,11 @@ public class SpeechTab extends BindableTab {
 		}
 	}
 
-	@Override
-	public void stageMedia() {
-		String path = stagedMedia.getFile().getAbsolutePath();
-		textToSpeech(userField.getText(), path);
-	}
+
+//	public void stageMedia() {
+//		String path = stagedMedia.getFile().getAbsolutePath();
+//		textToSpeech(userField.getText(), path);
+//	}
 
 	/**
 	 * Convenience method which saves a particular string as an audio file at a
@@ -282,16 +300,9 @@ public class SpeechTab extends BindableTab {
 		}
 	}
 
-	@Override
-	public void publishStage(StagedMedia media) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void initStagedMedia() {
-		stagedMedia = new StagedAudio(StagedAudio.MediaTypes.WAV);
-	}
+//	public void initStagedMedia() {
+//		stagedMedia = new StagedAudio(StagedAudio.MediaTypes.WAV);
+//	}
 
 	private String buildPath() {
 		StringBuilder sb = new StringBuilder();
@@ -360,6 +371,8 @@ public class SpeechTab extends BindableTab {
 			}
 		}
 	}
+
+
 	
 
 

@@ -1,6 +1,7 @@
 package editor;
 
 import utility.StagedMedia;
+import utility.media.MediaFile;
 import javafx.scene.control.Tab;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
@@ -19,7 +20,7 @@ abstract public class BindableTab extends Tab {
 	 * This field represents a snapshot of changes thats are being tested out before they are finalized
 	 * onto the original Media.
 	 */
-	protected StagedMedia stagedMedia;
+	protected MediaFile mainStageMedia;
 	
 	private MediaView mediaView;
 	
@@ -34,12 +35,6 @@ abstract public class BindableTab extends Tab {
 		mediaView = mv;
 		this.setClosable(false);
 	}
-	
-	/**
-	 * This method specifies the specific type of StagedMedia which this tab shall generate.
-	 * @return
-	 */
-	protected abstract void initStagedMedia();
 	
 	/**
 	 * This method sets any necessary binds within the tab based on properties available to the encasing stage.
@@ -57,15 +52,12 @@ abstract public class BindableTab extends Tab {
 		return mediaView;
 	}
 	
-	/**
-	 * This method takes all of the settings and values within this tab and processes them to produce all (if any) StagedMedia.
-	 * For example, the SpeechTab will take the text within its TextArea and create an wav file of that speech (linked to a StagedMedia).
-	 */
-	public abstract void stageMedia();
+	public MediaFile getCurrentMediaFile() {
+		return new MediaFile(mediaView.getMediaPlayer().getMedia());
+	}
 	
-	/**
-	 * This method takes previously StagedMedia and combines it with the original Media source.
-	 */
-	public abstract void publishStage(StagedMedia media);
+	
+	public abstract void commitToMediaPlayer(MediaFile mediaToCommit);
+	
 }
 
