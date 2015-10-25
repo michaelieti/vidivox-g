@@ -57,7 +57,5 @@ abstract public class BindableTab extends Tab {
 	}
 	
 	
-	public abstract void commitToMediaPlayer(MediaFile mediaToCommit);
-	
 }
 

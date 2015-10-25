@@ -145,12 +145,6 @@ public class SpeechTab extends BindableTab {
 
 	}	
 	
-	@Override
-	public void commitToMediaPlayer(MediaFile mediaToCommit) {
-		return;
-		
-	}
-	
 	public static SpeechTab getSpeechTab(){
 		return singletonObject;
 	}

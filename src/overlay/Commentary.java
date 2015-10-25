@@ -25,7 +25,7 @@ public class Commentary implements Comparable<Commentary> {
 	 * @param text - String of what is to be said.
 	 */
 	public Commentary(Duration time, String text, OverlayType type){
-		this.timeProperty = new SimpleObjectProperty<Duration>(time);
+		this.timeProperty = new SimpleObjectProperty<>(time);
 		this.textProperty = new SimpleStringProperty(text);
 		this.timeStringProperty = new SimpleStringProperty(TimeUtility.formatTime(time));
 		this.typeProperty = new SimpleObjectProperty<>(type);
@@ -106,27 +106,19 @@ public class Commentary implements Comparable<Commentary> {
 		double otherDuration = o.timeProperty.get().toMillis();
 		return (int)(otherDuration - thisDuration);
 	}
-	
-/*	@Override
-	public boolean equals(Object o){
-		Commentary obj = (Commentary)o;
-		//TODO: occasional crash on below comparator. how to reproduce?
-		System.out.println("time property of this: "+ TimeUtility.formatTime(timeProperty.get()));
-		System.out.println("text property of this: "+ textProperty.get());
-		System.out.println("time property of other: "+ TimeUtility.formatTime(obj.timeProperty.get()));
-		System.out.println("text property of other: " + obj.textProperty.get());
-		if (timeProperty.get().
-				compareTo(
-						obj.timeProperty.get()) == 0 
-				&& this.textProperty.equals(obj.textProperty))
-		{
-			return true;
-		}
-		else
-			return false;
-	}
-*/
-	
+//	
+//	@Override
+//	public boolean equals(Object o){
+//		Commentary obj = (Commentary)o;
+//		if (timeProperty.get().compareTo(obj.timeProperty.get()) == 0 
+//				&& this.textProperty.equals(obj.textProperty))
+//		{
+//			return true;
+//		}
+//		else
+//			return false;
+//	}
+//	
 	/**
 	 * A class required for the use of bi-directional bindings.
 	 * Converts formatted strings to durations and vice versa.
