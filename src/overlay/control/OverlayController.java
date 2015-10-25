@@ -1,5 +1,6 @@
 package overlay.control;
 
+import java.io.File;
 import java.io.IOException;
 
 import editor.EditPanel;
@@ -14,6 +15,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import overlay.Commentary;
 import overlay.model.OverlayModellable;
+import player.VidivoxPlayer;
+import utility.control.MediaHandler;
+import utility.control.SchemeFile;
+import utility.media.MediaFile;
+import utility.media.MediaFormat;
 
 
 /**
@@ -104,13 +110,10 @@ public class OverlayController {
 
 	
 	public void commitOverlay() {
-		// TODO: creates a new video, overlaid with the commentary.
-		// iterate through list
-		// first commentary object in list: text2wav into mediaFile_text
-		// get time property, use MediaFile -> MediaHandler.blankAudio -> extract to mediaFile_blankOffset
-		// new MediaFile -> MediaHandler.concatAudio(mediaFile_blankOffset, mediaFile_text )
-		//						`-------> extract to new MediaFile
-		
+		OverlayCommitter committer = new OverlayCommitter();
+		committer.addVideo(VidivoxPlayer.getVPlayer().getMedia());
+		committer.addCommentaryList(model.getOverlayList());
+		committer.beginCommit();
 	}
 	
 	

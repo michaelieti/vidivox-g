@@ -195,17 +195,13 @@ public class MediaHandler extends Application {
 	}
 	
 	/**
-	 * Creates a blank audio file of the given duration.
+	 * Creates a blank audio file of the given duration,
+	 *  which will be located at the destination stored in this object.
 	 * @param audio
 	 * @param duration
 	 * @throws Exception
 	 */
-	public void makeBlankAudio(MediaFile audio, Duration duration) throws Exception{
-		if (!audio.getType().equals(MediaType.Audio)) {
-			throw new Exception("input audio format '"
-					+ mediaFile.getFormat().toString()
-					+ "' is not a valid Audio source");
-		}
+	public void makeBlankAudio(Duration duration) throws Exception{
 		
 		StringBuilder sb = new StringBuilder("ffmpeg -y -f lavfi -i aevalsrc=0:0:0:0:0:0::duration=");
 		sb.append(duration.toSeconds());
