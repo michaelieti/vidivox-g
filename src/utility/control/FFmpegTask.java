@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import editor.MediaConverter;
 
 /**
@@ -34,7 +38,6 @@ public class FFmpegTask extends Task<Void> {
 		super.updateProgress(workDone, totalWork);
 		progress.setValue(workDone / totalWork);
 	}
-
 	@Override
 	protected Void call() throws Exception {
 
@@ -63,7 +66,7 @@ public class FFmpegTask extends Task<Void> {
 		Boolean processingStarted = false;
 		try {
 			while ((line = bin.readLine()) != null) {
-				;
+//				System.out.println(">>: " + line);
 				if (line.equals("Press [q] to stop, [?] for help")) {
 					processingStarted = true;
 				} else if (processingStarted & (line.indexOf("time=") != -1)) {

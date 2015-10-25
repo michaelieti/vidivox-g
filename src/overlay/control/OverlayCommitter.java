@@ -30,10 +30,10 @@ public class OverlayCommitter extends Application {
 		
 		OverlayCommitter oc = new OverlayCommitter();
 		
-		String uriString = System.getProperty("user.home") + "/workspace/vidivox/vidivox/vid.mp4";
+		String uriString = System.getProperty("user.home") + "/SoftEng206/vidivox/vid.mp4";
 		System.out.println(uriString);
 		File file = new File(uriString);
-		
+		System.out.println();
 		//make new commentary list
 		//provide a new video
 		List<Commentary> list = new ArrayList<Commentary>();
@@ -97,12 +97,15 @@ public class OverlayCommitter extends Application {
 					// 1 - make the blank audio
 			Duration blankTime = comment1.getTime();
 			MediaFile blankFile = makeBlank(blankTime);
+			System.out.println("######################Blank File for " + blankTime + " > " + blankFile.getQuoteOfAbsolutePath());
 			
 					// 2 - make the text to speech
 			MediaFile speechFile = simpleMakeSpeech(comment1.getText());
+			System.out.println("######################Speech File > " + speechFile.getQuoteOfAbsolutePath());
 			
 					// 3 - concatenate the blank file and the speech file
 			MediaFile firstComment = concat(blankFile, speechFile);
+			System.out.println("######################Comment File > " + firstComment.getQuoteOfAbsolutePath());
 			
 			//now we have the first comment with the audio offset.
 			
@@ -141,7 +144,7 @@ public class OverlayCommitter extends Application {
 			//return the media file
 			
 			//assume that the MediaFile object mergedVideo holds the video overlaid with audio
-			
+
 		}
 		catch (Exception e){
 			e.printStackTrace();

@@ -39,10 +39,10 @@ public class SchemeFile {
 
 	public SchemeFile() {
 		scmPath = new File(System.getProperty("user.dir") + "/.temp/"
-				+ this.hashCode() + ".scm");
+				+ Math.abs(this.hashCode()) + ".scm");
 		while (scmPath.exists()) {
 			scmPath = new File(System.getProperty("user.dir") + "/.temp/"
-					+ scmPath.hashCode() + ".scm");
+					+ Math.abs(scmPath.hashCode()) + ".scm");
 		}
 	}
 
@@ -103,7 +103,7 @@ public class SchemeFile {
 		FileWriter scmFile = new FileWriter(scmPath);
 		scmFile.write(inputBuilder.toString());
 		scmFile.close();
-		System.out.println(inputBuilder.toString());
+//		System.out.println(inputBuilder.toString());
 	}
 
 }

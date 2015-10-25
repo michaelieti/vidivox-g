@@ -1,5 +1,6 @@
 package utility.control;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.concurrent.Task;
 
@@ -14,6 +15,7 @@ public class FFMPEG {
 
 	private DoubleProperty progress;
 	private Thread th;
+	private FFmpegTask ffmpegProcess;
 
 	/**
 	 * 
@@ -27,7 +29,7 @@ public class FFMPEG {
 	 */
 	public FFMPEG(DoubleProperty progress, String input, Double finalDuration) {
 		this.progress = progress;
-		Task<Void> ffmpegProcess = new FFmpegTask(progress, input,
+		ffmpegProcess = new FFmpegTask(progress, input,
 				finalDuration);
 		th = new Thread(ffmpegProcess);
 		th.setDaemon(true);
@@ -40,6 +42,7 @@ public class FFMPEG {
 	public void start() {
 		th.start();
 	}
+	
 
 	/**
 	 * 
