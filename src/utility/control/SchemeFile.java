@@ -9,6 +9,14 @@ import utility.media.MediaFile;
 
 public class SchemeFile {
 
+	public static final int MAX_PITCH = 200;
+	public static final int MIN_PITCH = 50;
+	public static final int DEFAULT_PITCH = 105;
+	
+	public static final double MAX_RATE = 2.0;
+	public static final double MIN_RATE = 0.5;
+	public static final double DEFAULT_RATE = 1.0;
+	
 	private File scmPath;
 	private StringBuilder inputBuilder = new StringBuilder();
 	private VoiceActor actor = VoiceActor.Robot;

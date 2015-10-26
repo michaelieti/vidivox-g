@@ -34,6 +34,7 @@ public class Commentary implements Comparable<Commentary> {
 		this.textProperty = new SimpleStringProperty(text);
 		this.timeStringProperty = new SimpleStringProperty(TimeUtility.formatTime(time));
 		this.typeProperty = new SimpleObjectProperty<>(type);
+		this.festivalSettingsProperty = new SimpleObjectProperty<SchemeFile>(new SchemeFile());
 		Bindings.bindBidirectional(timeStringProperty, timeProperty, new DurationConverter());
 	}
 	
@@ -45,6 +46,13 @@ public class Commentary implements Comparable<Commentary> {
 	public void setTime(Duration time){
 		timeProperty.set(time);
 		setTimeString("");
+	}
+	
+	public void setScheme(SchemeFile scm){
+		festivalSettingsProperty.setValue(scm);
+	}
+	public SchemeFile getScheme(){
+		return festivalSettingsProperty.get();
 	}
 	
 	public void setType(OverlayType type){
