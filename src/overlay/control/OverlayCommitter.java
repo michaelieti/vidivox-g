@@ -59,8 +59,6 @@ public class OverlayCommitter extends Application {
 		launch(args);
 	}
 
-	/* end testing purposes ;_; */
-
 	public OverlayCommitter addVideo(Media originalVideo) {
 		this.originalVideo = originalVideo;
 		return this;
@@ -87,17 +85,7 @@ public class OverlayCommitter extends Application {
 			if (commentaryList.size() == 0) {
 				return null;
 			}
-			// check all other fields in the future and set flags as appropriate
 		}
-
-		// TODO: creates a new video, overlaid with the commentary.
-		// iterate through list
-		// first commentary object in list: text2wav into mediaFile_text
-		// get time property, use MediaFile -> MediaHandler.blankAudio ->
-		// extract to mediaFile_blankOffset
-		// new MediaFile -> MediaHandler.concatAudio(mediaFile_blankOffset,
-		// mediaFile_text )
-		// `-------> extract to new MediaFile
 
 		List<MediaFile> toBeMerged = new ArrayList<MediaFile>();
 		boolean debug = false;
@@ -174,20 +162,30 @@ public class OverlayCommitter extends Application {
 		return blankFile;
 	}
 
+	/**
+	 * This is a convenience method for creating a Text to Speech MediaFile.
+	 * @param text
+	 * @return
+	 * @throws Exception
+	 */
 	private MediaFile simpleMakeSpeech(String text) throws Exception {
 
+		/* Initializing festival Scheme Settings */
 		SchemeFile scmFile = new SchemeFile();
 		scmFile.writeToDisk();
 
+		/* Initializing MediaFile Container */
 		MediaFile textMediaFile = MediaFile
 				.createMediaContainer(MediaFormat.WAV);
 		MediaHandler textMediaHandler = new MediaHandler(progressProperty,
 				textMediaFile);
+		
+		/* */
 		textMediaHandler.textToSpeech(text, scmFile);
 		textMediaHandler.waitFor();
 		textMediaFile = textMediaHandler.getMediaFile();
-		// textMediaFile now holds the speech wav
 		return textMediaFile;
 	}
+	
 
 }

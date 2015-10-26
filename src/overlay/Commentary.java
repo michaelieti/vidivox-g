@@ -1,20 +1,23 @@
 package overlay;
 
-import java.io.IOException;
-
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import overlay.control.OverlayType;
+import utility.control.SchemeFile;
+import utility.control.SchemeFile.VoiceActor;
 
 public class Commentary implements Comparable<Commentary> {
 	
-	private SimpleObjectProperty<OverlayType> typeProperty;
-	private SimpleObjectProperty<Duration> timeProperty;
-	private SimpleStringProperty textProperty;
-	private SimpleStringProperty timeStringProperty;
+	private ObjectProperty<OverlayType> typeProperty;
+	private ObjectProperty<Duration> timeProperty;
+	private StringProperty textProperty;
+	private ObjectProperty<SchemeFile> festivalSettingsProperty;
+	private StringProperty timeStringProperty;
 	//can put in pitch/voice/stretch later
 	
 	public Commentary() {
@@ -55,6 +58,12 @@ public class Commentary implements Comparable<Commentary> {
 	public void setText(String text){
 		textProperty.set(text);
 	}
+	
+	public void setVoiceActor(VoiceActor actor) {
+		festivalSettingsProperty.getValue().setActor(actor);
+	}
+	
+
 	/**
 	 * Sets the timestring. 
 	 * **note that the string to be passed doesn't have any effect on the timestring,
