@@ -46,6 +46,11 @@
 	 -fx-text-fill: darkgrey;
 }
 
+.text {
+	-fx-text-fill: dodgerblue;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
 .tab {
 	-fx-background-color: #e6e6e6;
     -fx-background-insets: 0 1 0 1,0,0;

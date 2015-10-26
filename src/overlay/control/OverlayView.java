@@ -2,6 +2,8 @@ package overlay.control;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -33,13 +35,17 @@ public class OverlayView extends Stage {
 	@SuppressWarnings("unchecked")
 	public OverlayView(){
 		super();
-		
+		this.setResizable(false);
 		this.setTitle("Overlay");
 		VBox mainPanel = new VBox();
+		mainPanel.setAlignment(Pos.TOP_CENTER);
+		mainPanel.setPadding(new Insets(10, 10, 10, 10));
+		mainPanel.setSpacing(10);
 		
 		/* Filter Panel creation */
 		HBox filterPanel = new HBox();
 		Text filterLabel = new Text("Filter by: ");
+		filterPanel.setAlignment(Pos.CENTER_LEFT);
 		filterPanel.getChildren().add(filterLabel);
 		
 		/* Overlay Table creation */
@@ -52,6 +58,9 @@ public class OverlayView extends Stage {
 		
 		/* creation of overlay editor panel*/
 		HBox editBox = new HBox();
+		editBox.setAlignment(Pos.CENTER);
+		editBox.setPadding(new Insets(10, 10, 10, 10));
+		editBox.setSpacing(10);
 		/* EDIT BUTTON*/
 		editButton = new Button("Edit selected");
 		/* DELETE BUTTON*/
@@ -63,7 +72,7 @@ public class OverlayView extends Stage {
 		
 		mainPanel.getChildren().addAll(filterPanel,tableView, editBox, commitButton);
 		
-		Scene sc = new Scene(mainPanel, 250, 600);
+		Scene sc = new Scene(mainPanel);
 		this.setScene(sc);
 		
 		/* setting default close/open events */

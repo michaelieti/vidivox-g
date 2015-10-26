@@ -56,8 +56,9 @@ public class Main extends Application {
 			p.delete();
 		}
 		if (!p.mkdirs()) {
-			throw new Exception("Unable to create temporary directory at '"
+			System.out.println("Unable to create temporary directory at '"
 					+ p.getCanonicalPath() + "'.");
+			System.out.println("A Process or previous instance of Vidivox may be accessing this directory, expect unstable functionality");
 		}
 	}
 
