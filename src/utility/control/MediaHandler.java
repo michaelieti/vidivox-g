@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import overlay.Commentary;
@@ -23,6 +25,7 @@ public class MediaHandler extends Application {
 
 	private DoubleProperty progress;
 	private MediaFile mediaFile;
+	private FFMPEG cmd;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -85,7 +88,14 @@ public class MediaHandler extends Application {
 	public MediaFile getMediaFile() {
 		return mediaFile;
 	}
+	
+	public FFMPEG getProcess() {
+		return cmd;
+	}
 
+	public void setOnFinished(EventHandler<WorkerStateEvent> event) {
+		cmd.setOnFinished(event);
+	}
 	/**
 	 * Takes a source MediaFile and converts its contents to match the formating
 	 * of the destination MediaFile.
@@ -100,7 +110,7 @@ public class MediaHandler extends Application {
 
 		String expansion = "ffmpeg -y -i " + source.getQuoteOfAbsolutePath()
 				+ " " + mediaFile.getQuoteOfAbsolutePath();
-		FFMPEG cmd = new FFMPEG(progress, expansion, source.getDuration());
+		cmd = new FFMPEG(progress, expansion, source.getDuration());
 		cmd.start();
 	}
 
@@ -133,7 +143,7 @@ public class MediaHandler extends Application {
 		ffmpegCommand = ffmpegCommand.concat("-filter_complex \"amix=inputs="
 				+ files.length + "\" -ac 2 "
 				+ mediaFile.getQuoteOfAbsolutePath());
-		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, longestDuration);
+		cmd = new FFMPEG(progress, ffmpegCommand, longestDuration);
 		cmd.start();
 	}
 
@@ -153,7 +163,7 @@ public class MediaHandler extends Application {
 		String ffmpegCommand = "ffmpeg -y -i "
 				+ source.getQuoteOfAbsolutePath() + " -an "
 				+ mediaFile.getQuoteOfAbsolutePath();
-		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, source.getDuration());
+		cmd = new FFMPEG(progress, ffmpegCommand, source.getDuration());
 		cmd.start();
 
 	}
@@ -190,7 +200,7 @@ public class MediaHandler extends Application {
 				+ " -filter_complex amix=inputs=2 -shortest "
 				+ mediaFile.getQuoteOfAbsolutePath();
 
-		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, video.getDuration());
+		cmd = new FFMPEG(progress, ffmpegCommand, video.getDuration());
 		cmd.start();
 	}
 	
@@ -208,7 +218,7 @@ public class MediaHandler extends Application {
 		sb.append(" ");
 		sb.append(mediaFile.getQuoteOfAbsolutePath());
 		
-		FFMPEG cmd = new FFMPEG(progress, sb.toString(), duration.toSeconds());
+		cmd = new FFMPEG(progress, sb.toString(), duration.toSeconds());
 		cmd.start();
 	}
 	
@@ -234,16 +244,20 @@ public class MediaHandler extends Application {
 		
 		Double totalDuration = audio1.getDuration() + audio2.getDuration();
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + sb.toString() + "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-		FFMPEG cmd = new FFMPEG(progress, sb.toString(), totalDuration);
+		cmd = new FFMPEG(progress, sb.toString(), totalDuration);
 		cmd.start();
 		
+	}
+	
+	public void concatAudio(List<MediaFile> audio) {
+		MediaFile[] audios = audio;
 	}
 
 
 	public void textToSpeech(String text, SchemeFile festival) {
 		String ffmpegCommand = "`echo \"" + text + "\" | text2wave -o "
 				+ mediaFile.getQuoteOfAbsolutePath() + " -eval " + festival.getAbsolutePath() + "`";
-		FFMPEG cmd = new FFMPEG(progress, ffmpegCommand, 1.0);
+		cmd = new FFMPEG(progress, ffmpegCommand, 1.0);
 		cmd.start();
 		try {
 			Thread.sleep(1000);
