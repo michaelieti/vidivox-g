@@ -2,7 +2,6 @@ package editor;
 
 import java.net.URISyntaxException;
 
-import utility.StagedMedia;
 import utility.media.MediaFile;
 import javafx.scene.control.Tab;
 import javafx.scene.media.MediaView;

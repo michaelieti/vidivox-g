@@ -20,11 +20,9 @@ public class BackgroundTask extends Task<Void> {
 			System.out.print(listOfTasks.indexOf(f) + " - " + f.toString() );
 			f.getProcess().call();
 			f.waitFor();
-			Thread.sleep(1000);
 		}
-		System.out.print(listOfTasks);
 		listOfTasks.clear();
-		System.out.println("Done");
+		System.out.println("~~~~~~~~~~~~~~Done~~~~~~~~~~~~~~");
 		return null;
 	}
 

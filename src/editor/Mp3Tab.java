@@ -2,8 +2,6 @@ package editor;
 
 import java.io.File;
 
-import utility.StagedAudio;
-import utility.StagedMedia;
 import utility.media.MediaFile;
 
 import javafx.beans.binding.StringBinding;
@@ -79,9 +77,18 @@ public class Mp3Tab extends BindableTab {
 			public void handle(ActionEvent arg0) {
 				if (userFile != null) {
 					Media audio = new Media(userFile.toURI().toString());
-					StagedAudio s = new StagedAudio(audio, "");
+					MediaFile audioContainer = new MediaFile(audio);
+					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+					
+					
+					//TODO: Michael add your shit here
+					
+					
+					
+					
+					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 					Media video = mv.getMediaPlayer().getMedia();
-					MediaConverter.mergeVideoAndAudio(video, s, prog);
+					//MediaConverter.mergeVideoAndAudio(video, s, prog);
 				}
 			}
 

@@ -1,6 +1,5 @@
 package utility.media;
 
-import utility.StagedAudio.MediaTypes;
 
 /**
  * A list of supported media formats and their types.

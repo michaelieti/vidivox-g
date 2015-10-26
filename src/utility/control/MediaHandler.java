@@ -1,19 +1,11 @@
 package utility.control;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import overlay.Commentary;
 import javafx.application.Application;
 import utility.media.MediaFile;
-import utility.media.MediaFormat;
 import utility.media.MediaType;
 
 /**
@@ -167,7 +159,7 @@ public class MediaHandler extends Application {
 			}
 		}
 		ffmpegCommand = ffmpegCommand.concat("-filter_complex \"amix=inputs="
-				+ files.length + "\" -ac 2 "
+				+ files.length + "\" "
 				+ mediaFile.getQuoteOfAbsolutePath());
 		cmd = new FFMPEG(progress, ffmpegCommand, longestDuration);
 		cmd.queueTo(queueTasks);
@@ -229,7 +221,7 @@ public class MediaHandler extends Application {
 		String ffmpegCommand = "ffmpeg -y -i "
 				+ video.getQuoteOfAbsolutePath() + " -i "
 				+ audio.getQuoteOfAbsolutePath()
-				+ " -filter_complex \"amix=inputs=2\" -shortest -ac 2 "
+				+ " -filter_complex \"amix=inputs=2\" -ac 2 -shortest "
 				+ mediaFile.getQuoteOfAbsolutePath();
 		cmd = new FFMPEG(progress, ffmpegCommand, video.getDuration());
 		cmd.queueTo(queueTasks);
@@ -274,7 +266,7 @@ public class MediaHandler extends Application {
 		StringBuilder sb = new StringBuilder("ffmpeg -y -i ");
 		sb.append(audio1.getQuoteOfAbsolutePath())
 		.append(" -i " + audio2.getQuoteOfAbsolutePath())
-		.append(" -filter_complex '[0:0] [1:0] concat =n=2:v=0:a=1' -ac 2 ")
+		.append(" -filter_complex '[0:0] [1:0] concat =n=2:v=0:a=1' ")
 		.append(mediaFile.getQuoteOfAbsolutePath());
 		
 		Double totalDuration = audio1.getDuration() + audio2.getDuration();

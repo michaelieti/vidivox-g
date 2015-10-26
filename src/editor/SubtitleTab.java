@@ -1,6 +1,5 @@
 package editor;
 
-import utility.StagedMedia;
 import utility.media.MediaFile;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
