@@ -2,6 +2,7 @@ package utility.control;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -249,9 +250,6 @@ public class MediaHandler extends Application {
 		
 	}
 	
-	public void concatAudio(List<MediaFile> audio) {
-		MediaFile[] audios = audio;
-	}
 
 
 	public void textToSpeech(String text, SchemeFile festival) {
