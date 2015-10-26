@@ -31,7 +31,14 @@ public class MediaHandler extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		System.out.println("Making media files");
 		
+		MediaFile out1 = MediaFile.createMediaContainer(MediaFormat.AVI, new File(System.getProperty("user.home") + "/tempvids/"), "out1.avi");
+		MediaFile out2 = MediaFile.createMediaContainer(MediaFormat.MP4, new File(System.getProperty("user.home") + "/tempvids/"),"out2.mp4");
+		MediaFile out3 = MediaFile.createMediaContainer(MediaFormat.MP3, new File(System.getProperty("user.home") + "/tempvids/"),"out2.mp3");
+		
+		System.out.println("Made media files");
+		System.out.println("out1 made in " + out1.getQuoteOfAbsolutePath());
 		/*
 		MediaFile out1 = new MediaFile(new File(System.getProperty("user.home")
 				+ "/SoftEng206/ffmpeg/out1.mp3"));
@@ -45,6 +52,10 @@ public class MediaHandler extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+	
+	public MediaHandler() {
+		super();
 	}
 
 	public MediaHandler(MediaFile destination) throws Exception {

@@ -46,6 +46,7 @@ public class MediaFile {
 			path = new File(System.getProperty("user.dir") + "/.temp/"
 					+ Math.abs(path.hashCode()) + "." + desiredFormat.getExtension());
 		}
+		format = desiredFormat;
 	}
 
 	/**
@@ -163,11 +164,25 @@ public class MediaFile {
 	 * @return An UnknownMedia object with attached container (if successfully
 	 *         created).
 	 */
+	
+	
+
+	
 	public static MediaFile createMediaContainer(MediaFormat desiredFormat,
-			File desiredLocation) {
-		File correctLocation = addExtension(desiredLocation, desiredFormat);
+			File desiredLocation, String fileName) {
+		fileName = addExtension(fileName, desiredFormat);
+		System.out.println(fileName.toString());
+		
+		//builds the path
+		if (! desiredLocation.exists()){
+			System.out.println("Building path");
+			desiredLocation.mkdirs();
+		}
+		
+		//creates the file
 		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" \""
-				+ correctLocation.getAbsolutePath() + "\"";
+				+ desiredLocation.getAbsolutePath() + "/" + fileName + "\"";
+		System.out.println("Executing " + expansion);
 		String[] cmd = { "bash", "-c", expansion };
 		ProcessBuilder build = new ProcessBuilder(cmd);
 		Process p;
@@ -177,6 +192,8 @@ public class MediaFile {
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		File correctLocation = new File(desiredLocation.getAbsolutePath() + fileName);
 
 		return new MediaFile(correctLocation);
 	}
@@ -208,6 +225,16 @@ public class MediaFile {
 		return new MediaFile(output.getPath());
 	}
 
+	
+	private static String addExtension(String name, MediaFormat formatNeeded){
+		if (! name.endsWith(formatNeeded.getExtension())){
+			name = name + formatNeeded.getExtension();
+			return name;
+		}
+		else{
+			return name;
+		}
+	}
 	
 
 	/*

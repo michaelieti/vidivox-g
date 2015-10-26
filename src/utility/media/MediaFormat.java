@@ -23,7 +23,7 @@ public enum MediaFormat {
 
 	MP3(MediaType.Audio), WAV(MediaType.Audio), MP4(MediaType.Video), FLV(
 			MediaType.Video), Unknown(MediaType.Invalid, false), Unsupported(
-			MediaType.Invalid, false), Corrupt(MediaType.Invalid, false);
+			MediaType.Invalid, false), Corrupt(MediaType.Invalid, false), AVI(MediaType.Video);
 
 	private MediaType type;
 	private boolean valid = true;
