@@ -78,7 +78,7 @@ public class MediaHandler extends Application {
 			throws Exception {
 		if (!destination.isValid()) {
 			throw new Exception(
-					"Cannot instantiate a MediaHandler on an invalid MediaFile");
+					destination.getQuoteOfAbsolutePath() + " is an invalid MediaFile");
 		}
 		this.progress = progress;
 		this.mediaFile = destination;
@@ -156,6 +156,7 @@ public class MediaHandler extends Application {
 		ffmpegCommand = ffmpegCommand.concat("-filter_complex \"amix=inputs="
 				+ files.length + "\" -ac 2 "
 				+ mediaFile.getQuoteOfAbsolutePath());
+		System.out.println(">> " + ffmpegCommand);
 		cmd = new FFMPEG(progress, ffmpegCommand, longestDuration);
 		cmd.start();
 	}
@@ -200,11 +201,11 @@ public class MediaHandler extends Application {
 					+ "' is not a valid Video source");
 		} else if (!video.getType().equals(MediaType.Video)) {
 			throw new Exception("input video format '"
-					+ mediaFile.getFormat().toString()
+					+ video.getFormat().toString()
 					+ "' is not a valid Video source");
 		} else if (!audio.getType().equals(MediaType.Audio)) {
 			throw new Exception("input audio format '"
-					+ mediaFile.getFormat().toString()
+					+ audio.getFormat().toString()
 					+ "' is not a valid Audio source");
 		}
 		String ffmpegCommand = "ffmpeg -y -i "
@@ -212,9 +213,11 @@ public class MediaHandler extends Application {
 				+ audio.getQuoteOfAbsolutePath()
 				+ " -filter_complex amix=inputs=2 -shortest "
 				+ mediaFile.getQuoteOfAbsolutePath();
-
+		System.out.println(">> " + ffmpegCommand);
+		Thread.sleep(1000);
 		cmd = new FFMPEG(progress, ffmpegCommand, video.getDuration());
 		cmd.start();
+		cmd.waitFor();
 	}
 	
 	/**
