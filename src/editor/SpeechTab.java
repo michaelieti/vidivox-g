@@ -4,11 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-import utility.control.BackgroundTask;
-import utility.control.MediaHandler;
-import utility.control.SchemeFile;
-import utility.media.MediaFile;
-import utility.media.MediaFormat;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
@@ -22,7 +17,6 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -32,7 +26,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaView;
@@ -46,6 +39,11 @@ import overlay.control.OverlayController;
 import overlay.control.OverlayType;
 import player.SliderVX;
 import player.VidivoxPlayer;
+import utility.control.BackgroundTask;
+import utility.control.MediaHandler;
+import utility.control.SchemeFile;
+import utility.media.MediaFile;
+import utility.media.MediaFormat;
 
 public class SpeechTab extends BindableTab {
 
@@ -57,7 +55,6 @@ public class SpeechTab extends BindableTab {
 	private Text msg;
 	private TextArea userField;
 	private Button speechBtn, saveBtn, overlayBtn, cancelOverlayBtn;
-	private FileChooser f;
 	private ProgressBar progBar = new ProgressBar();
 	
 	/* advanced GUI elements */
@@ -69,6 +66,8 @@ public class SpeechTab extends BindableTab {
 	/* festival fields*/
 	private int pid = -1;
 	
+	
+	@SuppressWarnings("unused")
 	private MediaHandler speechMedia;
 	private SchemeFile scmFile;
 	
@@ -81,7 +80,6 @@ public class SpeechTab extends BindableTab {
 	/**
 	 * sets the scheme file's settings according to what is currently on the GUI.
 	 */
-	@SuppressWarnings("unchecked")
 	private void bindAdvancedOptions(){
 		//bind all sliders and stuff to scmFile
 		//must be called when new scmFile is created.
@@ -472,13 +470,6 @@ public class SpeechTab extends BindableTab {
 //		stagedMedia = new StagedAudio(StagedAudio.MediaTypes.WAV);
 //	}
 
-	private String buildPath() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(System.getProperty("user.home"));
-		sb.append("/temp/wav");
-		return sb.toString();
-	}
-	
 	
 	/* EVENT HANDLERS, FILTERS, TASKS */
 	

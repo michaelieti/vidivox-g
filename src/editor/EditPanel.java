@@ -6,7 +6,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import overlay.Commentary;
 import player.VidivoxPlayer;
 
 /**

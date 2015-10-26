@@ -16,7 +16,6 @@ import java.util.Scanner;
 import utility.control.BackgroundTask;
 import utility.control.FFMPEG;
 
-import editor.MediaConverter;
 
 /**
  * A MediaFile object represents a media source located on disk. Through file

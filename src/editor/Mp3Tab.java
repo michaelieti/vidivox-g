@@ -2,15 +2,7 @@ package editor;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
-import utility.control.BackgroundTask;
-import utility.control.FFMPEG;
-import utility.control.MediaHandler;
-import utility.media.MediaFile;
-import utility.media.MediaFormat;
-import utility.media.MediaType;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.When;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,18 +13,22 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import player.VidivoxPlayer;
+import utility.control.BackgroundTask;
+import utility.control.MediaHandler;
+import utility.media.MediaFile;
+import utility.media.MediaFormat;
 
 public class Mp3Tab extends BindableTab {
 
@@ -90,7 +86,6 @@ public class Mp3Tab extends BindableTab {
 					try {
 						audioContainer = new MediaFile(audio);
 					} catch (URISyntaxException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					try{

@@ -2,7 +2,6 @@ package overlay.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.Duration;
 import overlay.Commentary;
 import overlay.control.OverlayType;
 
