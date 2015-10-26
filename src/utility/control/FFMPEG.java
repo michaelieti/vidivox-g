@@ -45,10 +45,15 @@ public class FFMPEG {
 		th.start();
 	}
 	
-	
-	public void setOnFinished(EventHandler<WorkerStateEvent> event) {
-		ffmpegProcess.setOnSucceeded(event);
+	public void waitFor() {
+		try {
+			ffmpegProcess.waitFor();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
 
 	/**
 	 * 

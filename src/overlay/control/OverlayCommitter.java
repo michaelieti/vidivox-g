@@ -7,6 +7,7 @@ import java.util.List;
 
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -20,7 +21,7 @@ public class OverlayCommitter extends Application {
 	
 	Media originalVideo;
 	List<Commentary> commentaryList;
-	DoubleProperty progressProperty;
+	DoubleProperty progressProperty = new SimpleDoubleProperty(0);
 	
 	/* for testing purposes! */
 	@Override
@@ -162,6 +163,7 @@ public class OverlayCommitter extends Application {
 		
 		return concatenatedHandler.getMediaFile();
 	}
+	
 	
 	private MediaFile makeBlank(Duration blankTime) throws Exception{
 		MediaHandler blankMediaHandler;

@@ -93,8 +93,8 @@ public class MediaHandler extends Application {
 		return cmd;
 	}
 
-	public void setOnFinished(EventHandler<WorkerStateEvent> event) {
-		cmd.setOnFinished(event);
+	public void waitFor() {
+		cmd.waitFor();
 	}
 	/**
 	 * Takes a source MediaFile and converts its contents to match the formating
@@ -231,9 +231,7 @@ public class MediaHandler extends Application {
 	public void concatAudio(MediaFile audio1, MediaFile audio2) throws Exception{
 		if (!audio1.getType().equals(MediaType.Audio) || 
 				!audio2.getType().equals(MediaType.Audio)) {
-			throw new Exception("input audio format '"
-					+ mediaFile.getFormat().toString()
-					+ "' is not a valid Audio source");
+			throw new Exception("input audio format");
 		}
 		
 		StringBuilder sb = new StringBuilder("ffmpeg -y -i ");
@@ -246,13 +244,18 @@ public class MediaHandler extends Application {
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + sb.toString() + "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 		cmd = new FFMPEG(progress, sb.toString(), totalDuration);
 		cmd.start();
-		
+		cmd.waitFor();
 	}
 	
-	public void concatAudio(List<MediaFile> audio) {
-		MediaFile[] audios = audio;
+	public void addAudioToEnd(MediaFile audio) throws Exception {
+		if (!audio.getType().equals(MediaType.Audio)) {
+			throw new Exception("input audio format '"
+					+ audio.getFormat().toString()
+					+ "' is not a valid Audio source");
+		}
+		
+		this.concatAudio(this.getMediaFile(), audio);
 	}
-
 
 	public void textToSpeech(String text, SchemeFile festival) {
 		String ffmpegCommand = "`echo \"" + text + "\" | text2wave -o "

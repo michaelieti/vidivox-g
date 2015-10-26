@@ -25,6 +25,7 @@ public class FFmpegTask extends Task<Void> {
 	private DoubleProperty progress;
 	private Double totalWork;
 	private String input;
+	private Process process;
 
 	protected FFmpegTask(DoubleProperty progress, String input,
 			Double finalDuration) {
@@ -44,7 +45,7 @@ public class FFmpegTask extends Task<Void> {
 		ProcessBuilder procBulder = new ProcessBuilder("/bin/bash", "-c", input);
 		procBulder.redirectErrorStream(true);
 		try {
-			Process process = procBulder.start();
+			process = procBulder.start();
 			currentlyProcessed(process.getInputStream());
 
 		} catch (Exception e) {
@@ -53,6 +54,12 @@ public class FFmpegTask extends Task<Void> {
 		}
 
 		return null;
+	}
+	
+	public void waitFor() throws InterruptedException {
+		if (process != null) {
+			process.waitFor();
+		}
 	}
 
 	/*
