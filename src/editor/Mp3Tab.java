@@ -121,6 +121,8 @@ public class Mp3Tab extends BindableTab {
 						Thread th = new Thread(queue);
 						th.setDaemon(true);
 						th.start();
+						
+						VidivoxPlayer.getVPlayer().setMedia(mergedHandler.getMediaFile().getMedia());
 					
 					} catch (Exception e){
 						e.printStackTrace();
