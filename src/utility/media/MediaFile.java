@@ -4,8 +4,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.media.Media;
+import java.nio.file.Path;
+
+import utility.control.FFMPEG;
 
 import editor.MediaConverter;
 
@@ -17,7 +24,6 @@ import editor.MediaConverter;
  * 
  */
 public class MediaFile {
-
 	private File path;
 	private MediaFormat format = MediaFormat.Unknown;
 	private Double duration = 0.0;
@@ -32,19 +38,22 @@ public class MediaFile {
 		}
 	}
 
-	public MediaFile(Media media) {
-		this(new File(media.getSource()));
+	public MediaFile(Media media) throws URISyntaxException {
+		this(Paths.get(new URI(media.getSource())).toFile());
 	}
+
 	/*
 	 * Convenience constructor used to create a MediaFile at a temporary
 	 * location.
 	 */
 	private MediaFile(MediaFormat desiredFormat) {
 		path = new File(System.getProperty("user.dir") + "/.temp/"
-				+ Math.abs(this.hashCode()) + "." + desiredFormat.getExtension());
+				+ Math.abs(this.hashCode()) + "."
+				+ desiredFormat.getExtension());
 		while (path.exists()) {
 			path = new File(System.getProperty("user.dir") + "/.temp/"
-					+ Math.abs(path.hashCode()) + "." + desiredFormat.getExtension());
+					+ Math.abs(path.hashCode()) + "."
+					+ desiredFormat.getExtension());
 		}
 	}
 
@@ -78,7 +87,7 @@ public class MediaFile {
 	public File getPath() {
 		return path;
 	}
-	
+
 	public String getQuoteOfAbsolutePath() {
 		return "\"" + path.getAbsolutePath() + "\"";
 	}
@@ -97,6 +106,7 @@ public class MediaFile {
 	public boolean isValid() {
 		return format.isValid();
 	}
+
 	/**
 	 * Deletes the Media source which the MediaFile is pointing to.
 	 */
@@ -104,7 +114,7 @@ public class MediaFile {
 		path.delete();
 		format = MediaFormat.Unknown;
 	}
-	
+
 	/*
 	 * A helper function which probes an UnknownMedia for its true file type.
 	 */
@@ -135,13 +145,34 @@ public class MediaFile {
 							.timeToSeconds(splitOfCurrentLine[1]);
 
 				}
-				if (currentLineOfOutput.startsWith("Input #0,") && output == null) {
+				if (currentLineOfOutput.startsWith("Input #0,")
+						&& output == null) {
 					splitOfCurrentLine = currentLineOfOutput.split(",");
-					if (splitOfCurrentLine.length >= 2) {
-						output = splitOfCurrentLine[1].trim().toUpperCase();
-					} else {
+					if (splitOfCurrentLine.length < 2) {
 						output = "";
-					} 
+					} else if (splitOfCurrentLine.length > 3) {
+						for (String s : splitOfCurrentLine) {
+							if (MediaFormat.getFromString(s).isValid()) {
+								output = MediaFormat.getFromString(s)
+										.getExtension().toUpperCase();
+								break;
+							}
+						}
+						if (output == null) {
+							output = "";
+						}
+					} else {
+						output = splitOfCurrentLine[1].trim().toUpperCase();
+					}
+				}
+				if (currentLineOfOutput.startsWith("major_brand     :")
+						&& output == null) {
+					splitOfCurrentLine = currentLineOfOutput.split(":");
+					if (splitOfCurrentLine.length < 2) {
+						output = "";
+					} else {
+						output = splitOfCurrentLine[1];
+					}
 				}
 			}
 			p.waitFor();
@@ -192,23 +223,27 @@ public class MediaFile {
 	 */
 	public static MediaFile createMediaContainer(MediaFormat desiredFormat) {
 		MediaFile output = new MediaFile(desiredFormat);
+		
+		if (desiredFormat.getType().equals(MediaType.Video)) {
+			String expression = "ffmpeg -y -f lavfi -i nullsrc -frames:v 1 " + output.getQuoteOfAbsolutePath();
+			FFMPEG cmd = new FFMPEG(new SimpleDoubleProperty(0), expression, 0.0);
+			cmd.start();
+			cmd.waitFor();
+			output.format = desiredFormat;
+			output.duration = 0.0;
+			return output;
+		}
+		
 		output.path = addExtension(output.path, desiredFormat);
 		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" \""
 				+ output.path.getAbsolutePath() + "\"";
-		String[] cmd = { "bash", "-c", expansion };
-		ProcessBuilder build = new ProcessBuilder(cmd);
-		Process p;
-		try {
-			p = build.start();
-			p.waitFor();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		return new MediaFile(output.getPath());
+		FFMPEG cmd = new FFMPEG(new SimpleDoubleProperty(0), expansion, 0.0);
+		cmd.start();
+		cmd.waitFor();
+		output.format = desiredFormat;
+		output.duration = 0.0;
+		return output;
 	}
-
-	
 
 	/*
 	 * A helper function which takes a file path and a media format, and

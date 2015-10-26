@@ -1,5 +1,7 @@
 package utility.media;
 
+import utility.StagedAudio.MediaTypes;
+
 /**
  * A list of supported media formats and their types.
  * <P>
@@ -65,6 +67,9 @@ public enum MediaFormat {
 	public static MediaFormat processTypeFromString(String type) {
 		type = type.toUpperCase();
 		for (MediaFormat format : MediaFormat.values()) {
+			if (format.equals(MP4) && "mp42".equals(type.toLowerCase())) {
+				return format;
+			}
 			if (format.getExtension().toUpperCase().equals(type)) {
 				return format;
 			}
@@ -74,10 +79,22 @@ public enum MediaFormat {
 	}
 
 	public String getExtension() {
+
 		if (this.isValid()) {
 			return this.toString().toLowerCase();
 		} else {
 			return "";
 		}
+	}
+
+	public static MediaFormat getFromString(String tag) {
+		for (MediaFormat form : MediaFormat.values()) {
+			if (form.isValid()) {
+				if (form.toString().toUpperCase().equals(tag.toUpperCase())) {
+					return form;
+				}
+			}
+		}
+		return MediaFormat.Unsupported;
 	}
 }

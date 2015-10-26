@@ -1,6 +1,7 @@
 package player;
 
 import java.io.File;
+import java.io.IOException;
 
 import editor.EditPanel;
 import javafx.application.Application;
@@ -35,19 +36,7 @@ public class Main extends Application {
 	
 	public static void main(String[] args) throws Exception {
 		/*Checks whether the temporary already exists. Cleans the directory if it does, and creates a new one */
-		File p = new File(System.getProperty("user.dir") + "/.temp");
-		if (p.exists() && p.isDirectory()) {
-			File[] list = p.listFiles();
-			for (File f : list) {
-				f.delete();
-			}
-			p.delete();
-		} else if (p.exists()) {
-			p.delete();
-		}
-		if (!p.mkdirs()) {
-			throw new Exception("Unable to create temporary directory at '" + p.getCanonicalPath() + "'.");
-		}
+		InitTemp();
 		/*
 		int i = 0;
 		while (p.exists()) {
@@ -64,6 +53,21 @@ public class Main extends Application {
 		
 	}
 
+	public static void InitTemp() throws Exception {
+		File p = new File(System.getProperty("user.dir") + "/.temp");
+		if (p.exists() && p.isDirectory()) {
+			File[] list = p.listFiles();
+			for (File f : list) {
+				f.delete();
+			}
+			p.delete();
+		} else if (p.exists()) {
+			p.delete();
+		}
+		if (!p.mkdirs()) {
+			throw new Exception("Unable to create temporary directory at '" + p.getCanonicalPath() + "'.");
+		}
+	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		ms = new MainStage(this);
