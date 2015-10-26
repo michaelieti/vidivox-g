@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Scanner;
+
+import utility.media.MediaFile;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -98,7 +101,7 @@ public class FFmpegTask extends Task<Void> {
 				} else if (processingStarted & (line.indexOf("time=") != -1)) {
 					line = line.substring(line.indexOf("time=") + 5,
 							line.indexOf(" bitrate"));
-					this.updateProgress(MediaConverter.timeToSeconds(line),
+					this.updateProgress(MediaFile.timeToSeconds(line),
 							totalWork);
 				}
 			}
@@ -108,4 +111,6 @@ public class FFmpegTask extends Task<Void> {
 		}
 		return;
 	}
+	
+	
 }

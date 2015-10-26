@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.media.Media;
 import java.nio.file.Path;
+import java.util.Scanner;
 
 import utility.control.BackgroundTask;
 import utility.control.FFMPEG;
@@ -169,8 +170,7 @@ public class MediaFile {
 
 					splitOfCurrentLine = splitOfCurrentLine[0].split(" ");
 					// [Duration:] [00:00:01.01]
-					duration = MediaConverter
-							.timeToSeconds(splitOfCurrentLine[1]);
+					duration = timeToSeconds(splitOfCurrentLine[1]);
 
 				}
 				if (currentLineOfOutput.startsWith("Input #0,")
@@ -303,6 +303,27 @@ public class MediaFile {
 		} else {
 			return toAddExtension;
 		}
+	}
+	
+	/**
+	 * This helper function takes a string in the form "hh:mm:ss" and returns
+	 * the amount of seconds this amounts to.
+	 * 
+	 * @param time
+	 * @return
+	 */
+	public static Double timeToSeconds(String time) {
+		time = time.replace(":", " ");
+		time = time.replace(".", " ");
+		Scanner scan = new Scanner(time);
+		// Calculating hours
+		int seconds = scan.nextInt() * 3600;
+		// Calculating minutes
+		seconds += scan.nextInt() * 60;
+		// Calculating seconds
+		seconds += scan.nextInt();
+		scan.close();
+		return (double) seconds;
 	}
 
 }
