@@ -307,6 +307,7 @@ public class SpeechTab extends BindableTab {
 		this.setContent(speechPane);
 		
 		bindAdvancedOptions();
+		userField.setWrapText(true);
 	}	
 	
 	public static SpeechTab getSpeechTab(){
