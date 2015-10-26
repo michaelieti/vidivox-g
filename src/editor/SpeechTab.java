@@ -80,6 +80,7 @@ public class SpeechTab extends BindableTab {
 	/**
 	 * sets the scheme file's settings according to what is currently on the GUI.
 	 */
+	@SuppressWarnings("unchecked")
 	private void bindAdvancedOptions(){
 		//bind all sliders and stuff to scmFile
 		//must be called when new scmFile is created.
