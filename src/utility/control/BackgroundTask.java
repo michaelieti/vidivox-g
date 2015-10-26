@@ -24,6 +24,7 @@ public class BackgroundTask extends Task<Void> {
 			f.waitFor();
 			Thread.sleep(1000);
 		}
+		System.out.print(listOfTasks);
 		listOfTasks.clear();
 		System.out.println("Done");
 		return null;

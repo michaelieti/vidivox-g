@@ -130,6 +130,8 @@ public class OverlayCommitter extends Application {
 			MediaFile[] array = new MediaFile[toBeMerged.size()];
 			array = (MediaFile[]) toBeMerged.toArray(array);
 			finalHandler.mergeAudio(array);
+			finalHandler.setBackgroundTask(queue);
+			finalHandler.setNameOfProcess("Audio Merge");
 			finalHandler.printToConsole(true);
 			MediaFile audio = finalHandler.getMediaFile();
 			if (debug)
@@ -140,7 +142,9 @@ public class OverlayCommitter extends Application {
 			
 		
 			MediaHandler videoHandler = new MediaHandler(finalVideo);
+			videoHandler.setBackgroundTask(queue);
 			videoHandler.mergeAudioAndVideo(orginal, audio);
+			videoHandler.setNameOfProcess("Final Merge");
 			if (debug)
 				System.out.println("\nFile Info:\n\tLocation: "
 						+ videoHandler.getMediaFile().getQuoteOfAbsolutePath());
@@ -161,9 +165,9 @@ public class OverlayCommitter extends Application {
 		MediaHandler concatenatedHandler = new MediaHandler(progressProperty,
 				concatenatedFile);
 		concatenatedHandler.setBackgroundTask(queue);
-		concatenatedHandler.setNameOfProcess("Concat");
+		
 		concatenatedHandler.concatAudio(first, second);
-
+		concatenatedHandler.setNameOfProcess("Concat");
 		return concatenatedHandler.getMediaFile();
 	}
 
@@ -173,8 +177,8 @@ public class OverlayCommitter extends Application {
 		MediaFile blankFile = MediaFile.createMediaContainer(queue,MediaFormat.WAV);
 		blankMediaHandler = new MediaHandler(progressProperty, blankFile);
 		blankMediaHandler.setBackgroundTask(queue);
-		blankMediaHandler.setNameOfProcess("Make Blank");
 		blankMediaHandler.makeBlankAudio(blankTime);
+		blankMediaHandler.setNameOfProcess("Make Blank");
 		blankFile = blankMediaHandler.getMediaFile();
 		// blankFile now holds a blank file
 		return blankFile;
@@ -200,10 +204,11 @@ public class OverlayCommitter extends Application {
 		MediaHandler textMediaHandler = new MediaHandler(progressProperty,
 				textMediaFile);
 		textMediaHandler.setBackgroundTask(queue);
-		textMediaHandler.setNameOfProcess("Simple Text to Speech");
+		
 
 		/* Constructing text to speech file */
 		textMediaHandler.textToSpeech(text, scmFile);
+		textMediaHandler.setNameOfProcess("Simple Text to Speech");
 		textMediaFile = textMediaHandler.getMediaFile();
 		return textMediaFile;
 	}
