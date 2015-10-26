@@ -63,6 +63,7 @@ public class SpeechTab extends BindableTab {
 	/* advanced GUI elements */
 	private final ComboBox<SchemeFile.VoiceActor> voiceActorsComboBox;
 	private SliderVX rateSlider, pitchInitialSlider, pitchFinalSlider;
+	private Text rateNum, iPitchNum, fPitchNum;
 	private Button resetAdvanced;
 	
 	/* festival fields*/
@@ -85,34 +86,41 @@ public class SpeechTab extends BindableTab {
 		//bind all sliders and stuff to scmFile
 		//must be called when new scmFile is created.
 		
-		voiceActorsComboBox.setOnAction(new EventHandler(){
+		voiceActorsComboBox.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
-			public void handle(Event event) {
+			public void handle(ActionEvent event) {
 				scmFile.setActor((SchemeFile.VoiceActor)voiceActorsComboBox.getSelectionModel().getSelectedItem());
+				
 			}
 		});
 		
 		rateSlider.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
-				double currentRate = rateSlider.getValue() / SchemeFile.MAX_RATE;
-				scmFile.setRateOfSpeech(currentRate);
+				if (! rateSlider.isValueChanging()){
+					scmFile.setRateOfSpeech(rateSlider.getValue());
+					rateNum.setText(Double.toString(rateSlider.getValue()));
+				}
 			}
 		});
 		
 		pitchInitialSlider.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
-				double currentPitch = pitchInitialSlider.getValue() / SchemeFile.MAX_PITCH;
-				scmFile.setInitialPitch((int)currentPitch);
+				if (! pitchInitialSlider.isValueChanging()) {
+					scmFile.setInitialPitch((int)pitchInitialSlider.getValue());
+					iPitchNum.setText(Double.toString(pitchInitialSlider.getValue()));
+				}
 			}
 		});
 		
 		pitchFinalSlider.valueProperty().addListener(new InvalidationListener() {
 			@Override
 			public void invalidated(Observable observable) {
-				double currentPitch = pitchFinalSlider.getValue() / SchemeFile.MAX_PITCH;
-				scmFile.setFinalPitch((int)currentPitch);
+				if (! pitchFinalSlider.isValueChanging()) {
+					scmFile.setFinalPitch((int)pitchFinalSlider.getValue());
+					fPitchNum.setText(Double.toString(pitchFinalSlider.getValue()));
+				}
 			}
 		});
 	}
@@ -201,30 +209,77 @@ public class SpeechTab extends BindableTab {
 		VBox advancedOptionBox = new VBox();
 		advancedOptionBox.setMaxWidth(200);
 		advancedOptionBox.setAlignment(Pos.CENTER);
+		advancedOptionBox.disableProperty().bind(
+				Bindings.or(userField.lengthProperty().isEqualTo(0), mv
+						.mediaPlayerProperty().isNull()));
 		
 		HBox voiceActorPanel = new HBox();
 		Text voiceActorLabel = new Text("Voice Actor: ");
+		voiceActorLabel.setFill(Color.LIGHTGREY);
 		ObservableList<SchemeFile.VoiceActor> options = 
 			    FXCollections.observableArrayList(SchemeFile.VoiceActor.Jono, SchemeFile.VoiceActor.Robot, SchemeFile.VoiceActor.Gordon );
 		voiceActorsComboBox = new ComboBox<SchemeFile.VoiceActor>(options);
 		voiceActorPanel.getChildren().addAll(voiceActorLabel, voiceActorsComboBox);
+		voiceActorPanel.setPadding(new Insets(8,8,8,8));
 		
+		
+		HBox rateBox = new HBox();
 		Text rateLabel = new Text("Rate");
+		rateLabel.setFill(Color.LIGHTGREY);
 		rateSlider = new SliderVX(SchemeFile.MIN_RATE, SchemeFile.MAX_RATE, SchemeFile.DEFAULT_RATE);
 		rateSlider.setMaxWidth(150);
+		rateSlider.setSnapToTicks(true);
+		rateSlider.setMajorTickUnit(0.5);
+		rateSlider.setMinorTickCount(0);
+		rateSlider.disableProperty().bind(
+				Bindings.or(userField.lengthProperty().isEqualTo(0), mv
+						.mediaPlayerProperty().isNull()));
+		rateNum = new Text(Double.toString(rateSlider.getValue()));
+		rateNum.setFill(Color.LIGHTGREY);
+		rateBox.getChildren().addAll(rateSlider, rateNum);
+		rateBox.setPadding(new Insets(8,8,8,8));
 		
+		HBox initialPitchBox = new HBox();
 		Text pitch_initial = new Text("Initial pitch");
-		pitchInitialSlider = new SliderVX(SchemeFile.MIN_PITCH, SchemeFile.MAX_PITCH, SchemeFile.DEFAULT_PITCH);
+		pitch_initial.setFill(Color.LIGHTGREY);
+		pitchInitialSlider = new SliderVX(SchemeFile.MIN_PITCH, SchemeFile.MAX_PITCH, SchemeFile.DEFAULT_PITCH_INITIAL);
 		pitchInitialSlider.setMaxWidth(150);
+		pitchInitialSlider.setSnapToTicks(true);
+		pitchInitialSlider.setMajorTickUnit(5);
+		pitchInitialSlider.setMinorTickCount(0);
+		pitchInitialSlider.disableProperty().bind(
+				Bindings.or(userField.lengthProperty().isEqualTo(0), mv
+						.mediaPlayerProperty().isNull()));
+		iPitchNum = new Text(Double.toString(pitchInitialSlider.getValue()));
+		iPitchNum.setFill(Color.LIGHTGREY);
+		initialPitchBox.getChildren().addAll(pitchInitialSlider, iPitchNum);
+		initialPitchBox.setPadding(new Insets(8,8,8,8));
+		
+		HBox finalPitchBox = new HBox();
 		Text pitch_final = new Text("Final pitch");
-		pitchFinalSlider = new SliderVX(SchemeFile.MIN_PITCH, SchemeFile.MAX_PITCH, SchemeFile.DEFAULT_PITCH);
+		pitch_final.setFill(Color.LIGHTGREY);
+		pitchFinalSlider = new SliderVX(SchemeFile.MIN_PITCH, SchemeFile.MAX_PITCH, SchemeFile.DEFAULT_PITCH_FINAL);
 		pitchFinalSlider.setMaxWidth(150);
+		pitchFinalSlider.setSnapToTicks(true);
+		pitchFinalSlider.setMajorTickUnit(5);
+		pitchFinalSlider.setMinorTickCount(0);
+		pitchFinalSlider.disableProperty().bind(
+				Bindings.or(userField.lengthProperty().isEqualTo(0), mv
+						.mediaPlayerProperty().isNull()));
+		fPitchNum = new Text(Double.toString(pitchFinalSlider.getValue()));
+		fPitchNum.setFill(Color.LIGHTGREY);
+		finalPitchBox.getChildren().addAll(pitchFinalSlider, fPitchNum);
+		finalPitchBox.setPadding(new Insets(8,8,8,8));
 		
 		resetAdvanced = new Button("Reset sliders");
 		resetAdvanced.setOnAction(new ResetSlidersHandler());
+		resetAdvanced.setPadding(new Insets(8,8,8,8));
+		resetAdvanced.disableProperty().bind(
+				Bindings.or(userField.lengthProperty().isEqualTo(0), mv
+						.mediaPlayerProperty().isNull()));
 		
-		advancedOptionBox.getChildren().addAll(voiceActorPanel, rateLabel, rateSlider, pitch_initial, pitchInitialSlider, 
-				pitch_final, pitchFinalSlider, resetAdvanced);
+		advancedOptionBox.getChildren().addAll(voiceActorPanel, rateLabel, rateBox, pitch_initial, initialPitchBox, 
+				pitch_final, finalPitchBox, resetAdvanced);
 		
 		
 		/* placement starts here */
@@ -252,7 +307,6 @@ public class SpeechTab extends BindableTab {
 		this.setContent(speechPane);
 		
 		bindAdvancedOptions();
-
 	}	
 	
 	public static SpeechTab getSpeechTab(){
@@ -503,8 +557,8 @@ public class SpeechTab extends BindableTab {
 		@Override
 		public void handle(ActionEvent event) {
 			rateSlider.setValue(SchemeFile.DEFAULT_RATE);
-			pitchInitialSlider.setValue(SchemeFile.DEFAULT_PITCH);
-			pitchFinalSlider.setValue(SchemeFile.DEFAULT_PITCH);
+			pitchInitialSlider.setValue(SchemeFile.DEFAULT_PITCH_INITIAL);
+			pitchFinalSlider.setValue(SchemeFile.DEFAULT_PITCH_FINAL);
 		}
 		
 	}
