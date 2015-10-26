@@ -126,7 +126,8 @@ public class OverlayController {
 		popup.show(this.view);
 		
 		MediaFile overlaidVideo = committer.beginCommit();
-		
+		System.out.println("Setting committed video to MediaView");
+		VidivoxPlayer.getVPlayer().setMedia(overlaidVideo.getMedia());
 	}
 	
 	
