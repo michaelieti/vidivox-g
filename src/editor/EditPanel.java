@@ -62,7 +62,7 @@ public class EditPanel extends Stage {
 		speechTab = new SpeechTab(mv, "Speech",
 				"Enter text to be spoken over the video. Hover over controls for more details");
 		subtitleTab = new SubtitleTab(mv, "Subtitles", "Enter text to be subtitled (coming soon...)");
-		mp3 = new Mp3Tab(mv, "Audio", "Overlay an mp3 or wav file on the current video. The overlay will apply to the entire video from the time point the video is currently at.");
+		mp3 = new Mp3Tab(mv, "Audio", "Overlay an mp3 or wav file on the current video. The overlay will apply to the entire video from the current time point.");
 		speechTab.setBind(this);
 		subtitleTab.setBind(this);
 		mp3.setBind(this);

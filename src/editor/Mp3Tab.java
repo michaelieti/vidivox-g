@@ -77,7 +77,7 @@ public class Mp3Tab extends BindableTab {
 			}
 
 		});
-		overlayBtn = new Button("Add to Overlay");
+		overlayBtn = new Button("Merge at this point in the video");
 		overlayBtn
 				.setTooltip(new Tooltip(
 						"Click to overlay the mp3 with the current video and play the result"));
