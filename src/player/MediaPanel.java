@@ -1,6 +1,8 @@
 package player;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaView;
 
@@ -19,6 +21,7 @@ public class MediaPanel extends VBox {
 		setAlignment(Pos.CENTER);
 		mv.setFitHeight(500);
 		mv.setFitWidth(800);
+		VBox.setMargin(mv, new Insets(0,8,0,8));
 		this.getChildren().add(mv);
 	}
 
