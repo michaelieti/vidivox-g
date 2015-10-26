@@ -93,8 +93,6 @@ public class Mp3Tab extends BindableTab {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-					//TODO: Michael add your shit here
 					try{
 						BackgroundTask queue;
 						queue = new BackgroundTask();
@@ -144,9 +142,6 @@ public class Mp3Tab extends BindableTab {
 					} catch (Exception e){
 						e.printStackTrace();
 					}
-					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-					
-					//MediaConverter.mergeVideoAndAudio(video, s, prog);
 				}
 			}
 
