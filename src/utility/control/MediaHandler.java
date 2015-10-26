@@ -27,7 +27,7 @@ public class MediaHandler extends Application {
 	private DoubleProperty progress;
 	private MediaFile mediaFile;
 	private FFMPEG cmd;
-	private BackgroundTask queueTasks = new BackgroundTask();
+	private BackgroundTask queueTasks;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -60,8 +60,9 @@ public class MediaHandler extends Application {
 	}
 
 	
-	public MediaHandler(MediaFile destination) throws Exception {
-		this(new SimpleDoubleProperty(0), destination);
+	public MediaHandler(BackgroundTask queue ,MediaFile destination) throws Exception {
+		this(queue, new SimpleDoubleProperty(0), destination);
+
 	}
 	
 	public void setBackgroundTask(BackgroundTask queue) {
@@ -80,7 +81,7 @@ public class MediaHandler extends Application {
 	 *             An exception is thrown if an invalid MediaFile is passed to
 	 *             the constructor.
 	 */
-	public MediaHandler(DoubleProperty progress, MediaFile destination)
+	public MediaHandler(BackgroundTask queue ,DoubleProperty progress, MediaFile destination)
 			throws Exception {
 		if (!destination.isValid()) {
 			throw new Exception(
@@ -88,6 +89,7 @@ public class MediaHandler extends Application {
 		}
 		this.progress = progress;
 		this.mediaFile = destination;
+		this.queueTasks = queue;
 	}
 
 	/**
@@ -111,10 +113,6 @@ public class MediaHandler extends Application {
 		return cmd;
 	}
 	
-	public void setNameOfProcess(String name) {
-		cmd.setName(name);
-	}
-
 	public void printToConsole(boolean print) {
 		cmd.printOutput(print);
 	}
@@ -137,6 +135,7 @@ public class MediaHandler extends Application {
 				+ " " + mediaFile.getQuoteOfAbsolutePath();
 		cmd = new FFMPEG(progress, expansion, source.getDuration());
 		cmd.queueTo(queueTasks);
+		cmd.setName("Convert");
 		return queueTasks;
 	}
 	
@@ -172,7 +171,7 @@ public class MediaHandler extends Application {
 				+ mediaFile.getQuoteOfAbsolutePath());
 		cmd = new FFMPEG(progress, ffmpegCommand, longestDuration);
 		cmd.queueTo(queueTasks);
-		
+		cmd.setName("Merge Audio");
 		return queueTasks;
 	}
 
@@ -195,6 +194,7 @@ public class MediaHandler extends Application {
 				+ mediaFile.getQuoteOfAbsolutePath();
 		cmd = new FFMPEG(progress, ffmpegCommand, source.getDuration());
 		cmd.queueTo(queueTasks);
+		cmd.setName("Strip Audio");
 		return queueTasks;
 
 	}
@@ -229,10 +229,11 @@ public class MediaHandler extends Application {
 		String ffmpegCommand = "ffmpeg -y -i "
 				+ video.getQuoteOfAbsolutePath() + " -i "
 				+ audio.getQuoteOfAbsolutePath()
-				+ " -filter_complex amix=inputs=2 -shortest -ac 2 "
+				+ " -filter_complex \"amix=inputs=2\" -shortest -ac 2 "
 				+ mediaFile.getQuoteOfAbsolutePath();
 		cmd = new FFMPEG(progress, ffmpegCommand, video.getDuration());
 		cmd.queueTo(queueTasks);
+		cmd.setName("Merge A/V");
 		return queueTasks;
 	}
 	
@@ -253,6 +254,7 @@ public class MediaHandler extends Application {
 		
 		cmd = new FFMPEG(progress, sb.toString(), duration.toSeconds());
 		cmd.queueTo(queueTasks);
+		cmd.setName("Blank Audio");
 		return queueTasks;
 	}
 	
@@ -272,12 +274,13 @@ public class MediaHandler extends Application {
 		StringBuilder sb = new StringBuilder("ffmpeg -y -i ");
 		sb.append(audio1.getQuoteOfAbsolutePath())
 		.append(" -i " + audio2.getQuoteOfAbsolutePath())
-		.append(" -filter_complex '[0:0] [1:0] concat =n=2:v=0:a=1' ")
+		.append(" -filter_complex '[0:0] [1:0] concat =n=2:v=0:a=1' -ac 2 ")
 		.append(mediaFile.getQuoteOfAbsolutePath());
 		
 		Double totalDuration = audio1.getDuration() + audio2.getDuration();
 		cmd = new FFMPEG(progress, sb.toString(), totalDuration);
 		cmd.queueTo(queueTasks);
+		cmd.setName("Concat Audio");
 		return queueTasks;
 	
 	}
@@ -287,6 +290,7 @@ public class MediaHandler extends Application {
 				+ mediaFile.getQuoteOfAbsolutePath() + " -eval " + festival.getAbsolutePath() + "`";
 		cmd = new FFMPEG(progress, ffmpegCommand, 1.0);
 		cmd.queueTo(queueTasks);
+		cmd.setName("Text to Speech");
 		return queueTasks;
 	}
 	

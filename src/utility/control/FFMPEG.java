@@ -36,6 +36,7 @@ public class FFMPEG {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public void printOutput(boolean print) {
 		ffmpegProcess.setPrint(print);
 	}
@@ -43,6 +44,7 @@ public class FFMPEG {
 	 * Called to start the FFMPEG command.
 	 */
 	public void queueTo(BackgroundTask queue) {
+		System.out.println("Called");
 		queue.addTask(this);
 	}
 	
@@ -68,13 +70,10 @@ public class FFMPEG {
 		return progress;
 	}
 	
+	@Override
 	public String toString() {
 		if (name.equals("")) {
-			if (input.length() > 10) {
-				return input.substring(0, 6) + " ... " + input.substring(input.length() - 7, input.length() - 1);
-			} else {
-				return super.toString();
-			}
+			return super.toString();
 		} else {
 			return name;
 		}
