@@ -114,6 +114,7 @@ public class MediaHandler extends Application {
 		cmd = new FFMPEG(progress, expansion, source.getDuration());
 		cmd.start();
 	}
+	
 
 	/**
 	 * Merges a list of MediaFiles and stores the result in the destination
