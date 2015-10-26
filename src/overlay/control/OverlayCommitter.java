@@ -134,9 +134,19 @@ public class OverlayCommitter extends Application {
 			//the MediaFile object 'allComments' now holds the audio for all comments spaced out
 			// by appropriately lengthed intervals.
 			
-			mergedVideo = new MediaFile(originalVideo);
 					// 5 - merge video (from originalVideo, a Media object)
 					// and audio (from all 
+			
+			// create new media container (video)
+			MediaFile mergedVideoContainer = MediaFile.createMediaContainer(MediaFormat.MP4);
+			//  pass into new handler (with property)
+			MediaHandler mergedVideoHandler = new MediaHandler(progressProperty, mergedVideoContainer);
+			// mergeVideoAndAudio(video, audio)
+			MediaFile originalMediaFile = new MediaFile(originalVideo);
+			mergedVideoHandler.mergeAudioAndVideo(originalMediaFile, allComments);
+			
+			mergedVideo = mergedVideoHandler.getMediaFile();
+			
 			//get allComments MediaFile
 			//get the media file from originalVideo
 				//turn that into a MediaFile object
