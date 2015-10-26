@@ -52,6 +52,8 @@ public class SpeechTab extends BindableTab {
 
 	final private static int btnSpacing = 20;
 
+	final private boolean debug = true;
+	
 	/* GUI elements */
 	private Text msg;
 	private TextArea userField;
@@ -459,6 +461,13 @@ public class SpeechTab extends BindableTab {
 				Duration time = VidivoxPlayer.getVPlayer().getMediaPlayer().getCurrentTime();
 				Commentary comment = new Commentary(time, text, OverlayType.TTS);
 				comment.setScheme(scmFile);
+				
+				if (debug){
+					System.out.println("Properties of saved scm file");
+					//TODO: problems happen between saving and getting the scheme file again for editing
+				}
+				
+				
 				OverlayController.getController().addCommentary(comment);
 				scmFile = new SchemeFile();
 				bindAdvancedOptions();
