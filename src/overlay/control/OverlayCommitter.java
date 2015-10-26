@@ -66,6 +66,7 @@ public class OverlayCommitter extends Application {
 	
 	public OverlayCommitter addProgressProperty(DoubleProperty doubleprop){
 		this.progressProperty = doubleprop;
+		System.out.println("Progress property added!");
 		return this;
 	}
 	
