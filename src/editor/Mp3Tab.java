@@ -118,11 +118,28 @@ public class Mp3Tab extends BindableTab {
 						MediaHandler mergedHandler = new MediaHandler(queue, mergedFile);
 						mergedHandler.mergeAudioAndVideo(new MediaFile(video), concatHandler.getMediaFile());
 						
+						
 						Thread th = new Thread(queue);
 						th.setDaemon(true);
 						th.start();
 						
-						VidivoxPlayer.getVPlayer().setMedia(mergedHandler.getMediaFile().getMedia());
+						Thread th2 = new Thread(new Runnable() {
+							@Override
+							public void run() {
+								try {
+									th.join();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+									System.out.println("Your join failed!");
+								}
+								VidivoxPlayer.getVPlayer().setMedia(mergedHandler.getMediaFile().getMedia());
+							}
+						});
+						th2.setDaemon(true);
+						th2.start();
+						
+						
+						
 					
 					} catch (Exception e){
 						e.printStackTrace();
