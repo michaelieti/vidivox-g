@@ -28,6 +28,16 @@ public class MediaFile {
 	private MediaFormat format = MediaFormat.Unknown;
 	private Double duration = 0.0;
 
+	/**
+	 * This constructor should be called if you want to create a Media File from
+	 * a file that is already on disk.
+	 * <P>
+	 * If you wish to initialize an empty MediaFile use
+	 * {@link #createMediaContainer()}.
+	 * 
+	 * @param location
+	 *            Locaiton of a pre-existing media file.
+	 */
 	public MediaFile(File location) {
 		path = location;
 		if (!location.exists() || !location.isFile()) {
@@ -38,6 +48,16 @@ public class MediaFile {
 		}
 	}
 
+	/**
+	 * This constructor should be called if you want to create a Media File from
+	 * a {@link javafx.scene.media.Media} object.
+	 * <P>
+	 * If you wish to initialize an empty MediaFile use
+	 * {@link #createMediaContainer()}.
+	 * 
+	 * @param location
+	 *            Location of a pre-existing media file.
+	 */
 	public MediaFile(Media media) throws URISyntaxException {
 		this(Paths.get(new URI(media.getSource())).toFile());
 	}
@@ -88,6 +108,12 @@ public class MediaFile {
 		return path;
 	}
 
+	/**
+	 * This method is to handle the cases where an Absolute Path may contain
+	 * spaces. This is problematic for bash programs.
+	 * 
+	 * @return The absolute path of this MediaFile surrounded by quotations.
+	 */
 	public String getQuoteOfAbsolutePath() {
 		return "\"" + path.getAbsolutePath() + "\"";
 	}
@@ -196,20 +222,17 @@ public class MediaFile {
 	 */
 	public static MediaFile createMediaContainer(MediaFormat desiredFormat,
 			File desiredLocation) {
-		File correctLocation = addExtension(desiredLocation, desiredFormat);
-		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" \""
-				+ correctLocation.getAbsolutePath() + "\"";
-		String[] cmd = { "bash", "-c", expansion };
-		ProcessBuilder build = new ProcessBuilder(cmd);
-		Process p;
-		try {
-			p = build.start();
-			p.waitFor();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
+		// Not sure if this is needed. If the user specifies a location would
+		// they want the location to be changed to accommodate for extension?
+		//
+		// File desiredLocation = addExtension(desiredLocation, desiredFormat);
 
-		return new MediaFile(correctLocation);
+		String ffmpegCommand = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" \""
+				+ desiredLocation.getAbsolutePath() + "\"";
+		FFMPEG cmd = new FFMPEG(new SimpleDoubleProperty(0), ffmpegCommand, 0.0);
+		cmd.start();
+		cmd.waitFor();
+		return new MediaFile(desiredLocation);
 	}
 
 	/**
@@ -222,22 +245,22 @@ public class MediaFile {
 	 *         created).
 	 */
 	public static MediaFile createMediaContainer(MediaFormat desiredFormat) {
+		/* Initializing Media Container */
 		MediaFile output = new MediaFile(desiredFormat);
-		
-		if (desiredFormat.getType().equals(MediaType.Video)) {
-			String expression = "ffmpeg -y -f lavfi -i nullsrc -frames:v 1 " + output.getQuoteOfAbsolutePath();
-			FFMPEG cmd = new FFMPEG(new SimpleDoubleProperty(0), expression, 0.0);
-			cmd.start();
-			cmd.waitFor();
-			output.format = desiredFormat;
-			output.duration = 0.0;
-			return output;
-		}
-		
 		output.path = addExtension(output.path, desiredFormat);
-		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" \""
-				+ output.path.getAbsolutePath() + "\"";
-		FFMPEG cmd = new FFMPEG(new SimpleDoubleProperty(0), expansion, 0.0);
+
+		/* Determining type of container to make */
+		String ffmpegCommand;
+		if (desiredFormat.getType().equals(MediaType.Video)) {
+			ffmpegCommand = "ffmpeg -y -f lavfi -i nullsrc -frames:v 1 "
+					+ output.getQuoteOfAbsolutePath();
+		} else {
+			ffmpegCommand = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" \""
+					+ output.path.getAbsolutePath() + "\"";
+		}
+
+		/* Constructing Container */
+		FFMPEG cmd = new FFMPEG(new SimpleDoubleProperty(0), ffmpegCommand, 0.0);
 		cmd.start();
 		cmd.waitFor();
 		output.format = desiredFormat;
