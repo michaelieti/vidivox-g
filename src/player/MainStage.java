@@ -31,39 +31,39 @@ public class MainStage extends Stage {
 	}
 
 	private SkinColor currentSkinColor = SkinColor.BLUE;
-	private MediaPanel vidiMedia;
-	private VidivoxVideoControls vidiVidCtrl;
-	private VidivoxFileControls vidiFileCtrl;
+	private MediaPanel mediaPanel;
+	private VidivoxVideoControls controlPanel;
+	private VidivoxFileControls filePanel;
 	private Main main;
-	final private MainStage mainstage;
+	final private MainStage mainStage;
 
 	public MainStage(Main appLauncher) {
 		super();
 		this.setTitle(Main.DEFAULT_TITLE);
 		main = appLauncher;
-		mainstage = this;
+		mainStage = this;
 		BorderPane borderPane = new BorderPane();
 		borderPane.setPadding(new Insets(0, 0, 15, 0));
 
-		vidiMedia = new MediaPanel();
+		mediaPanel = new MediaPanel();
 		
 
 		// FILE CONTROL BAR: ADDED TO TOP
-		vidiFileCtrl = new VidivoxFileControls(this, vidiMedia);
-		borderPane.setTop(vidiFileCtrl);
+		filePanel = new VidivoxFileControls(this, mediaPanel);
+		borderPane.setTop(filePanel);
 
 		// MEDIA VIEW NODE ADDED: CENTER
-		borderPane.setCenter(vidiMedia);
+		borderPane.setCenter(mediaPanel);
 
 		// CONTROL PANEL ADDED: BOTTOM
-		vidiVidCtrl = new VidivoxVideoControls(vidiMedia.getMediaView());
-		borderPane.setBottom(vidiVidCtrl);
+		controlPanel = new VidivoxVideoControls(mediaPanel.getMediaView());
+		borderPane.setBottom(controlPanel);
 
 		//sets up the VidivoxPlayer class to start taking inputs
 		VidivoxPlayer.getVPlayer().
-			setControlPanel(vidiVidCtrl).
-			setFilePanel(vidiFileCtrl).
-			setMediaPanel(vidiMedia);
+			setControlPanel(controlPanel).
+			setFilePanel(filePanel).
+			setMediaPanel(mediaPanel);
 		
 		heightProperty().addListener(new ChangeListener<Number>(){
 			@Override
@@ -96,23 +96,15 @@ public class MainStage extends Stage {
 
 		this.iconifiedProperty().addListener(new IconificationListener());
 		setCurrentSkinColor(SkinColor.BLUE);
-		/*
-		StringBinding currentMedia = new When(vidiMedia.getMediaView()
-				.mediaPlayerProperty().isNull()).then(Main.DEFAULT_TITLE)
-				.otherwise(
-						Main.DEFAULT_TITLE
-								+ " - "
-								+ vidiMedia.getMediaView().getMediaPlayer()
-										.getMedia().getSource());
-		this.titleProperty().bind(currentMedia); */
+
 	}
 
 	public MediaPanel getMediaPane() {
-		return vidiMedia;
+		return mediaPanel;
 	}
 
 	public VidivoxVideoControls getVideoControls() {
-		return vidiVidCtrl;
+		return controlPanel;
 	}
 
 	public Main getLauncher() {
@@ -149,7 +141,7 @@ public class MainStage extends Stage {
 				main.getEditor().setIconified(false);
 
 				main.getOverlay().setIconified(false);
-				mainstage.setIconified(false);
+				mainStage.setIconified(false);
 			} else {
 				main.getEditor().setIconified(true);
 				main.getOverlay().setIconified(true);

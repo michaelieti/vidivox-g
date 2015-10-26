@@ -33,7 +33,6 @@ public class SliderVX extends Slider {
 				new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent event) {
-						/* mouseEventTime = System.currentTimeMillis(); */
 						sliderFlag = true;
 					}
 				});
