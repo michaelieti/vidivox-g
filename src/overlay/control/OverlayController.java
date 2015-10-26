@@ -108,7 +108,7 @@ public class OverlayController {
 	
 	public void commitOverlay() {
 		OverlayCommitter committer = new OverlayCommitter();
-		committer.addVideo(VidivoxPlayer.getVPlayer().getMedia());
+		committer.addVideo(VidivoxPlayer.getVPlayer().getOriginalMedia());
 		committer.addCommentaryList(model.getOverlayList());
 		
 //		System.out.println("committing overlay");

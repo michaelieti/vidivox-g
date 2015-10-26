@@ -248,6 +248,8 @@ public class VidivoxFileControls extends MenuBar {
 				// get the wrapper class, set the media
 				VidivoxPlayer vp = VidivoxPlayer.getVPlayer();
 				vp.setMedia(media);
+				vp.setOriginalMedia(media);
+				//sets the original media for later use in overlay
 
 				vp.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);
 			}

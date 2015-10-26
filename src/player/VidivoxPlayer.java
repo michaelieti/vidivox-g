@@ -31,6 +31,8 @@ public class VidivoxPlayer {
 
 	private MediaView mv;
 	
+	private Media originalMedia;
+	
 	private MediaPanel mediaPanel;
 	private VidivoxVideoControls controlPanel;
 	private VidivoxFileControls filePanel;
@@ -82,6 +84,14 @@ public class VidivoxPlayer {
 		return mv.getMediaPlayer().getMedia();
 	}
 
+	public void setOriginalMedia(Media media){
+		originalMedia = media;
+	}
+	
+	public Media getOriginalMedia(){
+		return originalMedia;
+	}
+	
 	public void setMediaPlayer(MediaPlayer mp) {
 		if (getMediaPlayer() != null){
 			predisposal();
