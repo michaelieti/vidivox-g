@@ -1,9 +1,16 @@
 package editor;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
+import utility.control.BackgroundTask;
+import utility.control.FFMPEG;
+import utility.control.MediaHandler;
 import utility.media.MediaFile;
-
+import utility.media.MediaFormat;
+import utility.media.MediaType;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.When;
 import javafx.beans.property.SimpleStringProperty;
@@ -24,6 +31,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import player.VidivoxPlayer;
 
 public class Mp3Tab extends BindableTab {
 
@@ -56,7 +65,7 @@ public class Mp3Tab extends BindableTab {
 		// Initializing Button Event handlers
 		browseBtn = new Button("Browse");
 		browseBtn.disableProperty().bind(mv.mediaPlayerProperty().isNull());
-		browseBtn.setTooltip(new Tooltip("Select an mp3 file"));
+		browseBtn.setTooltip(new Tooltip("Select an mp3 file. This i"));
 		browseBtn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				// open up file chooser & get user selection as File object
@@ -77,17 +86,47 @@ public class Mp3Tab extends BindableTab {
 			public void handle(ActionEvent arg0) {
 				if (userFile != null) {
 					Media audio = new Media(userFile.toURI().toString());
-					MediaFile audioContainer = new MediaFile(audio);
+					MediaFile audioContainer = null;
+					try {
+						audioContainer = new MediaFile(audio);
+					} catch (URISyntaxException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-					
-					
 					//TODO: Michael add your shit here
+					try{
+						BackgroundTask queue;
+						queue = new BackgroundTask();
+						//get current duration
+						Duration currentDuration = VidivoxPlayer.getVPlayer().getMediaPlayer().getCurrentTime();
+						//make blank = duration
+						MediaFile blankFile = MediaFile.createMediaContainer(queue, MediaFormat.MP3);
+						MediaHandler blankHandler = new MediaHandler(queue, blankFile);
+						blankHandler.makeBlankAudio(currentDuration);
+						//concat blank + mp3
+						MediaFile concatFile = MediaFile.createMediaContainer(queue, MediaFormat.MP3);
+						MediaHandler concatHandler = new MediaHandler(queue, concatFile);
+						concatHandler.concatAudio(blankHandler.getMediaFile(), audioContainer);	//concats blank and mp3
+						
+						Media video = mv.getMediaPlayer().getMedia();
+						
+						//merge both video and mp3
+						
+						
+						MediaFile mergedFile = MediaFile.createMediaContainer(queue, MediaFormat.MP4);
+						MediaHandler mergedHandler = new MediaHandler(queue, mergedFile);
+						mergedHandler.mergeAudioAndVideo(new MediaFile(video), concatHandler.getMediaFile());
+						
+						Thread th = new Thread(queue);
+						th.setDaemon(true);
+						th.start();
 					
-					
-					
-					
+					} catch (Exception e){
+						e.printStackTrace();
+					}
 					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-					Media video = mv.getMediaPlayer().getMedia();
+					
 					//MediaConverter.mergeVideoAndAudio(video, s, prog);
 				}
 			}
@@ -127,4 +166,5 @@ public class Mp3Tab extends BindableTab {
 	public File getFile() {
 		return userFile;
 	}
+	
 }
