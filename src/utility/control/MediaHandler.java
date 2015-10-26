@@ -27,19 +27,20 @@ public class MediaHandler extends Application {
 	private DoubleProperty progress;
 	private MediaFile mediaFile;
 	private FFMPEG cmd;
+	private BackgroundTask queueTasks = new BackgroundTask();
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
 		System.out.println("Making media files");
-		
-		MediaFile out1 = MediaFile.createMediaContainer(MediaFormat.AVI, new File(System.getProperty("user.home") + "/tempvids/"), "out1.avi");
+		/*
+		MediaFile out1 = MediaFile.createMediaContainer(MediaFormat.MP4, new File(System.getProperty("user.home") + "/tempvids/"), "out1.avi");
 		MediaFile out2 = MediaFile.createMediaContainer(MediaFormat.MP4, new File(System.getProperty("user.home") + "/tempvids/"),"out2.mp4");
 		MediaFile out3 = MediaFile.createMediaContainer(MediaFormat.MP3, new File(System.getProperty("user.home") + "/tempvids/"),"out2.mp3");
 		
 		System.out.println("Made media files");
 		System.out.println("out1 made in " + out1.getQuoteOfAbsolutePath());
-		/*
+		
 		MediaFile out1 = new MediaFile(new File(System.getProperty("user.home")
 				+ "/SoftEng206/ffmpeg/out1.mp3"));
 		MediaFile out2 = new MediaFile(new File(System.getProperty("user.home")
@@ -58,8 +59,13 @@ public class MediaHandler extends Application {
 		super();
 	}
 
+	
 	public MediaHandler(MediaFile destination) throws Exception {
 		this(new SimpleDoubleProperty(0), destination);
+	}
+	
+	public void setBackgroundTask(BackgroundTask queue) {
+		queueTasks = queue;
 	}
 
 	/**
@@ -104,7 +110,14 @@ public class MediaHandler extends Application {
 	public FFMPEG getProcess() {
 		return cmd;
 	}
+	
+	public void setNameOfProcess(String name) {
+		cmd.setName(name);
+	}
 
+	public void printToConsole(boolean print) {
+		cmd.printOutput(print);
+	}
 	public void waitFor() {
 		cmd.waitFor();
 	}
@@ -118,12 +131,13 @@ public class MediaHandler extends Application {
 	 * 
 	 * @param source
 	 */
-	public void convert(MediaFile source) {
+	public BackgroundTask convert(MediaFile source) {
 
 		String expansion = "ffmpeg -y -i " + source.getQuoteOfAbsolutePath()
 				+ " " + mediaFile.getQuoteOfAbsolutePath();
 		cmd = new FFMPEG(progress, expansion, source.getDuration());
-		cmd.start();
+		cmd.queueTo(queueTasks);
+		return queueTasks;
 	}
 	
 
@@ -136,7 +150,7 @@ public class MediaHandler extends Application {
 	 * @throws Exception
 	 *             If the destination container is not of type Audio.
 	 */
-	public void mergeAudio(MediaFile... files) throws Exception {
+	public BackgroundTask mergeAudio(MediaFile... files) throws Exception {
 		Double longestDuration = 0.0;
 		if (!mediaFile.getType().equals(MediaType.Audio)) {
 			throw new Exception("destination format '"
@@ -156,9 +170,10 @@ public class MediaHandler extends Application {
 		ffmpegCommand = ffmpegCommand.concat("-filter_complex \"amix=inputs="
 				+ files.length + "\" -ac 2 "
 				+ mediaFile.getQuoteOfAbsolutePath());
-		System.out.println(">> " + ffmpegCommand);
 		cmd = new FFMPEG(progress, ffmpegCommand, longestDuration);
-		cmd.start();
+		cmd.queueTo(queueTasks);
+		
+		return queueTasks;
 	}
 
 	/**
@@ -166,9 +181,10 @@ public class MediaHandler extends Application {
 	 * in the destination MediaFile.
 	 * 
 	 * @param source
+	 * @return 
 	 * @throws Exception
 	 */
-	public void stripAudio(MediaFile source) throws Exception {
+	public BackgroundTask stripAudio(MediaFile source) throws Exception {
 		if (!mediaFile.getType().equals(MediaType.Video)) {
 			throw new Exception("destination format '"
 					+ mediaFile.getFormat().toString()
@@ -178,7 +194,8 @@ public class MediaHandler extends Application {
 				+ source.getQuoteOfAbsolutePath() + " -an "
 				+ mediaFile.getQuoteOfAbsolutePath();
 		cmd = new FFMPEG(progress, ffmpegCommand, source.getDuration());
-		cmd.start();
+		cmd.queueTo(queueTasks);
+		return queueTasks;
 
 	}
 
@@ -189,11 +206,12 @@ public class MediaHandler extends Application {
 	 *            A valid video source.
 	 * @param audio
 	 *            A valid audio source.
+	 * @return 
 	 * @throws Exception
 	 *             An Exception is thrown if any of the input Media containers
 	 *             are of unexpected format.
 	 */
-	public void mergeAudioAndVideo(MediaFile video, MediaFile audio)
+	public BackgroundTask mergeAudioAndVideo(MediaFile video, MediaFile audio)
 			throws Exception {
 		if (!mediaFile.getType().equals(MediaType.Video)) {
 			throw new Exception("destination format '"
@@ -211,13 +229,11 @@ public class MediaHandler extends Application {
 		String ffmpegCommand = "ffmpeg -y -i "
 				+ video.getQuoteOfAbsolutePath() + " -i "
 				+ audio.getQuoteOfAbsolutePath()
-				+ " -filter_complex amix=inputs=2 -shortest "
+				+ " -filter_complex amix=inputs=2 -shortest -ac 2 "
 				+ mediaFile.getQuoteOfAbsolutePath();
-		System.out.println(">> " + ffmpegCommand);
-		Thread.sleep(1000);
 		cmd = new FFMPEG(progress, ffmpegCommand, video.getDuration());
-		cmd.start();
-		cmd.waitFor();
+		cmd.queueTo(queueTasks);
+		return queueTasks;
 	}
 	
 	/**
@@ -225,9 +241,10 @@ public class MediaHandler extends Application {
 	 *  which will be located at the destination stored in this object.
 	 * @param audio
 	 * @param duration
+	 * @return 
 	 * @throws Exception
 	 */
-	public void makeBlankAudio(Duration duration) throws Exception{
+	public BackgroundTask makeBlankAudio(Duration duration) throws Exception{
 		
 		StringBuilder sb = new StringBuilder("ffmpeg -y -f lavfi -i aevalsrc=0:0:0:0:0:0::duration=");
 		sb.append(duration.toSeconds());
@@ -235,16 +252,18 @@ public class MediaHandler extends Application {
 		sb.append(mediaFile.getQuoteOfAbsolutePath());
 		
 		cmd = new FFMPEG(progress, sb.toString(), duration.toSeconds());
-		cmd.start();
+		cmd.queueTo(queueTasks);
+		return queueTasks;
 	}
 	
 	/**
 	 * Concatenates two audio files, audio 1 comes before audio 2.
 	 * @param audio1
 	 * @param audio2
+	 * @return 
 	 * @throws Exception
 	 */
-	public void concatAudio(MediaFile audio1, MediaFile audio2) throws Exception{
+	public BackgroundTask concatAudio(MediaFile audio1, MediaFile audio2) throws Exception{
 		if (!audio1.getType().equals(MediaType.Audio) || 
 				!audio2.getType().equals(MediaType.Audio)) {
 			throw new Exception("input audio format");
@@ -257,32 +276,18 @@ public class MediaHandler extends Application {
 		.append(mediaFile.getQuoteOfAbsolutePath());
 		
 		Double totalDuration = audio1.getDuration() + audio2.getDuration();
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" + sb.toString() + "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 		cmd = new FFMPEG(progress, sb.toString(), totalDuration);
-		cmd.start();
-		cmd.waitFor();
-	}
+		cmd.queueTo(queueTasks);
+		return queueTasks;
 	
-	public void addAudioToEnd(MediaFile audio) throws Exception {
-		if (!audio.getType().equals(MediaType.Audio)) {
-			throw new Exception("input audio format '"
-					+ audio.getFormat().toString()
-					+ "' is not a valid Audio source");
-		}
-		
-		this.concatAudio(this.getMediaFile(), audio);
 	}
 
-	public void textToSpeech(String text, SchemeFile festival) {
+	public BackgroundTask textToSpeech(String text, SchemeFile festival) {
 		String ffmpegCommand = "`echo \"" + text + "\" | text2wave -o "
 				+ mediaFile.getQuoteOfAbsolutePath() + " -eval " + festival.getAbsolutePath() + "`";
 		cmd = new FFMPEG(progress, ffmpegCommand, 1.0);
-		cmd.start();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		cmd.queueTo(queueTasks);
+		return queueTasks;
 	}
 	
 

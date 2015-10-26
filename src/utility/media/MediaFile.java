@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.media.Media;
 import java.nio.file.Path;
 
+import utility.control.BackgroundTask;
 import utility.control.FFMPEG;
 
 import editor.MediaConverter;
@@ -221,36 +222,16 @@ public class MediaFile {
 	 * @return An UnknownMedia object with attached container (if successfully
 	 *         created).
 	 */
-	
-	
 
-	
-	public static MediaFile createMediaContainer(MediaFormat desiredFormat,
+	public static MediaFile createMediaContainer(BackgroundTask queue, MediaFormat desiredFormat,
 			File desiredLocation, String fileName) {
 		fileName = addExtension(fileName, desiredFormat);
-		System.out.println(fileName.toString());
-		
-		//builds the path
-		if (! desiredLocation.exists()){
-			System.out.println("Building path");
-			desiredLocation.mkdirs();
+
+		if (desiredLocation.exists()) {
+			System.out.println("A file/directory by the name at '" + desiredFormat + "' already exists");
+			return new MediaFile(desiredLocation);
 		}
-		
-		//creates the file
-		String expansion = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" \""
-				+ desiredLocation.getAbsolutePath() + "/" + fileName + "\"";
-		System.out.println("Executing " + expansion);
-		String[] cmd = { "bash", "-c", expansion };
-		ProcessBuilder build = new ProcessBuilder(cmd);
-		Process p;
-		try {
-			p = build.start();
-			p.waitFor();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		File correctLocation = new File(desiredLocation.getAbsolutePath() + fileName);
+		desiredLocation = new File(desiredLocation.getAbsolutePath() + fileName);
 
 		// Not sure if this is needed. If the user specifies a location would
 		// they want the location to be changed to accommodate for extension?
@@ -259,9 +240,8 @@ public class MediaFile {
 
 		String ffmpegCommand = "ffmpeg -y -filter_complex \"aevalsrc=0::duration=0.1\" \""
 				+ desiredLocation.getAbsolutePath() + "\"";
-		FFMPEG cmdx = new FFMPEG(new SimpleDoubleProperty(0), ffmpegCommand, 0.0);
-		cmdx.start();
-		cmdx.waitFor();
+		FFMPEG cmd = new FFMPEG(new SimpleDoubleProperty(0), ffmpegCommand, 0.0);
+		cmd.queueTo(queue);
 		return new MediaFile(desiredLocation);
 	}
 
@@ -274,7 +254,8 @@ public class MediaFile {
 	 * @return An UnknownMedia object with attached container (if successfully
 	 *         created).
 	 */
-	public static MediaFile createMediaContainer(MediaFormat desiredFormat) {
+	public static MediaFile createMediaContainer(BackgroundTask queue,
+			MediaFormat desiredFormat) {
 		/* Initializing Media Container */
 		MediaFile output = new MediaFile(desiredFormat);
 		output.path = addExtension(output.path, desiredFormat);
@@ -291,23 +272,21 @@ public class MediaFile {
 
 		/* Constructing Container */
 		FFMPEG cmd = new FFMPEG(new SimpleDoubleProperty(0), ffmpegCommand, 0.0);
-		cmd.start();
-		cmd.waitFor();
+		queue.addTask(cmd);
 		output.format = desiredFormat;
 		output.duration = 0.0;
 		return output;
 	}
 
-	private static String addExtension(String name, MediaFormat formatNeeded){
-		if (! name.endsWith(formatNeeded.getExtension())){
+	private static String addExtension(String name, MediaFormat formatNeeded) {
+		if (!name.endsWith(formatNeeded.getExtension())) {
 			name = name + formatNeeded.getExtension();
 			return name;
-		}
-		else{
+		} else {
 			return name;
 		}
 	}
-	
+
 	/*
 	 * A helper function which takes a file path and a media format, and
 	 * attempts to apply the correct extension syntax.

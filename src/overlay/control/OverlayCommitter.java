@@ -8,11 +8,14 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import overlay.Commentary;
 import player.Main;
+import utility.control.BackgroundTask;
 import utility.control.MediaHandler;
 import utility.control.SchemeFile;
 import utility.media.MediaFile;
@@ -23,6 +26,7 @@ public class OverlayCommitter extends Application {
 	Media originalVideo;
 	List<Commentary> commentaryList;
 	DoubleProperty progressProperty = new SimpleDoubleProperty(0);
+	private BackgroundTask queue = new BackgroundTask();
 
 	/* for testing purposes! */
 	@Override
@@ -75,6 +79,17 @@ public class OverlayCommitter extends Application {
 		return this;
 	}
 
+	public void call() {
+		Thread th = new Thread(queue);
+		th.setDaemon(true);
+		th.start();
+	}
+	
+	public void setOnFinished(EventHandler<WorkerStateEvent> event) {
+		queue.setOnSucceeded(event);
+		
+	}
+
 	public MediaFile beginCommit() {
 		if (originalVideo == null) {
 			System.out.println("Media supplied was null!");
@@ -86,20 +101,25 @@ public class OverlayCommitter extends Application {
 				return null;
 			}
 		}
-
+		queue = new BackgroundTask();
 		List<MediaFile> toBeMerged = new ArrayList<MediaFile>();
-		boolean debug = false;
+		boolean debug = true;
 		try {
 			MediaFile finalOutput = MediaFile
-					.createMediaContainer(MediaFormat.WAV);
+					.createMediaContainer(queue,MediaFormat.WAV);
+			MediaFile finalVideo = MediaFile
+					.createMediaContainer(queue,MediaFormat.MP4);
+			if (debug)
+				System.out.println("\nFile Info: FinalVideo\n\tLocation: "
+						+ finalVideo.getQuoteOfAbsolutePath());
 			MediaHandler finalHandler = new MediaHandler(finalOutput);
 			for (Commentary c : commentaryList) {
-				MediaFile blankFile = makeBlank(c.getTime());
-				MediaFile speechFile = simpleMakeSpeech(c.getText());
+				MediaFile blankFile = makeBlank(queue, c.getTime());
+				MediaFile speechFile = simpleMakeSpeech(queue, c.getText());
 
-				MediaFile commentFile = concat(blankFile, speechFile);
+				MediaFile commentFile = concat(queue, blankFile, speechFile);
 				if (debug)
-					System.out.println("File Info:\n\tLocation: "
+					System.out.println("\nFile Info:\n\tIndex: " + commentaryList.indexOf(c) +"\n\tLocation: "
 							+ commentFile.getQuoteOfAbsolutePath()
 							+ "\n\tBlank: "
 							+ blankFile.getQuoteOfAbsolutePath()
@@ -109,23 +129,20 @@ public class OverlayCommitter extends Application {
 			}
 			MediaFile[] array = new MediaFile[toBeMerged.size()];
 			array = (MediaFile[]) toBeMerged.toArray(array);
-			Thread.sleep(1000);
 			finalHandler.mergeAudio(array);
+			finalHandler.printToConsole(true);
 			MediaFile audio = finalHandler.getMediaFile();
 			if (debug)
-				System.out.println("File Info:\n\tLocation: "
+				System.out.println("\nFile Info:\n\tLocation: "
 						+ finalHandler.getMediaFile().getQuoteOfAbsolutePath());
 			MediaFile orginal = new MediaFile(originalVideo);
 
-			MediaFile finalVideo = MediaFile
-					.createMediaContainer(MediaFormat.MP4);
-			if (debug)
-				System.out.println("File Info:\n\tLocation: "
-						+ finalVideo.getQuoteOfAbsolutePath());
+			
+		
 			MediaHandler videoHandler = new MediaHandler(finalVideo);
 			videoHandler.mergeAudioAndVideo(orginal, audio);
 			if (debug)
-				System.out.println("File Info:\n\tLocation: "
+				System.out.println("\nFile Info:\n\tLocation: "
 						+ videoHandler.getMediaFile().getQuoteOfAbsolutePath());
 			return videoHandler.getMediaFile();
 
@@ -137,26 +154,27 @@ public class OverlayCommitter extends Application {
 
 	}
 
-	private MediaFile concat(MediaFile first, MediaFile second)
-			throws Exception {
+	private MediaFile concat(BackgroundTask queue, MediaFile first,
+			MediaFile second) throws Exception {
 		MediaFile concatenatedFile = MediaFile
-				.createMediaContainer(MediaFormat.WAV);
+				.createMediaContainer(queue,MediaFormat.WAV);
 		MediaHandler concatenatedHandler = new MediaHandler(progressProperty,
 				concatenatedFile);
+		concatenatedHandler.setBackgroundTask(queue);
+		concatenatedHandler.setNameOfProcess("Concat");
 		concatenatedHandler.concatAudio(first, second);
-		concatenatedHandler.waitFor();
-		// do we need to wait for concatenation? yes, probably ;_;
 
 		return concatenatedHandler.getMediaFile();
 	}
 
-	private MediaFile makeBlank(Duration blankTime) throws Exception {
+	private MediaFile makeBlank(BackgroundTask queue, Duration blankTime)
+			throws Exception {
 		MediaHandler blankMediaHandler;
-		MediaFile blankFile = MediaFile.createMediaContainer(MediaFormat.WAV);
+		MediaFile blankFile = MediaFile.createMediaContainer(queue,MediaFormat.WAV);
 		blankMediaHandler = new MediaHandler(progressProperty, blankFile);
+		blankMediaHandler.setBackgroundTask(queue);
+		blankMediaHandler.setNameOfProcess("Make Blank");
 		blankMediaHandler.makeBlankAudio(blankTime);
-		blankMediaHandler.waitFor();
-		// do we need to wait for it to make the audio?
 		blankFile = blankMediaHandler.getMediaFile();
 		// blankFile now holds a blank file
 		return blankFile;
@@ -164,11 +182,13 @@ public class OverlayCommitter extends Application {
 
 	/**
 	 * This is a convenience method for creating a Text to Speech MediaFile.
+	 * 
 	 * @param text
 	 * @return
 	 * @throws Exception
 	 */
-	private MediaFile simpleMakeSpeech(String text) throws Exception {
+	private MediaFile simpleMakeSpeech(BackgroundTask queue, String text)
+			throws Exception {
 
 		/* Initializing festival Scheme Settings */
 		SchemeFile scmFile = new SchemeFile();
@@ -176,16 +196,16 @@ public class OverlayCommitter extends Application {
 
 		/* Initializing MediaFile Container */
 		MediaFile textMediaFile = MediaFile
-				.createMediaContainer(MediaFormat.WAV);
+				.createMediaContainer(queue,MediaFormat.WAV);
 		MediaHandler textMediaHandler = new MediaHandler(progressProperty,
 				textMediaFile);
-		
-		/* */
+		textMediaHandler.setBackgroundTask(queue);
+		textMediaHandler.setNameOfProcess("Simple Text to Speech");
+
+		/* Constructing text to speech file */
 		textMediaHandler.textToSpeech(text, scmFile);
-		textMediaHandler.waitFor();
 		textMediaFile = textMediaHandler.getMediaFile();
 		return textMediaFile;
 	}
-	
 
 }

@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 
 import utility.StagedAudio;
 import utility.StagedMedia;
+import utility.control.BackgroundTask;
 import utility.control.MediaHandler;
 import utility.media.MediaFile;
 import utility.media.MediaFormat;
@@ -64,8 +65,15 @@ public class SpeechTab extends BindableTab {
 		super(mv, title);
 		
 		singletonObject = this;
-		
-		MediaFile mediaFile = MediaFile.createMediaContainer(MediaFormat.WAV);
+		BackgroundTask temp = new BackgroundTask();
+		MediaFile mediaFile = MediaFile.createMediaContainer(temp, MediaFormat.WAV);
+		Thread th = new Thread(temp);
+		th.start();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
 		try {
 			speechMedia = new MediaHandler(mediaFile);
 		} catch (Exception e) {

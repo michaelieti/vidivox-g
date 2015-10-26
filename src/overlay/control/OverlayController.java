@@ -1,15 +1,10 @@
 package overlay.control;
 
-import java.io.File;
-import java.io.IOException;
-
-import editor.EditPanel;
 import editor.SpeechTab;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SelectionModel;
@@ -18,15 +13,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
-import javafx.stage.PopupWindow;
-import javafx.util.Callback;
 import overlay.Commentary;
 import overlay.model.OverlayModellable;
 import player.VidivoxPlayer;
-import utility.control.MediaHandler;
-import utility.control.SchemeFile;
 import utility.media.MediaFile;
-import utility.media.MediaFormat;
 
 
 /**
@@ -125,9 +115,18 @@ public class OverlayController {
 //		OverlayCommitterProgressPopup popup = new OverlayCommitterProgressPopup(committer);
 //		popup.show(this.view);
 		
-		MediaFile overlaidVideo = committer.beginCommit();
+		final MediaFile overlaidVideo = committer.beginCommit();
+		committer.setOnFinished(new EventHandler<WorkerStateEvent> () {
+
+			@Override
+			public void handle(WorkerStateEvent arg0) {
+				VidivoxPlayer.getVPlayer().setMedia(overlaidVideo.getMedia());
+			}
+			
+		});
+		committer.call();
 		System.out.println("Setting committed video to MediaView");
-		VidivoxPlayer.getVPlayer().setMedia(overlaidVideo.getMedia());
+		
 	}
 	
 	

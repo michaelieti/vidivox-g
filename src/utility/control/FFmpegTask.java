@@ -26,6 +26,7 @@ public class FFmpegTask extends Task<Void> {
 	private Double totalWork;
 	private String input;
 	private Process process;
+	private boolean printOutput = false;
 
 	protected FFmpegTask(DoubleProperty progress, String input,
 			Double finalDuration) {
@@ -37,10 +38,11 @@ public class FFmpegTask extends Task<Void> {
 
 	protected void updateProgress(double workDone, double totalWork) {
 		super.updateProgress(workDone, totalWork);
-		progress.setValue(workDone / totalWork);
+		//progress.setValue(workDone / totalWork);
 	}
 	@Override
 	protected Void call() throws Exception {
+		System.out.println(">>> " + input);
 
 		ProcessBuilder procBulder = new ProcessBuilder("/bin/bash", "-c", input);
 		procBulder.redirectErrorStream(true);
@@ -62,6 +64,13 @@ public class FFmpegTask extends Task<Void> {
 		}
 	}
 
+	public void setPrint(boolean print) {
+		printOutput = print;
+	}
+	
+	public Process getProcess() {
+		return process;
+	}
 	/*
 	 * A helper function which processes the output stream from an FFMPEG
 	 * command. Parsing of this output allows an indication of progress to be
@@ -70,10 +79,13 @@ public class FFmpegTask extends Task<Void> {
 	private void currentlyProcessed(InputStream in) {
 		BufferedReader bin = new BufferedReader(new InputStreamReader(in));
 		String line;
+		int i = 0;
 		Boolean processingStarted = false;
+		if (printOutput) System.out.println("\n~~~~~~~~~Printing Output for FFMPEG Command~~~~~~~~~\n");
 		try {
 			while ((line = bin.readLine()) != null) {
-//				System.out.println(">>: " + line);
+				i++;
+				if (printOutput) System.out.println(i  + " | " + line);
 				if (line.equals("Press [q] to stop, [?] for help")) {
 					processingStarted = true;
 				} else if (processingStarted & (line.indexOf("time=") != -1)) {
@@ -83,6 +95,7 @@ public class FFmpegTask extends Task<Void> {
 							totalWork);
 				}
 			}
+			if (printOutput) System.out.println("~~~~~~~~~~~~~~~~Finish~~~~~~~~~~~~~~~~");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

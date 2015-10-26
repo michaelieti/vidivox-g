@@ -33,24 +33,15 @@ public class Main extends Application {
 	private MainStage ms;
 	private EditPanel editorPanel;
 	private OverlayView olView;
-	
+
 	public static void main(String[] args) throws Exception {
-		/*Checks whether the temporary already exists. Cleans the directory if it does, and creates a new one */
-		InitTemp();
 		/*
-		int i = 0;
-		while (p.exists()) {
-			System.out.println(p.getCanonicalPath() + " already exists.");
-			p = new File(System.getProperty("user.dir") + "/.temp" + i);
-			System.out.println("New temp dir at "+ p.getCanonicalPath());
-			i++;
-		}
-		if (!p.mkdirs()) {
-			throw new Exception("Unable to create temporary directory at '" + p.getCanonicalPath() + "'.");
-		}
-		*/
+		 * Checks whether the temporary already exists. Cleans the directory if
+		 * it does, and creates a new one
+		 */
+		InitTemp();
 		launch(args);
-		
+
 	}
 
 	public static void InitTemp() throws Exception {
@@ -65,43 +56,50 @@ public class Main extends Application {
 			p.delete();
 		}
 		if (!p.mkdirs()) {
-			throw new Exception("Unable to create temporary directory at '" + p.getCanonicalPath() + "'.");
+			throw new Exception("Unable to create temporary directory at '"
+					+ p.getCanonicalPath() + "'.");
 		}
 	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		ms = new MainStage(this);
 		editorPanel = new EditPanel(ms.getMediaPane().getMediaView());
 		olView = new OverlayView();
-		
+
 		primaryStage = ms;
-		
-		OverlayModel olModel = new OverlayModel();	//initializes overlay data model
-		OverlayController olController = new OverlayController(olModel);	//initializes the controller
+
+		OverlayModel olModel = new OverlayModel(); // initializes overlay data
+													// model
+		OverlayController olController = new OverlayController(olModel); // initializes
+																			// the
+																			// controller
 		olView = new OverlayView();
-		olController.setView(olView);	//sets the controller's associated view
-		olController.initialize();		//initializes event handlers etc between view and model
-		
+		olController.setView(olView); // sets the controller's associated view
+		olController.initialize(); // initializes event handlers etc between
+									// view and model
+
 		/* SCREEN POSITIONAL SET UP */
 		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 		editorPanel.setX(screenBounds.getMinX());
 		editorPanel.setY(screenBounds.getMaxY() / 2 - 200);
-		
+
 		olView.setX(screenBounds.getMaxX() - 250);
 		olView.setY(screenBounds.getMaxY() / 2 - 200);
-		
+
 		primaryStage.show();
 		editorPanel.show();
 		olView.show();
-		
-//		MediaFile outputFinal = MediaFile.createMediaContainer(MediaFormat.WAV,
-//				new File(System.getProperty("user.home")
-//						+ "/SoftEng206/ffmpeg/FinalDest.wav"));
-//		MediaHandler mh = new MediaHandler(outputFinal);
-//		SchemeFile scmFile = new SchemeFile();
-//		scmFile.setActor(SchemeFile.VoiceActor.Gordon);
-//		scmFile.writeToDisk();
-//		mh.textToSpeech("Hello Test", scmFile);
+
+		// MediaFile outputFinal =
+		// MediaFile.createMediaContainer(MediaFormat.WAV,
+		// new File(System.getProperty("user.home")
+		// + "/SoftEng206/ffmpeg/FinalDest.wav"));
+		// MediaHandler mh = new MediaHandler(outputFinal);
+		// SchemeFile scmFile = new SchemeFile();
+		// scmFile.setActor(SchemeFile.VoiceActor.Gordon);
+		// scmFile.writeToDisk();
+		// mh.textToSpeech("Hello Test", scmFile);
 	}
 
 	public EditPanel getEditor() {
