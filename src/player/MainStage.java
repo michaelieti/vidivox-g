@@ -35,11 +35,13 @@ public class MainStage extends Stage {
 	private VidivoxVideoControls vidiVidCtrl;
 	private VidivoxFileControls vidiFileCtrl;
 	private Main main;
+	final private MainStage mainstage;
 
 	public MainStage(Main appLauncher) {
 		super();
 		this.setTitle(Main.DEFAULT_TITLE);
 		main = appLauncher;
+		mainstage = this;
 		BorderPane borderPane = new BorderPane();
 		borderPane.setPadding(new Insets(0, 0, 15, 0));
 
@@ -68,7 +70,6 @@ public class MainStage extends Stage {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				VidivoxPlayer.getVPlayer().getMediaView()
 				.setFitHeight(newValue.doubleValue() - 180);
-				System.out.println("new height = " + newValue );
 			}
 		});
 		widthProperty().addListener(new ChangeListener<Number>(){
@@ -76,7 +77,6 @@ public class MainStage extends Stage {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				VidivoxPlayer.getVPlayer().getMediaView().
 				setFitWidth(newValue.doubleValue());
-				System.out.println("new width = " + newValue );
 			}
 		});
 		
@@ -92,41 +92,9 @@ public class MainStage extends Stage {
 		/*
 		 * Setting the close action of this window to close the application
 		 */
-		this.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent event) {
-				/*
-				 * The purpose of this code is to clean up the temporary folder,
-				 * ready for the next launch.
-				 */
-				File p = new File(System.getProperty("user.dir") + "/.temp/");
-				if (p.exists() && p.isDirectory()) {
-					for (File f : p.listFiles()) {
-						f.delete();
-					}
-				}
-				p.delete();
-				Platform.exit();
-			}
-		});
-		final Stage current = this;
-		//TODO: comment this, wtf is this even
-		this.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> ov,
-					Boolean oldValue, Boolean newValue) {
-				if (!newValue) {
+		this.setOnCloseRequest(new ClosureHandler());
 
-					main.getEditor().setIconified(false);
-
-					main.getOverlay().setIconified(false);
-					current.setIconified(false);
-				} else {
-					main.getEditor().setIconified(true);
-					main.getOverlay().setIconified(true);
-				}
-			}
-		});
+		this.iconifiedProperty().addListener(new IconificationListener());
 		setCurrentSkinColor(SkinColor.BLUE);
 		/*
 		StringBinding currentMedia = new When(vidiMedia.getMediaView()
@@ -171,4 +139,39 @@ public class MainStage extends Stage {
 		this.currentSkinColor = currentSkinColor;
 	}
 
+	
+	private class IconificationListener implements ChangeListener<Boolean> {
+		@Override
+		public void changed(ObservableValue<? extends Boolean> ov,
+				Boolean oldValue, Boolean newValue) {
+			if (!newValue) {
+
+				main.getEditor().setIconified(false);
+
+				main.getOverlay().setIconified(false);
+				mainstage.setIconified(false);
+			} else {
+				main.getEditor().setIconified(true);
+				main.getOverlay().setIconified(true);
+			}
+		}
+	}
+	
+	private class ClosureHandler implements EventHandler<WindowEvent>{
+		@Override
+		public void handle(WindowEvent event) {
+			/*
+			 * The purpose of this code is to clean up the temporary folder,
+			 * ready for the next launch.
+			 */
+			File p = new File(System.getProperty("user.dir") + "/.temp/");
+			if (p.exists() && p.isDirectory()) {
+				for (File f : p.listFiles()) {
+					f.delete();
+				}
+			}
+			p.delete();
+			Platform.exit();
+		}
+	}
 }
