@@ -60,9 +60,12 @@ public class VidivoxFileControls extends MenuBar {
 	 * A CheckMenuItem which represents whether a skin is currently being used.
 	 */
 	protected CheckMenuItem blueSkin, orangeSkin, purpleSkin, greenSkin;
-
+	private final MainStage ms;
+	
+	
 	public VidivoxFileControls(final MainStage ms, final MediaPanel vvm) {
 		super();
+		this.ms = ms;
 		VidivoxPlayer.getVPlayer().setFilePanel(this);
 		this.setId("fileControls");
 		// OPEN FILE BUTTON STARTS HERE
@@ -70,111 +73,26 @@ public class VidivoxFileControls extends MenuBar {
 		fileMenu = new Menu("File");
 		fileMenu.setId("fileMenu");
 		
-
 		windowMenu = new Menu("Window");
 		windowMenu.setId("fileMenu");
 		/*
 		 * This checks which windows are open before showing the menu. This particular implementation is inflexible.
 		 */
-		windowMenu.setOnShowing(new EventHandler<Event>() {
-
-			@Override
-			public void handle(Event arg0) {
-				for (MenuItem m : windowMenu.getItems()) {
-					if (m.equals(edittor)) {
-						((CheckMenuItem) m).setSelected(ms.getLauncher()
-								.getEditor().isShowing());
-					} else if (m.equals(overlay)) {
-						((CheckMenuItem) m).setSelected(ms.getLauncher()
-								.getOverlay().isShowing());
-					}
-				}
-
-			}
-
-		});
+		windowMenu.setOnShowing(new WindowMenuHandler(ms));
+		
 		custMenu = new Menu("Customize");
 		custMenu.setId("fileMenu");
 		//TODO: Consider similar structures for this menu
 
 		open = new MenuItem("Open file");
 		open.setId("fileBtns");
-		open.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				System.out.println("File Opened Wow!");
-				URI mediaPath = null;
-				File currentFile = null;
-				currentFile = fileChooser.showOpenDialog(ms);
-				if (currentFile != null) {
-					mediaPath = currentFile.toURI(); // converts to URI object
-					// next step retrieves the MediaView object from the main
-					// stage
-					Media media = null;
-					try {
-						media = new Media(mediaPath.toString());
-					} catch (Exception me) { // this is pretty hax tbh TODO:
-												// come up with a better way to
-												// do this
-						me.printStackTrace();
-						System.out.println("wrong file format");
-					}
-					// file check!
-					System.out.println(mediaPath.toString());
-					// get the wrapper class, set the media
-					VidivoxPlayer vp = VidivoxPlayer.getVPlayer();
-					vp.setMedia(media);
-
-					vp.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);
-				}
-			}
-
-		});
-
+		open.setOnAction(new OpenFileHandler());
+		
 		// SAVE FILE BUTTON STARTS HERE
 		save = new MenuItem("Save file");
 		save.setId("fileBtns");
-		save.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				Media toSave = VidivoxPlayer.getVPlayer()
-						.getMediaPlayer().getMedia();
-				FileChooser f = new FileChooser();
-				f.setTitle("Save");
-				File file = new FileChooser().showSaveDialog(null);
-				if (file != null) {
-					System.out.println(toSave.getSource());
-					URI u = null;
-					try {
-						u = new URI(toSave.getSource());
-					} catch (URISyntaxException e1) {
-						e1.printStackTrace();
-					}
-					String expansion = "mv " + u.getPath() + " "
-							+ file.getAbsolutePath();
-					String[] cmd = { "bash", "-c", expansion };
-					ProcessBuilder build = new ProcessBuilder(cmd);
-					build.redirectErrorStream(true);
-					Process p = null;
-					try {
-						p = build.start();
-						BufferedReader bout = new BufferedReader(
-								new InputStreamReader(p.getInputStream()));
-						String line;
-						while ((line = bout.readLine()) != null) {
-							System.out.println(line);
-						}
-						p.waitFor();
-						System.out.println(file.toURI().toString());
-						Media newMedia = new Media(file.toURI().toString());
-						VidivoxPlayer.getVPlayer().setMedia(newMedia);
-					} catch (IOException | InterruptedException e) {		
-						e.printStackTrace();
-					}
-
-				}
-
-			}
-		});
-
+		save.setOnAction(new SaveFileHandler());
+		
 		edittor = new CheckMenuItem("Editing Panel");
 		edittor.setId("fileBtns");
 		edittor.setOnAction(new EventHandler<ActionEvent>() {
@@ -279,5 +197,106 @@ public class VidivoxFileControls extends MenuBar {
 		this.getMenus().addAll(fileMenu, windowMenu, custMenu);
 
 	}
+	
+	/* handlers */
+	
+	private class WindowMenuHandler implements EventHandler<Event> {
+		
+		MainStage ms;
+		
+		WindowMenuHandler(MainStage ms){
+			super();
+			this.ms = ms;
+		}
+		
+		@Override
+		public void handle(Event arg0) {
+			for (MenuItem m : windowMenu.getItems()) {
+				if (m.equals(edittor)) {
+					((CheckMenuItem) m).setSelected(ms.getLauncher()
+							.getEditor().isShowing());
+				} else if (m.equals(overlay)) {
+					((CheckMenuItem) m).setSelected(ms.getLauncher()
+							.getOverlay().isShowing());
+				}
+			}
+		}
+	}
+
+	private class OpenFileHandler implements EventHandler<ActionEvent> {
+		
+		public void handle(ActionEvent event) {
+			System.out.println("File Opened Wow!");
+			URI mediaPath = null;
+			File currentFile = null;
+			currentFile = fileChooser.showOpenDialog(ms);
+			if (currentFile != null) {
+				mediaPath = currentFile.toURI(); // converts to URI object
+				// next step retrieves the MediaView object from the main
+				// stage
+				Media media = null;
+				try {
+					media = new Media(mediaPath.toString());
+				} catch (Exception me) { // this is pretty hax tbh TODO:
+											// come up with a better way to
+											// do this
+					me.printStackTrace();
+					System.out.println("wrong file format");
+				}
+				// file check!
+				System.out.println(mediaPath.toString());
+				// get the wrapper class, set the media
+				VidivoxPlayer vp = VidivoxPlayer.getVPlayer();
+				vp.setMedia(media);
+
+				vp.getMediaPlayer().setAutoPlay(isAutoPlayEnabled);
+			}
+		}
+
+	}
+
+	private class SaveFileHandler implements EventHandler<ActionEvent> {
+		public void handle(ActionEvent event) {
+			Media toSave = VidivoxPlayer.getVPlayer()
+					.getMediaPlayer().getMedia();
+			FileChooser f = new FileChooser();
+			f.setTitle("Save");
+			File file = new FileChooser().showSaveDialog(null);
+			if (file != null) {
+				System.out.println(toSave.getSource());
+				URI u = null;
+				try {
+					u = new URI(toSave.getSource());
+				} catch (URISyntaxException e1) {
+					e1.printStackTrace();
+				}
+				String expansion = "mv " + u.getPath() + " "
+						+ file.getAbsolutePath();
+				String[] cmd = { "bash", "-c", expansion };
+				ProcessBuilder build = new ProcessBuilder(cmd);
+				build.redirectErrorStream(true);
+				Process p = null;
+				try {
+					p = build.start();
+					BufferedReader bout = new BufferedReader(
+							new InputStreamReader(p.getInputStream()));
+					String line;
+					while ((line = bout.readLine()) != null) {
+						System.out.println(line);
+					}
+					p.waitFor();
+					System.out.println(file.toURI().toString());
+					Media newMedia = new Media(file.toURI().toString());
+					VidivoxPlayer.getVPlayer().setMedia(newMedia);
+				} catch (IOException | InterruptedException e) {		
+					e.printStackTrace();
+				}
+
+			}
+
+		}
+	}
+
+	
 	
 }

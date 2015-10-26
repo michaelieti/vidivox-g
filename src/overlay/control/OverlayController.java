@@ -15,6 +15,9 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.PopupWindow;
 import javafx.util.Callback;
 import overlay.Commentary;
@@ -118,7 +121,8 @@ public class OverlayController {
 		committer.addVideo(VidivoxPlayer.getVPlayer().getMedia());
 		committer.addCommentaryList(model.getOverlayList());
 		
-		PopupWindow popup = new OverlayCommitterProgressPopup(committer);
+		System.out.println("committing overlay");
+		OverlayCommitterProgressPopup popup = new OverlayCommitterProgressPopup(committer);
 		popup.show(this.view);
 		
 		MediaFile overlaidVideo = committer.beginCommit();
@@ -193,19 +197,24 @@ public class OverlayController {
 	}
 	
 	
-	public class OverlayCommitterProgressPopup extends PopupWindow {
+	public class OverlayCommitterProgressPopup extends Popup {
 		ProgressBar bar;
 		OverlayCommitter oc;
+		Text processing = new Text("Processing");
 		
 		public OverlayCommitterProgressPopup(OverlayCommitter oc){
 			bar = new ProgressBar();
 			this.oc = oc;
 			
+			VBox overarchingBox = new VBox();
 			StackPane pane = new StackPane();
-			pane.getChildren().add(bar);
+			
+			pane.getChildren().addAll(bar, processing);
+			overarchingBox.getChildren().addAll(pane);
 			
 			oc.addProgressProperty(bar.progressProperty());
-			setScene(new Scene(pane, 300,200));
+			
+			getContent().add(overarchingBox);
 		}
 	}
 	

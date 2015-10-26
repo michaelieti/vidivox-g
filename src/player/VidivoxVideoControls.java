@@ -54,40 +54,7 @@ public class VidivoxVideoControls extends VBox {
 		// Buttons defined here (e.g. play button, pause button, stop button...)
 		playBtn = new Button();
 		playBtn.setId("playBtn");
-		playBtn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				rwd = false;
-				MediaPlayer mp = mediaView.getMediaPlayer();
-				// if the rate is not currently 1.0, set to 1.0 and then return
-				// to pause.
-				if (mp.getRate() != 1.0) {
-					mp.setRate(1.0);
-					mp.setMute(false);
-				}
-				Status status = mp.getStatus();
-				// CHECK ONE: possible error? nothing is done in these states
-				// for now
-				if (status == Status.UNKNOWN || status == Status.HALTED) {
-					playBtn.setId("playBtn");
-					return;
-				}
-				// CHECK TWO: stopped/paused/ready states - begin playing video
-				if (status == Status.STOPPED || status == Status.READY
-						|| status == Status.PAUSED) {
-					// check if video track is at end: if so, reset the track.
-					if (mediaEnded) {
-						mp.seek(mp.getStartTime());
-						mediaEnded = false;
-					}// continue playing from that point
-					mp.play();
-					playBtn.setId("pauseBtn");
-				} else {
-					mp.pause();
-					playBtn.setId("playBtn");
-				}
-			}
-		});
-
+		playBtn.setOnAction(new PlayButtonHandler());
 		stopBtn = new Button();
 		stopBtn.setOnAction(new EventHandler<ActionEvent>() {
 			
@@ -185,22 +152,7 @@ public class VidivoxVideoControls extends VBox {
 			rwd = false;
 		} else {
 			rwd = true;
-			Task<Void> t = new Task<Void>() {
-				@Override
-				protected Void call() throws Exception {
-					MediaPlayer mp = mediaView.getMediaPlayer();
-					mp.setRate(0.0001);
-					mp.setMute(true);
-					while (rwd) {
-						mp.seek(mp.getCurrentTime().subtract(Duration.seconds(1)));
-						Thread.sleep(500);
-					}
-					mp.setMute(false);
-					mp.play();
-					mp.setRate(1.0);
-					return null;
-				}
-			};
+			Task<Void> t = new RewindTask();
 			Thread th = new Thread(t);
 			th.setDaemon(true);
 			th.start();
@@ -211,4 +163,55 @@ public class VidivoxVideoControls extends VBox {
 		return mediaTimeline;
 	}
 
+	private class PlayButtonHandler implements EventHandler<ActionEvent> {
+		public void handle(ActionEvent event) {
+			rwd = false;
+			MediaPlayer mp = mediaView.getMediaPlayer();
+			// if the rate is not currently 1.0, set to 1.0 and then return
+			// to pause.
+			if (mp.getRate() != 1.0) {
+				mp.setRate(1.0);
+				mp.setMute(false);
+			}
+			Status status = mp.getStatus();
+			// CHECK ONE: possible error? nothing is done in these states
+			// for now
+			if (status == Status.UNKNOWN || status == Status.HALTED) {
+				playBtn.setId("playBtn");
+				return;
+			}
+			// CHECK TWO: stopped/paused/ready states - begin playing video
+			if (status == Status.STOPPED || status == Status.READY
+					|| status == Status.PAUSED) {
+				// check if video track is at end: if so, reset the track.
+				if (mediaEnded) {
+					mp.seek(mp.getStartTime());
+					mediaEnded = false;
+				}// continue playing from that point
+				mp.play();
+				playBtn.setId("pauseBtn");
+			} else {
+				mp.pause();
+				playBtn.setId("playBtn");
+			}
+		}
+	}
+
+	private class RewindTask extends Task<Void> {
+		@Override
+		protected Void call() throws Exception {
+			MediaPlayer mp = mediaView.getMediaPlayer();
+			mp.setRate(0.0001);
+			mp.setMute(true);
+			while (rwd) {
+				mp.seek(mp.getCurrentTime().subtract(Duration.seconds(1)));
+				Thread.sleep(500);
+			}
+			mp.setMute(false);
+			mp.play();
+			mp.setRate(1.0);
+			return null;
+		}
+	};
+	
 }
