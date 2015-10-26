@@ -3,6 +3,8 @@ package utility.control;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 
 /**
  * A helper class which handles FFMPEG commands. Commands are run on a
@@ -43,6 +45,10 @@ public class FFMPEG {
 		th.start();
 	}
 	
+	
+	public void setOnFinished(EventHandler<WorkerStateEvent> event) {
+		ffmpegProcess.setOnSucceeded(event);
+	}
 
 	/**
 	 * 
