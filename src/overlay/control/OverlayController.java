@@ -121,9 +121,9 @@ public class OverlayController {
 		committer.addVideo(VidivoxPlayer.getVPlayer().getMedia());
 		committer.addCommentaryList(model.getOverlayList());
 		
-		System.out.println("committing overlay");
-		OverlayCommitterProgressPopup popup = new OverlayCommitterProgressPopup(committer);
-		popup.show(this.view);
+//		System.out.println("committing overlay");
+//		OverlayCommitterProgressPopup popup = new OverlayCommitterProgressPopup(committer);
+//		popup.show(this.view);
 		
 		MediaFile overlaidVideo = committer.beginCommit();
 		System.out.println("Setting committed video to MediaView");
