@@ -7,26 +7,35 @@ import java.lang.reflect.Field;
 import utility.StagedAudio;
 import utility.StagedMedia;
 import utility.control.MediaHandler;
+import utility.control.SchemeFile;
 import utility.media.MediaFile;
 import utility.media.MediaFormat;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.When;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -36,6 +45,7 @@ import javafx.util.Duration;
 import overlay.Commentary;
 import overlay.control.OverlayController;
 import overlay.control.OverlayType;
+import player.SliderVX;
 import player.VidivoxPlayer;
 
 public class SpeechTab extends BindableTab {
@@ -49,16 +59,63 @@ public class SpeechTab extends BindableTab {
 	private FileChooser f;
 	private ProgressBar progBar = new ProgressBar();
 	
+	/* advanced GUI elements */
+	private final ComboBox voiceActorsComboBox;
+	private SliderVX rateSlider, pitchInitialSlider, pitchFinalSlider;
+	private Button resetAdvanced;
+	
 	/* festival fields*/
 	private int pid = -1;
 	
 	private MediaHandler speechMedia;
+	private SchemeFile scmFile = new SchemeFile();
 	
 	/* commentary editing fields*/
 	private SimpleBooleanProperty editFlag = new SimpleBooleanProperty(false);
 	private Commentary commentUnderEdit = null;
 
 	private static SpeechTab singletonObject;
+	
+	/**
+	 * sets the scheme file's settings according to what is currently on the GUI.
+	 */
+	private void bindAdvancedOptions(){
+		//bind all sliders and stuff to scmFile
+		//must be called when new scmFile is created.
+		
+		voiceActorsComboBox.setOnAction(new EventHandler(){
+			@Override
+			public void handle(Event event) {
+				scmFile.setActor((SchemeFile.VoiceActor)voiceActorsComboBox.getSelectionModel().getSelectedItem());
+			}
+		});
+		
+		rateSlider.valueProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				double currentRate = rateSlider.getValue() / SchemeFile.MAX_RATE;
+				scmFile.setRateOfSpeech(currentRate);
+			}
+		});
+		
+		pitchInitialSlider.valueProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				double currentPitch = pitchInitialSlider.getValue() / SchemeFile.MAX_PITCH;
+				scmFile.setInitialPitch((int)currentPitch);
+			}
+		});
+		
+		pitchFinalSlider.valueProperty().addListener(new InvalidationListener() {
+			@Override
+			public void invalidated(Observable observable) {
+				double currentPitch = pitchFinalSlider.getValue() / SchemeFile.MAX_PITCH;
+				scmFile.setFinalPitch((int)currentPitch);
+			}
+		});
+	}
+	
+	
 	
 	public SpeechTab(final MediaView mv, String title, String message) {
 		super(mv, title);
@@ -125,34 +182,78 @@ public class SpeechTab extends BindableTab {
 		/* ensures that the cancel overlay button only appears when editflag = true*/
 		editFlag.addListener(new CancelOverlayButtonListener());
 		
+		
+		VBox advancedOptionBox = new VBox();
+		advancedOptionBox.setMaxWidth(200);
+		advancedOptionBox.setAlignment(Pos.CENTER);
+		
+		HBox voiceActorPanel = new HBox();
+		Text voiceActorLabel = new Text("Voice Actor: ");
+		ObservableList<SchemeFile.VoiceActor> options = 
+			    FXCollections.observableArrayList(SchemeFile.VoiceActor.Jono, SchemeFile.VoiceActor.Robot, SchemeFile.VoiceActor.Gordon );
+		voiceActorsComboBox = new ComboBox<SchemeFile.VoiceActor>(options);
+		voiceActorPanel.getChildren().addAll(voiceActorLabel, voiceActorsComboBox);
+		
+		Text rateLabel = new Text("Rate");
+		rateSlider = new SliderVX(SchemeFile.MIN_RATE, SchemeFile.MAX_RATE, SchemeFile.DEFAULT_RATE);
+		rateSlider.setMaxWidth(150);
+		
+		Text pitch_initial = new Text("Initial pitch");
+		pitchInitialSlider = new SliderVX(SchemeFile.MIN_PITCH, SchemeFile.MAX_PITCH, SchemeFile.DEFAULT_PITCH);
+		pitchInitialSlider.setMaxWidth(150);
+		Text pitch_final = new Text("Final pitch");
+		pitchFinalSlider = new SliderVX(SchemeFile.MIN_PITCH, SchemeFile.MAX_PITCH, SchemeFile.DEFAULT_PITCH);
+		pitchFinalSlider.setMaxWidth(150);
+		
+		resetAdvanced = new Button("Reset sliders");
+		resetAdvanced.setOnAction(new ResetSlidersHandler());
+		
+		advancedOptionBox.getChildren().addAll(voiceActorPanel, rateLabel, rateSlider, pitch_initial, pitchInitialSlider, 
+				pitch_final, pitchFinalSlider, resetAdvanced);
+		
+		
 		/* placement starts here */
-		GridPane speechPane = new GridPane();
-		speechPane.setGridLinesVisible(player.Main.GRID_IS_VISIBLE);
-		speechPane.setVgap(10);
-		speechPane.setHgap(10);
+		BorderPane speechPane = new BorderPane();
+		
 		speechPane.setPadding(new Insets(10, 10, 10, 10));
-		speechPane.add(msg, 0, 0, 3, 1);
-		speechPane.add(userField, 0, 1, 3, 3);
-		HBox speechBtns = new HBox();
-		speechBtns.setAlignment(Pos.CENTER);
-		speechBtns.setSpacing(btnSpacing);
-		speechBtns.getChildren().addAll(speechBtn, saveBtn, overlayBtn, cancelOverlayBtn);
-		speechPane.add(speechBtns, 0, 4, 3, 1);
-		progBar.setVisible(false);
-		speechPane.add(progBar, 0, 5);
+		speechPane.setTop(msg);
+		speechPane.setLeft(userField);
+		
+		VBox speechCtrl = new VBox();
+			HBox speechBtns = new HBox();
+			speechBtns.setAlignment(Pos.CENTER);
+			speechBtns.setSpacing(btnSpacing);
+			speechBtns.getChildren().addAll(speechBtn, saveBtn, overlayBtn, cancelOverlayBtn);
+			progBar.setVisible(false);
+		speechCtrl.getChildren().addAll(speechBtns, progBar);
+		speechPane.setBottom(speechCtrl);
+		
 		speechPane.getStyleClass().add("gridPane");
+		
+		speechPane.setRight(advancedOptionBox);
+		
+		BorderPane.setMargin(advancedOptionBox, new Insets(12,12,12,12));
+		BorderPane.setMargin(speechCtrl, new Insets (12,12,12,12));
 		this.setContent(speechPane);
+		
+		bindAdvancedOptions();
 
 	}	
 	
 	public static SpeechTab getSpeechTab(){
 		return singletonObject;
 	}
+	
+	public void setScheme(SchemeFile scm){
+		this.scmFile = scm;
+		bindAdvancedOptions();
+	}
 
 
 	public void editCommentary(Commentary commentary){
 		setEditFlag(true);	//sets edit flag
 		setUserField(commentary.getText());		//sets text field
+		setScheme(commentary.getScheme());
 		setCommentUnderEdit(commentary);		//sets comment under edit
 	}
 	
@@ -338,14 +439,20 @@ public class SpeechTab extends BindableTab {
 			
 			if (editFlag.get()){	//if currently under editing, just edit the text, leave the time
 				commentUnderEdit.setText(userField.getText());
+				commentUnderEdit.setScheme(scmFile);
 				OverlayController.getController().reloadTable();
 				setEditFlag(false);
+				scmFile = new SchemeFile();
+				bindAdvancedOptions();
 			} else {
 				// not currently under editing: create new commentary, use the current time, and use new text
 				String text = userField.getText();
 				Duration time = VidivoxPlayer.getVPlayer().getMediaPlayer().getCurrentTime();
 				Commentary comment = new Commentary(time, text, OverlayType.TTS);
+				comment.setScheme(scmFile);
 				OverlayController.getController().addCommentary(comment);
+				scmFile = new SchemeFile();
+				bindAdvancedOptions();
 			}
 		}
 	}
@@ -366,8 +473,16 @@ public class SpeechTab extends BindableTab {
 		}
 	}
 
-
 	
+	public class ResetSlidersHandler implements EventHandler<ActionEvent> {
+		@Override
+		public void handle(ActionEvent event) {
+			rateSlider.setValue(SchemeFile.DEFAULT_RATE);
+			pitchInitialSlider.setValue(SchemeFile.DEFAULT_PITCH);
+			pitchFinalSlider.setValue(SchemeFile.DEFAULT_PITCH);
+		}
+		
+	}
 
 
 }

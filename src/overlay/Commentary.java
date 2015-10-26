@@ -47,6 +47,13 @@ public class Commentary implements Comparable<Commentary> {
 		setTimeString("");
 	}
 	
+	public void setScheme(SchemeFile scm){
+		festivalSettingsProperty.set(scm);
+	}
+	public SchemeFile getScheme(){
+		return festivalSettingsProperty.get();
+	}
+	
 	public void setType(OverlayType type){
 		typeProperty.set(type);
 	}
