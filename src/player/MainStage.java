@@ -54,10 +54,12 @@ public class MainStage extends Stage {
 
 		// MEDIA VIEW NODE ADDED: CENTER
 		borderPane.setCenter(mediaPanel);
-
+		
 		// CONTROL PANEL ADDED: BOTTOM
 		controlPanel = new VidivoxVideoControls(mediaPanel.getMediaView());
 		borderPane.setBottom(controlPanel);
+		
+		
 
 		//sets up the VidivoxPlayer class to start taking inputs
 		VidivoxPlayer.getVPlayer().
@@ -76,7 +78,7 @@ public class MainStage extends Stage {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				VidivoxPlayer.getVPlayer().getMediaView().
-				setFitWidth(newValue.doubleValue());
+				setFitWidth(newValue.doubleValue() - 16);
 			}
 		});
 		
