@@ -68,6 +68,13 @@ public class FFmpegTask extends Task<Void> {
 		printOutput = print;
 	}
 	
+	public boolean isValid() {
+		if (input == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 	public Process getProcess() {
 		return process;
 	}

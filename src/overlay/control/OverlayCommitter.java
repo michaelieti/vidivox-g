@@ -31,30 +31,30 @@ public class OverlayCommitter extends Application {
 	/* for testing purposes! */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		System.out.println("Hello! Now begins the test....");
-		// make a new overlay committer
-
-		OverlayCommitter oc = new OverlayCommitter();
-
-		String uriString = System.getProperty("user.home")
-				+ "/SoftEng206/vidivox/vid.mp4";
-		System.out.println(uriString);
-		File file = new File(uriString);
-		System.out.println();
-		// make new commentary list
-		// provide a new video
-		List<Commentary> list = new ArrayList<Commentary>();
-		list.add(new Commentary(Duration.valueOf("1s"), "Test commentary",
-				OverlayType.TTS));
-		list.add(new Commentary(Duration.valueOf("1s"), "How's it going?",
-				OverlayType.TTS));
-		list.add(new Commentary(Duration.valueOf("1s"), "Test commentary",
-				OverlayType.TTS));
-
-		Media video = new Media(file.toURI().toString());
-		oc.addCommentaryList(list);
-		oc.addVideo(video);
-		oc.beginCommit();
+//		System.out.println("Hello! Now begins the test....");
+//		// make a new overlay committer
+//
+//		OverlayCommitter oc = new OverlayCommitter();
+//
+//		String uriString = System.getProperty("user.home")
+//				+ "/SoftEng206/vidivox/vid.mp4";
+//		System.out.println(uriString);
+//		File file = new File(uriString);
+//		System.out.println();
+//		// make new commentary list
+//		// provide a new video
+//		List<Commentary> list = new ArrayList<Commentary>();
+//		list.add(new Commentary(Duration.valueOf("1s"), "Test commentary",
+//				OverlayType.TTS));
+//		list.add(new Commentary(Duration.valueOf("1s"), "How's it going?",
+//				OverlayType.TTS));
+//		list.add(new Commentary(Duration.valueOf("1s"), "Test commentary",
+//				OverlayType.TTS));
+//
+//		Media video = new Media(file.toURI().toString());
+//		oc.addCommentaryList(list);
+//		oc.addVideo(video);
+//		oc.beginCommit();
 
 	}
 
@@ -112,7 +112,7 @@ public class OverlayCommitter extends Application {
 			if (debug)
 				System.out.println("\nFile Info: FinalVideo\n\tLocation: "
 						+ finalVideo.getQuoteOfAbsolutePath());
-			MediaHandler finalHandler = new MediaHandler(finalOutput);
+			MediaHandler finalHandler = new MediaHandler(queue,finalOutput);
 			for (Commentary c : commentaryList) {
 				MediaFile blankFile = makeBlank(queue, c.getTime());
 				MediaFile speechFile = simpleMakeSpeech(queue, c.getText());
@@ -130,8 +130,6 @@ public class OverlayCommitter extends Application {
 			MediaFile[] array = new MediaFile[toBeMerged.size()];
 			array = (MediaFile[]) toBeMerged.toArray(array);
 			finalHandler.mergeAudio(array);
-			finalHandler.setBackgroundTask(queue);
-			finalHandler.setNameOfProcess("Audio Merge");
 			finalHandler.printToConsole(true);
 			MediaFile audio = finalHandler.getMediaFile();
 			if (debug)
@@ -141,10 +139,8 @@ public class OverlayCommitter extends Application {
 
 			
 		
-			MediaHandler videoHandler = new MediaHandler(finalVideo);
-			videoHandler.setBackgroundTask(queue);
+			MediaHandler videoHandler = new MediaHandler(queue,finalVideo);
 			videoHandler.mergeAudioAndVideo(orginal, audio);
-			videoHandler.setNameOfProcess("Final Merge");
 			if (debug)
 				System.out.println("\nFile Info:\n\tLocation: "
 						+ videoHandler.getMediaFile().getQuoteOfAbsolutePath());
@@ -162,12 +158,10 @@ public class OverlayCommitter extends Application {
 			MediaFile second) throws Exception {
 		MediaFile concatenatedFile = MediaFile
 				.createMediaContainer(queue,MediaFormat.WAV);
-		MediaHandler concatenatedHandler = new MediaHandler(progressProperty,
+		MediaHandler concatenatedHandler = new MediaHandler(queue,progressProperty,
 				concatenatedFile);
-		concatenatedHandler.setBackgroundTask(queue);
 		
 		concatenatedHandler.concatAudio(first, second);
-		concatenatedHandler.setNameOfProcess("Concat");
 		return concatenatedHandler.getMediaFile();
 	}
 
@@ -175,10 +169,8 @@ public class OverlayCommitter extends Application {
 			throws Exception {
 		MediaHandler blankMediaHandler;
 		MediaFile blankFile = MediaFile.createMediaContainer(queue,MediaFormat.WAV);
-		blankMediaHandler = new MediaHandler(progressProperty, blankFile);
-		blankMediaHandler.setBackgroundTask(queue);
+		blankMediaHandler = new MediaHandler(queue,progressProperty, blankFile);
 		blankMediaHandler.makeBlankAudio(blankTime);
-		blankMediaHandler.setNameOfProcess("Make Blank");
 		blankFile = blankMediaHandler.getMediaFile();
 		// blankFile now holds a blank file
 		return blankFile;
@@ -201,14 +193,12 @@ public class OverlayCommitter extends Application {
 		/* Initializing MediaFile Container */
 		MediaFile textMediaFile = MediaFile
 				.createMediaContainer(queue,MediaFormat.WAV);
-		MediaHandler textMediaHandler = new MediaHandler(progressProperty,
+		MediaHandler textMediaHandler = new MediaHandler(queue,progressProperty,
 				textMediaFile);
-		textMediaHandler.setBackgroundTask(queue);
 		
 
 		/* Constructing text to speech file */
 		textMediaHandler.textToSpeech(text, scmFile);
-		textMediaHandler.setNameOfProcess("Simple Text to Speech");
 		textMediaFile = textMediaHandler.getMediaFile();
 		return textMediaFile;
 	}

@@ -140,7 +140,7 @@ public class SpeechTab extends BindableTab {
 			e1.printStackTrace();
 		}
 		try {
-			speechMedia = new MediaHandler(mediaFile);
+			speechMedia = new MediaHandler(temp, mediaFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

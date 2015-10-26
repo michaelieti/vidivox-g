@@ -242,6 +242,7 @@ public class MediaFile {
 				+ desiredLocation.getAbsolutePath() + "\"";
 		FFMPEG cmd = new FFMPEG(new SimpleDoubleProperty(0), ffmpegCommand, 0.0);
 		cmd.queueTo(queue);
+		cmd.setName("Create Empty " + desiredFormat);
 		return new MediaFile(desiredLocation);
 	}
 
@@ -273,6 +274,7 @@ public class MediaFile {
 		/* Constructing Container */
 		FFMPEG cmd = new FFMPEG(new SimpleDoubleProperty(0), ffmpegCommand, 0.0);
 		queue.addTask(cmd);
+		cmd.setName("Create Empty " + desiredFormat);
 		output.format = desiredFormat;
 		output.duration = 0.0;
 		return output;
