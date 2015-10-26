@@ -60,7 +60,7 @@ public class SpeechTab extends BindableTab {
 	private ProgressBar progBar = new ProgressBar();
 	
 	/* advanced GUI elements */
-	private final ComboBox voiceActorsComboBox;
+	private final ComboBox<SchemeFile.VoiceActor> voiceActorsComboBox;
 	private SliderVX rateSlider, pitchInitialSlider, pitchFinalSlider;
 	private Button resetAdvanced;
 	
@@ -68,7 +68,7 @@ public class SpeechTab extends BindableTab {
 	private int pid = -1;
 	
 	private MediaHandler speechMedia;
-	private SchemeFile scmFile = new SchemeFile();
+	private SchemeFile scmFile;
 	
 	/* commentary editing fields*/
 	private SimpleBooleanProperty editFlag = new SimpleBooleanProperty(false);
@@ -114,12 +114,18 @@ public class SpeechTab extends BindableTab {
 			}
 		});
 	}
-	
+	private void customSetSliders(SchemeFile scm){
+		voiceActorsComboBox.getSelectionModel().select(scm.getActor());
+		rateSlider.setValue(scm.getRateOfSpeech());
+		pitchInitialSlider.setValue(scm.getInitialPitch());
+		pitchFinalSlider.setValue(scm.getFinalPitch());
+	}
 	
 	
 	public SpeechTab(final MediaView mv, String title, String message) {
 		super(mv, title);
 		
+		scmFile = new SchemeFile();
 		singletonObject = this;
 		
 		MediaFile mediaFile = MediaFile.createMediaContainer(MediaFormat.WAV);
@@ -254,6 +260,8 @@ public class SpeechTab extends BindableTab {
 		setEditFlag(true);	//sets edit flag
 		setUserField(commentary.getText());		//sets text field
 		setScheme(commentary.getScheme());
+		customSetSliders(commentary.getScheme());
+		bindAdvancedOptions();
 		setCommentUnderEdit(commentary);		//sets comment under edit
 	}
 	
@@ -385,6 +393,7 @@ public class SpeechTab extends BindableTab {
 	 * @param path
 	 */
 	private void textToSpeech(String msg, String path) {
+		
 		String expansion = "`echo \"" + msg + "\" | text2wave > " + path + "`";
 		String[] cmd = { "bash", "-c", expansion };
 		ProcessBuilder build = new ProcessBuilder(cmd);
